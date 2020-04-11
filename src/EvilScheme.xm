@@ -1,34 +1,41 @@
-/* How to Hook with Logos
-Hooks are written with syntax similar to that of an Objective-C @implementation.
-You don't need to #include <substrate.h>, it will be done automatically, as will
-the generation of a class list and an automatic constructor.
+#import "PrivateFrameworks.h"
+#include <time.h>
 
-%hook ClassName
+static void logOptions(FBSOpenApplicationOptions *options, NSString *bundleID) {
+    NSError *error;
+    NSString *path = [NSString stringWithFormat:@"%@%@%ld",
+                      @"/var/mobile/Documents/logs/",
+                      bundleID,
+                      time(NULL)];
 
-// Hooking a class method
-+ (id)sharedInstance {
-	return %orig;
+    NSString *dict = [NSString stringWithFormat:@"%@", [options dictionary]];
+
+    [dict writeToURL:[NSURL URLWithString:[NSString stringWithFormat:@"file://%@.txt", path]]
+          atomically:YES
+            encoding:NSUTF8StringEncoding
+               error:&error];
+
+    NSArray *actions;
+    if((actions = [options dictionary][@"__Actions"])) {
+        for(BSAction *action in actions) {
+            BSSettings *info = [action info];
+            [[info allSettings] enumerateIndexesUsingBlock:^ (NSUInteger idx, BOOL *stop) {
+                id obj = [info objectForSetting:idx];
+                if([obj isKindOfClass:%c(NSData)]) {
+                    [obj writeToFile:[NSString stringWithFormat:@"%@.USERDATA.plist", path]
+                          atomically:YES];
+                    // This can be unarchived to a UAUserActivityInfo w/ NSKeyedUnarchiver
+                }
+            }];
+        }
+    }
 }
 
-// Hooking an instance method with an argument.
-- (void)messageName:(int)argument {
-	%log; // Write a message about this call, including its class, name and arguments, to the system log.
+%hook FBSystemServiceOpenApplicationRequest
 
-	%orig; // Call through to the original function with its original arguments.
-	%orig(nil); // Call through to the original function with a custom argument.
-
-	// If you use %orig(), you MUST supply all arguments (except for self and _cmd, the automatically generated ones.)
+- (void)setOptions:(FBSOpenApplicationOptions *)options {
+    logOptions(options, [self bundleIdentifier]);
+    %orig;
 }
 
-// Hooking an instance method with no arguments.
-- (id)noArguments {
-	%log;
-	id awesome = %orig;
-	[awesome doSomethingElse];
-
-	return awesome;
-}
-
-// Always make sure you clean up after yourself; Not doing so could have grave consequences!
 %end
-*/
