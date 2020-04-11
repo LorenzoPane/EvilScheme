@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import "EVKQueryItemLexicon.h"
 
 /// Percent encode a given string
 /// @param str NSString to encode
@@ -40,3 +41,9 @@
 - (instancetype)initWithRegex:(NSRegularExpression *)regex template:(NSString *)str;
 + (instancetype)portionWithRegex:(NSRegularExpression *)regex template:(NSString *)str;
 @end
+
+/// Portion that returns the URL's query string translated with a given dictionary
+@interface EVKTranslatedQueryPortion : NSObject <EVKURLPortion>
+ - (instancetype)initWithDictionary:(NSDictionary<NSString *, EVKQueryItemLexicon *> *)dict;
+ + (instancetype)portionWithDictionary:(NSDictionary<NSString *, EVKQueryItemLexicon *> *)dict;
+ @end

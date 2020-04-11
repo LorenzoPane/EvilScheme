@@ -1,2 +1,4 @@
-#import <EvilKit/EVKURLPortions.h>
-#import <EvilKit/EVKAppAlternative.h>
+#import "EVKAppAlternative.h"
+#import "EVKQueryItemLexicon.h"
+#import "EVKURLPortions.h"
+#import "NSURL+ComponentAdditions.h"

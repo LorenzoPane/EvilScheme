@@ -97,3 +97,38 @@
 }
 
 @end
+
+@implementation EVKTranslatedQueryPortion {
+     NSDictionary<NSString *, EVKQueryItemLexicon *> *paramTranslations;
+ }
+
+ - (instancetype)initWithDictionary:(NSDictionary<NSString *, EVKQueryItemLexicon *> *)dict {
+     if((self = [super init])) {
+         paramTranslations = dict;
+     }
+
+     return self;
+ }
+
+ + (instancetype)portionWithDictionary:(NSDictionary<NSString *,EVKQueryItemLexicon *> *)dict {
+     return [[EVKTranslatedQueryPortion alloc] initWithDictionary:dict];
+ }
+
+ - (NSString *)evalutatePortionWithURL:(NSURL *)url {
+     NSMutableArray *ret = [NSMutableArray new];
+     EVKQueryItemLexicon *t;
+     NSURLQueryItem *translatedItem;
+
+     for(NSURLQueryItem *item in [url queryItems]) {
+         if((t = paramTranslations[[item name]]) &&
+             (translatedItem = [t translateItem:item])) {
+             [ret addObject:translatedItem];
+         }
+     }
+
+     NSURLComponents *c = [[NSURLComponents alloc] init];
+     [c setQueryItems:ret];
+     return [c percentEncodedQuery];
+ }
+
+ @end
