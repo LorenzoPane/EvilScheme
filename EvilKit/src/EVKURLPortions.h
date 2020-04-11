@@ -1,5 +1,9 @@
 #import <Foundation/Foundation.h>
 
+/// Percent encode a given string
+/// @param str NSString to encode
+#define percentEncode(str) [str stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet characterSetWithCharactersInString:@""]]
+
 /// Protocol representing functions of URLs that return strings
 @protocol EVKURLPortion <NSObject>
 /// Evalutate portions given the original URL

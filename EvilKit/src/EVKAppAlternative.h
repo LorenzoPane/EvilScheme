@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "EVSURLPortions.h"
+#import "EVKURLPortions.h"
 
 /// Object to represent an altenative app to a default scheme endpoint and the modifications that must be made to it's request
 @interface EVKAppAlternative : NSObject
