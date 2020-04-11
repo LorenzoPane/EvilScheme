@@ -12,7 +12,10 @@
 - (NSString *)trimmedResourceSpecifier;
 
 /// Returns path parsed by NSURLComponents
-- (NSString *)pathComponent;
+- (NSString *)trimmedPathComponent;
+
+/// Returns the host parsed by NSURLComponents
+- (NSString *)hostComponent;
 
 /// Returns YES if the absolute string contains a match for a given regular expression
 /// @param regex regular expression to use

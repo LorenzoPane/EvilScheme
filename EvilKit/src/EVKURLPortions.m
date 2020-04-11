@@ -17,7 +17,7 @@
     return [[EVKStaticStringPortion alloc] initWithString:str];
 }
 
-- (NSString *)evalutatePortionWithURL:(NSURL *)url {
+- (NSString *)evaluateWithURL:(NSURL *)url {
     return string;
 }
 
@@ -39,32 +39,36 @@
     return [[EVKFullURLPortion alloc] initWithPercentEncoding:encoded];
 }
 
-- (NSString *)evalutatePortionWithURL:(NSURL *)url {
-    return percentEncoded ? percentEncode([url absoluteString]) : [url absoluteString];
+- (NSString *)evaluateWithURL:(NSURL *)url {
+    NSString *ret =  percentEncoded ? percentEncode([url absoluteString]) : [url absoluteString];
+    return ret ? ret : @"";
 }
 
 @end
 
-@implementation EVKPathPortion
+@implementation EVKTrimmedPathPortion
 
-- (NSString *)evalutatePortionWithURL:(NSURL *)url {
-    return [url pathComponent];
+- (NSString *)evaluateWithURL:(NSURL *)url {
+    NSString *ret = [url trimmedPathComponent];
+    return ret ? ret : @"";
 }
 
 @end
 
 @implementation EVKTrimmedResourceSpecifierPortion
 
-- (NSString *)evalutatePortionWithURL:(NSURL *)url {
-    return [url trimmedResourceSpecifier];
+- (NSString *)evaluateWithURL:(NSURL *)url {
+    NSString * ret = [url trimmedResourceSpecifier];
+    return ret ? ret : @"";
 }
 
 @end
 
 @implementation EVKQueryPortion
 
-- (NSString *)evalutatePortionWithURL:(NSURL *)url {
-    return [url queryString];
+- (NSString *)evaluateWithURL:(NSURL *)url {
+    NSString *ret = [url queryString];
+    return ret ? ret : @"";
 }
 
 @end
@@ -88,47 +92,68 @@
 }
 
 
-- (NSString *)evalutatePortionWithURL:(NSURL *)url {
+- (NSString *)evaluateWithURL:(NSURL *)url {
     NSMatchingOptions opts = NSMatchingWithTransparentBounds | NSMatchingWithoutAnchoringBounds;
-    return [_regex stringByReplacingMatchesInString:[url absoluteString]
-                                            options:opts
-                                              range:NSMakeRange(0, [[url absoluteString] length])
-                                       withTemplate:_template];
+    NSString * ret =  [_regex stringByReplacingMatchesInString:[url absoluteString]
+                                                       options:opts
+                                                         range:NSMakeRange(0, [[url absoluteString] length])
+                                                  withTemplate:_template];
+    return ret ? ret : @"";
 }
 
 @end
 
 @implementation EVKTranslatedQueryPortion {
-     NSDictionary<NSString *, EVKQueryItemLexicon *> *paramTranslations;
- }
+    NSDictionary<NSString *, EVKQueryItemLexicon *> *paramTranslations;
+}
 
- - (instancetype)initWithDictionary:(NSDictionary<NSString *, EVKQueryItemLexicon *> *)dict {
-     if((self = [super init])) {
-         paramTranslations = dict;
-     }
+- (instancetype)initWithDictionary:(NSDictionary<NSString *, EVKQueryItemLexicon *> *)dict {
+    if((self = [super init])) {
+        paramTranslations = dict;
+    }
 
-     return self;
- }
+    return self;
+}
 
- + (instancetype)portionWithDictionary:(NSDictionary<NSString *,EVKQueryItemLexicon *> *)dict {
-     return [[EVKTranslatedQueryPortion alloc] initWithDictionary:dict];
- }
++ (instancetype)portionWithDictionary:(NSDictionary<NSString *,EVKQueryItemLexicon *> *)dict {
+    return [[EVKTranslatedQueryPortion alloc] initWithDictionary:dict];
+}
 
- - (NSString *)evalutatePortionWithURL:(NSURL *)url {
-     NSMutableArray *ret = [NSMutableArray new];
-     EVKQueryItemLexicon *t;
-     NSURLQueryItem *translatedItem;
+- (NSString *)evaluateWithURL:(NSURL *)url {
+    NSMutableArray *items = [NSMutableArray new];
+    EVKQueryItemLexicon *t;
+    NSURLQueryItem *translatedItem;
 
-     for(NSURLQueryItem *item in [url queryItems]) {
-         if((t = paramTranslations[[item name]]) &&
-             (translatedItem = [t translateItem:item])) {
-             [ret addObject:translatedItem];
-         }
-     }
+    for(NSURLQueryItem *item in [url queryItems]) {
+        if((t = paramTranslations[[item name]]) &&
+            (translatedItem = [t translateItem:item])) {
+            [items addObject:translatedItem];
+        }
+    }
 
-     NSURLComponents *c = [[NSURLComponents alloc] init];
-     [c setQueryItems:ret];
-     return [c percentEncodedQuery];
- }
+    NSURLComponents *c = [[NSURLComponents alloc] init];
+    [c setQueryItems:items];
 
- @end
+    NSString *ret = [c percentEncodedQuery];
+    return ret ? ret : @"";
+}
+
+@end
+
+@implementation EVKHostPortion
+
+- (NSString *)evaluateWithURL:(NSURL *)url {
+    NSString *ret = [url hostComponent];;
+    return ret ? ret : @"";
+}
+
+@end
+
+@implementation EVKSchemePortion
+
+- (NSString *)evaluateWithURL:(NSURL *)url {
+    NSString *ret = [url scheme];
+    return ret ? ret : @"";
+}
+
+@end

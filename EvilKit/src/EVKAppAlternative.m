@@ -30,8 +30,7 @@
     if(outline) {
         NSMutableString *ret = [NSMutableString new];
         for(id <EVKURLPortion> portion in outline) {
-            NSString *str = [portion evalutatePortionWithURL:url];
-            if(str) [ret appendString: str];
+            [ret appendString:[portion evaluateWithURL:url]];
         }
         return [NSURL URLWithString:ret];
     }

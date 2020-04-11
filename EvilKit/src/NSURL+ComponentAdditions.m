@@ -12,14 +12,20 @@
                        resolvingAgainstBaseURL:NO] percentEncodedQuery];
 }
 
-- (NSString *)pathComponent {
-    return [[NSURLComponents componentsWithURL:self
-                       resolvingAgainstBaseURL:NO] path];
+- (NSString *)trimmedPathComponent {
+    NSCharacterSet *set = [NSCharacterSet characterSetWithCharactersInString:@"/"];
+    return [[[NSURLComponents componentsWithURL:self
+                       resolvingAgainstBaseURL:NO] path] stringByTrimmingCharactersInSet:set];
 }
 
 - (NSString *)trimmedResourceSpecifier {
     NSCharacterSet *set = [NSCharacterSet characterSetWithCharactersInString:@"/"];
     return [[self resourceSpecifier] stringByTrimmingCharactersInSet:set];
+}
+
+- (NSString *)hostComponent {
+    return [[NSURLComponents componentsWithURL:self
+                       resolvingAgainstBaseURL:NO] host];
 }
 
 - (BOOL)matchesRegularExpression:(NSRegularExpression *)regex {

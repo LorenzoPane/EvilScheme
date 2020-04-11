@@ -7,9 +7,9 @@
 
 /// Protocol representing functions of URLs that return strings
 @protocol EVKURLPortion <NSObject>
-/// Evalutate portions given the original URL
+/// Return the evaluated portion given the original URL or an empty string
 /// @param url Original URL
-- (NSString *)evalutatePortionWithURL:(NSURL *)url;
+- (NSString *)evaluateWithURL:(NSURL *)url;
 @end
 
 /// Portion which always returns a fixed string
@@ -25,7 +25,7 @@
 @end
 
 /// Portion which returns the URL's path as a string
-@interface EVKPathPortion : NSObject <EVKURLPortion>
+@interface EVKTrimmedPathPortion : NSObject <EVKURLPortion>
 @end
 
 /// Portion which returns the URL's resource specifier, excluding leading and trailing slashes
@@ -42,8 +42,16 @@
 + (instancetype)portionWithRegex:(NSRegularExpression *)regex template:(NSString *)str;
 @end
 
-/// Portion that returns the URL's query string translated with a given dictionary
+/// Portion which returns the URL's query string translated with a given dictionary
 @interface EVKTranslatedQueryPortion : NSObject <EVKURLPortion>
- - (instancetype)initWithDictionary:(NSDictionary<NSString *, EVKQueryItemLexicon *> *)dict;
- + (instancetype)portionWithDictionary:(NSDictionary<NSString *, EVKQueryItemLexicon *> *)dict;
- @end
+- (instancetype)initWithDictionary:(NSDictionary<NSString *, EVKQueryItemLexicon *> *)dict;
++ (instancetype)portionWithDictionary:(NSDictionary<NSString *, EVKQueryItemLexicon *> *)dict;
+@end
+
+/// Portion which returns the URL's host
+@interface EVKHostPortion : NSObject <EVKURLPortion>
+@end
+
+/// Portion which returns the URL's scheme
+@interface EVKSchemePortion : NSObject <EVKURLPortion>
+@end
