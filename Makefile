@@ -14,4 +14,5 @@ include $(THEOS_MAKE_PATH)/tweak.mk
 after-install::
 	install.exec "sbreload || killall -9 SpringBoard"
 
+SUBPROJECTS += EvilKit
 include $(THEOS_MAKE_PATH)/aggregate.mk
