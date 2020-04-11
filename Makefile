@@ -8,6 +8,7 @@ SAUCE = $(shell find Src -name '*.m')
 TWEAK_NAME = EvilScheme
 EvilScheme_FILES = src/EvilScheme.xm $(SAUCE)
 EvilScheme_CFLAGS = -fobjc-arc
+EvilScheme_EXTRA_FRAMEWORKS += EvilKit
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 

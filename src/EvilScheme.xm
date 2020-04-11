@@ -1,4 +1,5 @@
 #import "PrivateFrameworks.h"
+#import "EVSPreferenceManager.h"
 #include <time.h>
 
 static void logOptions(FBSOpenApplicationOptions *options, NSString *bundleID) {
@@ -35,6 +36,19 @@ static void logOptions(FBSOpenApplicationOptions *options, NSString *bundleID) {
 
 - (void)setOptions:(FBSOpenApplicationOptions *)options {
     logOptions(options, [self bundleIdentifier]);
+
+    NSMutableDictionary *opts = [[options dictionary] mutableCopy];
+    NSURL *url = [opts objectForKey:@"__PayloadURL"];
+
+    NSDictionary *apps = [%c(EVSPreferenceManager) appAlternatives];
+    EVKAppAlternative *app;
+
+    if((app = [apps valueForKey:[self bundleIdentifier]]) && url) {
+        [opts setObject:[app transformURL:url] forKey:@"__PayloadURL"];
+        [self setBundleIdentifier:[app substituteBundleID]];
+    }
+
+    [options setDictionary:opts];
     %orig;
 }
 
