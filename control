@@ -1,0 +1,9 @@
+Package: net.pane.l.evilscheme
+Name: EvilScheme
+Depends: mobilesubstrate
+Version: 0.0.1
+Architecture: iphoneos-arm
+Description: Manage default browser, navigation app, package manager, and more!
+Maintainer: lpane
+Author: lpane
+Section: Tweaks
