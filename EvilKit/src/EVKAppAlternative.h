@@ -2,7 +2,7 @@
 #import "EVKURLPortions.h"
 
 /// Object to represent an altenative app to a default scheme endpoint and the modifications that must be made to it's request
-@interface EVKAppAlternative : NSObject
+@interface EVKAppAlternative : NSObject <NSSecureCoding>
 
 /// Bundle ID of the default scheme endpoint
 @property (copy) NSString *targetBundleID;
@@ -19,7 +19,7 @@
 /// @param outlines Dictionary of prefixes to URLs and the corrosponding arrays of portions
 - (instancetype)initWithTargetBundleID:(NSString *)targetBundleID
                     substituteBundleID:(NSString *)substituteBundleID
-                           urlOutlines:(NSDictionary *)outlines;
+                           urlOutlines:(NSDictionary<NSString *, NSArray<id <EVKURLPortion>> *> *)outlines;
 
 /// Transforms given URL with the proper outline
 /// @param url URL to transform

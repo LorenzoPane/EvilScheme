@@ -9,7 +9,7 @@
 }
 
 - (instancetype)initWithKeyName:(NSString *)key
-                     dictionary:(NSDictionary *)dictionary
+                     dictionary:(NSDictionary<NSString *, NSString *> *)dictionary
                    defaultState:(URLQueryState)state {
     if((self = [super init])) {
         _key = key;
@@ -25,7 +25,7 @@
 
     if(!(value = [self substitutions][[item value]])) {
         switch([self defaultState]) {
-            case(URLQueryStatePassThrough):
+            case URLQueryStatePassThrough:
                 value = [item value];
                 break;
             default:
@@ -35,5 +35,21 @@
 
     return [NSURLQueryItem queryItemWithName:[self key] value:value];
 }
+
+// Coding {{{
++ (BOOL)supportsSecureCoding { return YES; }
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+    [coder encodeObject:[self key] forKey:@"key"];
+    [coder encodeObject:[self substitutions] forKey:@"substitutions"];
+    [coder encodeInteger:[self defaultState] forKey:@"defaultState"];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)coder {
+    return [self initWithKeyName:[coder decodeObjectOfClass:[NSString class] forKey:@"key"]
+                      dictionary:[coder decodeObjectOfClass:[NSDictionary class] forKey:@"substitutions"]
+                    defaultState:[coder decodeIntegerForKey:@"defaultState"]];
+}
+// }}}
 
 @end

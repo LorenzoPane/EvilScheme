@@ -6,7 +6,7 @@
 #define percentEncode(str) [str stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet characterSetWithCharactersInString:@""]]
 
 /// Protocol representing functions of URLs that return strings
-@protocol EVKURLPortion <NSObject>
+@protocol EVKURLPortion <NSSecureCoding>
 /// Return the evaluated portion given the original URL or an empty string
 /// @param url Original URL
 - (NSString *)evaluateWithURL:(NSURL *)url;

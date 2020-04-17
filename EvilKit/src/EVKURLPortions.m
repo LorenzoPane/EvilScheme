@@ -21,6 +21,18 @@
     return string;
 }
 
+// Coding {{{
++ (BOOL)supportsSecureCoding { return YES; }
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+    [coder encodeObject:string forKey:@"string"];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)coder {
+    return [self initWithString:[coder decodeObjectOfClass:[NSString class] forKey:@"string"]];
+}
+// }}}
+
 @end
 
 @implementation EVKFullURLPortion {
@@ -41,8 +53,19 @@
 
 - (NSString *)evaluateWithURL:(NSURL *)url {
     NSString *ret =  percentEncoded ? percentEncode([url absoluteString]) : [url absoluteString];
-    return ret ? ret : @"";
+    return ret ? : @"";
 }
+// Coding {{{
++ (BOOL)supportsSecureCoding { return YES; }
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+    [coder encodeBool:percentEncoded forKey:@"percentEncoded"];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)coder {
+    return [self initWithPercentEncoding:[coder decodeBoolForKey:@"percentEncoded"]];
+}
+// }}}
 
 @end
 
@@ -50,8 +73,16 @@
 
 - (NSString *)evaluateWithURL:(NSURL *)url {
     NSString *ret = [url trimmedPathComponent];
-    return ret ? ret : @"";
+    return ret ? : @"";
 }
+
+// Coding {{{
++ (BOOL)supportsSecureCoding { return YES; }
+
+- (void)encodeWithCoder:(NSCoder *)coder { return; }
+
+- (instancetype)initWithCoder:(NSCoder *)coder { return [self init]; };
+// }}}
 
 @end
 
@@ -59,8 +90,16 @@
 
 - (NSString *)evaluateWithURL:(NSURL *)url {
     NSString * ret = [url trimmedResourceSpecifier];
-    return ret ? ret : @"";
+    return ret ? : @"";
 }
+
+// Coding {{{
++ (BOOL)supportsSecureCoding { return YES; }
+
+- (void)encodeWithCoder:(NSCoder *)coder { return; }
+
+- (instancetype)initWithCoder:(NSCoder *)coder { return [self init]; }
+// }}}
 
 @end
 
@@ -68,8 +107,16 @@
 
 - (NSString *)evaluateWithURL:(NSURL *)url {
     NSString *ret = [url queryString];
-    return ret ? ret : @"";
+    return ret ? : @"";
 }
+
+// Coding {{{
++ (BOOL)supportsSecureCoding { return YES; }
+
+- (void)encodeWithCoder:(NSCoder *)coder { return; }
+
+- (instancetype)initWithCoder:(NSCoder *)coder { return [self init]; }
+// }}}
 
 @end
 
@@ -98,8 +145,22 @@
                                                        options:opts
                                                          range:NSMakeRange(0, [[url absoluteString] length])
                                                   withTemplate:_template];
-    return ret ? ret : @"";
+    return ret ? : @"";
 }
+
+// Coding {{{
++ (BOOL)supportsSecureCoding { return YES; }
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+    [coder encodeObject:_regex forKey:@"regex"];
+    [coder encodeObject:_template forKey:@"template"];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)coder {
+    return [self initWithRegex:[coder decodeObjectOfClass:[NSRegularExpression class] forKey:@"regex"]
+                      template:[coder decodeObjectOfClass:[NSString class] forKey:@"template"]];
+}
+// }}}
 
 @end
 
@@ -138,14 +199,34 @@
     return ret ? ret : @"";
 }
 
+// Coding {{{
++ (BOOL)supportsSecureCoding { return YES; }
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+    [coder encodeObject:paramTranslations forKey:@"paramTranslations"];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)coder {
+    return [self initWithDictionary:[coder decodeObjectOfClass:[NSDictionary class] forKey:@"paramTranslations"]];
+}
+// }}}
+
 @end
 
 @implementation EVKHostPortion
 
 - (NSString *)evaluateWithURL:(NSURL *)url {
     NSString *ret = [url hostComponent];;
-    return ret ? ret : @"";
+    return ret ? : @"";
 }
+
+// Coding {{{
++ (BOOL)supportsSecureCoding { return YES; }
+
+- (void)encodeWithCoder:(NSCoder *)coder { return; }
+
+- (instancetype)initWithCoder:(NSCoder *)coder { return [self init]; };
+// }}}
 
 @end
 
@@ -153,7 +234,15 @@
 
 - (NSString *)evaluateWithURL:(NSURL *)url {
     NSString *ret = [url scheme];
-    return ret ? ret : @"";
+    return ret ? : @"";
 }
+
+// Coding {{{
++ (BOOL)supportsSecureCoding { return YES; }
+
+- (void)encodeWithCoder:(NSCoder *)coder { return; }
+
+- (instancetype)initWithCoder:(NSCoder *)coder { return [self init]; };
+// }}}
 
 @end

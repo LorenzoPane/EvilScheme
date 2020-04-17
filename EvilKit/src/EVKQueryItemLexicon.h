@@ -10,13 +10,13 @@ typedef NS_ENUM(NSInteger, URLQueryState) {
 };
 
 /// An object to model translations of query items from one application's context to another's
-@interface EVKQueryItemLexicon : NSObject
+@interface EVKQueryItemLexicon : NSObject <NSSecureCoding>
 
 /// The name with which to substitute
 @property (nonatomic, copy) NSString *key;
 
 /// Dictionary of substitutions for values
-@property (nonatomic, copy) NSDictionary *substitutions;
+@property (nonatomic, copy) NSDictionary<NSString *, NSString *> *substitutions;
 
 /// The default state for values without a substitute
 @property URLQueryState defaultState;
@@ -30,7 +30,7 @@ typedef NS_ENUM(NSInteger, URLQueryState) {
 /// @param dictionary Dictionary of substitutions for values
 /// @param state The default state for values without a substitute
 - (instancetype)initWithKeyName:(NSString *)key
-                     dictionary:(NSDictionary *)dictionary
+                     dictionary:(NSDictionary<NSString *, NSString *> *)dictionary
                    defaultState:(URLQueryState)state;
 
 /// Returns a translated query item, or nil if translated item should not be included

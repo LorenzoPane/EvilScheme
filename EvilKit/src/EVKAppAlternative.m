@@ -7,7 +7,7 @@
 
 - (instancetype)initWithTargetBundleID:(NSString *)targetBundleID
                     substituteBundleID:(NSString *)substituteBundleID
-                           urlOutlines:(NSDictionary *)outlines {
+                           urlOutlines:(NSDictionary<NSString *, NSArray<id <EVKURLPortion>> *> *)outlines {
     if((self = [super init])) {
         _targetBundleID = targetBundleID;
         _substituteBundleID = substituteBundleID;
@@ -37,5 +37,21 @@
 
     return url;
 }
+
+// Coding {{{
++ (BOOL)supportsSecureCoding { return YES; }
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+    [coder encodeObject:[self targetBundleID] forKey:@"targetBundleID"];
+    [coder encodeObject:[self substituteBundleID] forKey:@"substituteBundleID"];
+    [coder encodeObject:[self urlOutlines] forKey:@"urlOutlines"];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)coder {
+    return [self initWithTargetBundleID:[coder decodeObjectOfClass:[NSString class] forKey:@"targetBundleID"]
+                     substituteBundleID:[coder decodeObjectOfClass:[NSString class] forKey:@"substituteBundleID"]
+                            urlOutlines:[coder decodeObjectOfClass:[NSDictionary class] forKey:@"urlOutlines"]];
+}
+// }}}
 
 @end
