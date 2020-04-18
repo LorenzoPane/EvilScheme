@@ -150,7 +150,7 @@
 - (instancetype)initWithRegex:(NSRegularExpression *)regex template:(NSString *)str {
     if((self = [super init])) {
         _regex = regex;
-        _template = str;
+        _templet = str;
     }
 
     return self;
@@ -165,7 +165,7 @@
     NSString * ret =  [_regex stringByReplacingMatchesInString:[url absoluteString]
                                                        options:opts
                                                          range:NSMakeRange(0, [[url absoluteString] length])
-                                                  withTemplate:_template];
+                                                  withTemplate:_templet];
     return ret ? : @"";
 }
 
@@ -176,12 +176,12 @@
 
 - (void)encodeWithCoder:(NSCoder *)coder {
     [coder encodeObject:_regex forKey:@"regex"];
-    [coder encodeObject:_template forKey:@"template"];
+    [coder encodeObject:_templet forKey:@"templet"];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)coder {
     return [self initWithRegex:[coder decodeObjectOfClass:[NSRegularExpression class] forKey:@"regex"]
-                      template:[coder decodeObjectOfClass:[NSString class] forKey:@"template"]];
+                      template:[coder decodeObjectOfClass:[NSString class] forKey:@"templet"]];
 }
 // }}}
 

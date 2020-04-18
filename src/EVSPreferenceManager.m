@@ -48,7 +48,7 @@
                                substituteBundleID:@"com.google.Maps"
                                       urlOutlines:@{
                                           @"^(((http(s?)://)?maps.apple.com)|(maps:))" : @[
-                                                  [EVKStaticStringPortion portionWithString:@"comgooglemaps://?" percentEncoded:YES],
+                                                  [EVKStaticStringPortion portionWithString:@"comgooglemaps://?" percentEncoded:NO],
                                                   [EVKTranslatedQueryPortion portionWithDictionary:@{
                                                       @"t" : [[EVKQueryItemLexicon alloc] initWithKeyName:@"directionsmode"
                                                                                                dictionary:@{

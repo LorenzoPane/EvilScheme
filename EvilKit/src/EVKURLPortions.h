@@ -48,7 +48,7 @@
 - (instancetype)initWithRegex:(NSRegularExpression *)regex template:(NSString *)str;
 + (instancetype)portionWithRegex:(NSRegularExpression *)regex template:(NSString *)str;
 @property (copy) NSRegularExpression *regex;
-@property (copy) NSString *template;
+@property (copy) NSString *templet;
 @end
 
 /// Portion which returns the URL's query string translated with a given dictionary
