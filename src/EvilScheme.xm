@@ -2,53 +2,41 @@
 #import "EVSPreferenceManager.h"
 #include <time.h>
 
-static void logOptions(FBSOpenApplicationOptions *options, NSString *bundleID) {
-    NSError *error;
-    NSString *path = [NSString stringWithFormat:@"%@%@%ld",
-                      @"/var/mobile/Documents/logs/",
-                      bundleID,
-                      time(NULL)];
-
-    NSString *dict = [NSString stringWithFormat:@"%@", [options dictionary]];
-
-    [dict writeToURL:[NSURL URLWithString:[NSString stringWithFormat:@"file://%@.txt", path]]
-          atomically:YES
-            encoding:NSUTF8StringEncoding
-               error:&error];
-
-    NSArray *actions;
-    if((actions = [options dictionary][@"__Actions"])) {
-        for(BSAction *action in actions) {
-            BSSettings *info = [action info];
-            [[info allSettings] enumerateIndexesUsingBlock:^ (NSUInteger idx, BOOL *stop) {
-                id obj = [info objectForSetting:idx];
-                if([obj isKindOfClass:%c(NSData)]) {
-                    [obj writeToFile:[NSString stringWithFormat:@"%@.USERDATA.plist", path]
-                          atomically:YES];
-                    // This can be unarchived to a UAUserActivityInfo w/ NSKeyedUnarchiver
-                }
-            }];
-        }
+static NSURL *urlFromActions(NSArray *actions) {
+    __block NSURL *ret;
+    for(BSAction *action in actions) {
+        [[[action info] allSettings] enumerateIndexesUsingBlock:^ (NSUInteger idx, BOOL *stop) {
+            id obj = [[action info] objectForSetting:idx];
+            if([obj isKindOfClass:%c(NSData)]) {
+                ret = [[NSKeyedUnarchiver unarchivedObjectOfClass:[UAUserActivityInfo class]
+                                                         fromData:obj
+                                                            error:nil] webpageURL];
+            }
+        }];
     }
+    return ret;
 }
 
 %hook FBSystemServiceOpenApplicationRequest
 
 - (void)setOptions:(FBSOpenApplicationOptions *)options {
-    logOptions(options, [self bundleIdentifier]);
-
+    // TODO: Handle universal URL's with safari targets more elegently
     NSMutableDictionary *opts = [[options dictionary] mutableCopy];
-    NSURL *url = [opts objectForKey:@"__PayloadURL"];
-
     NSDictionary *apps = [%c(EVSPreferenceManager) appAlternatives];
     EVKAppAlternative *app;
 
-    if((app = [apps valueForKey:[self bundleIdentifier]]) && url) {
-        [opts setObject:[app transformURL:url] forKey:@"__PayloadURL"];
-        [self setBundleIdentifier:[app substituteBundleID]];
+    __block NSURL *url = opts[@"__PayloadURL"];
+
+    if((app = [apps valueForKey:[self bundleIdentifier]])) {
+        if(url || (url = urlFromActions(opts[@"__Actions"]))) {
+            [opts setObject:[app transformURL:url] forKey:@"__PayloadURL"];
+            [self setBundleIdentifier:[app substituteBundleID]];
+        }
     }
 
+    NSLog(@"[EVS] From: %@", options);
     [options setDictionary:opts];
+    NSLog(@"[EVS] To:   %@", options);
     %orig;
 }
 
