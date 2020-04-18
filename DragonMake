@@ -1,0 +1,37 @@
+package_name: EvilScheme
+install_command: sbreload || killall -9 SpringBoard
+
+EvilScheme:
+    type: tweak
+    logos_files:
+        - $wildcard("./src/", "*.xm")
+    targetios: 13.0
+    c_header_search_dirs:
+        - ./src
+    archs:
+        - arm64
+    frameworks:
+        - UserActivity
+EvilSchemePrefs:
+    dir: Prefs
+    type: bundle
+    targetios: 13.0
+    files:
+        - $wildcard("./Prefs/", "*.m")
+    archs:
+        - arm64
+    frameworks:
+        - Preferences
+        - UIKit
+        - EvilKit
+    stage:
+        - mkdir -p .dragon/_/Library/PreferenceLoader/Preferences/
+        - cp entry.plist .dragon/_/Library/PreferenceLoader/Preferences/$name.plist
+EvilKit:
+    dir: EvilKit
+    type: bundle
+    install_location: '/Library/Frameworks/EvilKit.framework/'
+    files:
+      - $wildcard("./EvilKit/src/", "*.m")
+    archs:
+        - arm64
