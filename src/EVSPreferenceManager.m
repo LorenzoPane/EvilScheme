@@ -4,18 +4,19 @@
 
 + (NSDictionary<NSString *, EVKAppAlternative *> *)appAlternatives {
     NSString *ffx = @"firefox-focus://open-url?url=";
-    NSString *ddg = percentEncode(@"https://ddg.gg/?q=");
+    NSString *ddg = @"https://ddg.gg/?q=";
 
     EVKAppAlternative *browser = [EVKAppAlternative alloc];
     browser = [browser initWithTargetBundleID:@"com.apple.mobilesafari"
                            substituteBundleID:@"org.mozilla.ios.Focus"
                                   urlOutlines:@{
                                       @"^x-web-search:" : @[
-                                              [EVKStaticStringPortion portionWithString:[ffx stringByAppendingString:ddg]],
+                                              [EVKStaticStringPortion portionWithString:ffx percentEncoded:NO],
+                                              [EVKStaticStringPortion portionWithString:ddg percentEncoded:YES],
                                               [EVKQueryPortion new],
                                       ],
                                       @"^http(s?):" : @[
-                                          [EVKStaticStringPortion portionWithString:ffx],
+                                          [EVKStaticStringPortion portionWithString:ffx percentEncoded:NO],
                                           [EVKFullURLPortion portionWithPercentEncoding:YES],
                                       ],
                                   }];
@@ -25,13 +26,13 @@
                      substituteBundleID:@"com.readdle.smartemail"
                             urlOutlines:@{
                                 @"^mailto:[^\?]*$" : @[
-                                        [EVKStaticStringPortion portionWithString:@"readdle-spark://compose?recipient="],
+                                        [EVKStaticStringPortion portionWithString:@"readdle-spark://compose?recipient=" percentEncoded:NO],
                                         [EVKTrimmedPathPortion new],
                                 ],
                                 @"^mailto:.*\?.*$" : @[
-                                        [EVKStaticStringPortion portionWithString:@"readdle-spark://compose?recipient="],
+                                        [EVKStaticStringPortion portionWithString:@"readdle-spark://compose?recipient=" percentEncoded:YES],
                                         [EVKTrimmedPathPortion new],
-                                        [EVKStaticStringPortion portionWithString:@"&"],
+                                        [EVKStaticStringPortion portionWithString:@"&" percentEncoded:YES],
                                         [EVKTranslatedQueryPortion portionWithDictionary:@{
                                             @"bcc"     : [EVKQueryItemLexicon identityLexiconWithName:@"bcc"],
                                             @"body"    : [EVKQueryItemLexicon identityLexiconWithName:@"body"],
@@ -47,7 +48,7 @@
                                substituteBundleID:@"com.google.Maps"
                                       urlOutlines:@{
                                           @"^(((http(s?)://)?maps.apple.com)|(maps:))" : @[
-                                                  [EVKStaticStringPortion portionWithString:@"comgooglemaps://?"],
+                                                  [EVKStaticStringPortion portionWithString:@"comgooglemaps://?" percentEncoded:YES],
                                                   [EVKTranslatedQueryPortion portionWithDictionary:@{
                                                       @"t" : [[EVKQueryItemLexicon alloc] initWithKeyName:@"directionsmode"
                                                                                                dictionary:@{
@@ -69,6 +70,7 @@
                                                       @"ll" : [EVKQueryItemLexicon identityLexiconWithName:@"q"],
                                                       @"z" : [EVKQueryItemLexicon identityLexiconWithName:@"zoom"],
                                                   }]]}];
+
 
     return @{
         @"com.apple.mobilesafari" : browser,
