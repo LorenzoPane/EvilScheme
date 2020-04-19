@@ -4,21 +4,32 @@
 @property (nonatomic,copy) NSDictionary *dictionary;
 @end
 
-@interface FBSystemServiceOpenApplicationRequest : NSObject
-@property (nonatomic,copy) NSString *bundleIdentifier;
-@end
-
 @interface BSSettings : NSObject
--(id)objectForSetting:(unsigned long long)index;
+-(id)objectForSetting:(NSUInteger)index;
 -(NSIndexSet *)allSettings;
 -(void)_setObject:(id)obj forSetting:(NSUInteger)setting ;
 @end
 
 @interface BSAction : NSObject
 @property (nonatomic,copy,readonly) BSSettings *info;
--(id)initWithInfo:(id)arg1 timeout:(double)arg2 forResponseOnQueue:(id)arg3 withHandler:(/*^block*/id)arg4 ;
 @end
 
 @interface UAUserActivityInfo : NSObject
 @property (copy) NSURL * webpageURL;
+@end
+
+@class BSProcessHandle;
+
+@interface FBSystemService : NSObject
+- (void)_activateApplication:(NSString *)bundleID
+                   requestID:(NSUInteger)req
+                     options:(FBSOpenApplicationOptions *)options
+                      source:(BSProcessHandle *)source
+              originalSource:(BSProcessHandle *)origSource
+                  withResult:(id)completion;
+- (void)openApplication:(NSString *)bundleID
+            withOptions:(FBSOpenApplicationOptions *)options
+             originator:(BSProcessHandle *)source
+              requestID:(NSUInteger)req
+             completion:(id)completion ;
 @end

@@ -17,25 +17,27 @@ static NSURL *urlFromActions(NSArray *actions) {
     return ret;
 }
 
-%hook FBSystemServiceOpenApplicationRequest
+%hook FBSystemService
 
-- (void)setOptions:(FBSOpenApplicationOptions *)options {
-    // TODO: Handle universal URL's with safari targets more elegently
-    NSMutableDictionary *opts = [[options dictionary] mutableCopy];
-    NSDictionary *apps = [%c(EVSPreferenceManager) appAlternatives];
-    EVKAppAlternative *app;
-
-    __block NSURL *url = opts[@"__PayloadURL"];
-
-    if((app = [apps valueForKey:[self bundleIdentifier]])) {
-        if(url || (url = urlFromActions(opts[@"__Actions"]))) {
-            [opts setObject:[app transformURL:url] forKey:@"__PayloadURL"];
-            [self setBundleIdentifier:[app substituteBundleID]];
+- (void)openApplication:(NSString *)bundleID
+            withOptions:(FBSOpenApplicationOptions *)options
+             originator:(BSProcessHandle *)source
+              requestID:(NSUInteger)req
+             completion:(id)completion {
+    NSLog(@"[EVS] From: %@", options);
+    EVKAppAlternative *app = [%c(EVSPreferenceManager) appAlternatives][bundleID];
+    if(app) {
+        NSURL *url;
+        if((url = [options dictionary][@"__PayloadURL"])
+        || (url = [[options dictionary][@"__AppLink4LS"] URL])
+        || (url = urlFromActions([options dictionary][@"__Actions"]))) {
+            NSMutableDictionary *opts = [NSMutableDictionary new];
+            opts[@"__PayloadURL"]     = [app transformURL:url];
+            opts[@"__PayloadOptions"] = [options dictionary][@"__PayloadOptions"];
+            [options setDictionary:opts];
+            bundleID = [app substituteBundleID];
         }
     }
-
-    NSLog(@"[EVS] From: %@", options);
-    [options setDictionary:opts];
     NSLog(@"[EVS] To:   %@", options);
     %orig;
 }
