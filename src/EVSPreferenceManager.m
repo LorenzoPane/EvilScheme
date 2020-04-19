@@ -30,9 +30,9 @@
                                         [EVKTrimmedPathPortion new],
                                 ],
                                 @"^mailto:.*\?.*$" : @[
-                                        [EVKStaticStringPortion portionWithString:@"readdle-spark://compose?recipient=" percentEncoded:YES],
+                                        [EVKStaticStringPortion portionWithString:@"readdle-spark://compose?recipient=" percentEncoded:NO],
                                         [EVKTrimmedPathPortion new],
-                                        [EVKStaticStringPortion portionWithString:@"&" percentEncoded:YES],
+                                        [EVKStaticStringPortion portionWithString:@"&" percentEncoded:NO],
                                         [EVKTranslatedQueryPortion portionWithDictionary:@{
                                             @"bcc"     : [EVKQueryItemLexicon identityLexiconWithName:@"bcc"],
                                             @"body"    : [EVKQueryItemLexicon identityLexiconWithName:@"body"],
@@ -63,7 +63,7 @@
                                                                                                         @"r": @"transit",
                                                                                                     }
                                                                                                   defaultState:URLQueryStateNull],
-                                                      @"address" : [EVKQueryItemLexicon identityLexiconWithName:@"daddr"],
+                                                      @"address" : [EVKQueryItemLexicon identityLexiconWithName:@"q"],
                                                       @"daddr" : [EVKQueryItemLexicon identityLexiconWithName:@"daddr"],
                                                       @"saddr" : [EVKQueryItemLexicon identityLexiconWithName:@"saddr"],
                                                       @"q" : [EVKQueryItemLexicon identityLexiconWithName:@"q"],
