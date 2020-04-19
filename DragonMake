@@ -35,3 +35,6 @@ EvilKit:
       - $wildcard("./EvilKit/src/", "*.m")
     archs:
         - arm64
+    stage:
+        - mkdir -p .dragon/_/Library/Frameworks/EvilKit.framework/Headers
+        - cp src/*.h .dragon/_/Library/Frameworks/EvilKit.framework/Headers
