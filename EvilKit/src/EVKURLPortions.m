@@ -156,8 +156,8 @@
     return self;
 }
 
-+ (instancetype)portionWithRegex:(NSRegularExpression *)regex template:(NSString *)template {
-    return [[EVKRegexSubstitutionPortion alloc] initWithRegex:regex template:template];
++ (instancetype)portionWithRegex:(NSRegularExpression *)regex template:(NSString *)templet {
+    return [[EVKRegexSubstitutionPortion alloc] initWithRegex:regex template:templet];
 }
 
 - (NSString *)evaluateWithURL:(NSURL *)url {
