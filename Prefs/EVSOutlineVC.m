@@ -36,7 +36,7 @@ NS_ENUM(NSInteger, OutlineTextFieldTags) {
     [[self tableView] setDataSource:self];
     [[self tableView] setDelegate:self];
     [[self tableView] registerClass:[UITableViewCell class] forCellReuseIdentifier:@"LabelCell"];
-    [[self tableView] registerClass:[EVSEditTextCell class] forCellReuseIdentifier:@"EditTextCell"];
+    [[self tableView] registerClass:[L0EditTextCell class] forCellReuseIdentifier:@"EditTextCell"];
     [[self tableView] setRowHeight:44];
     [self setView:[self tableView]];
 }
@@ -44,7 +44,7 @@ NS_ENUM(NSInteger, OutlineTextFieldTags) {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch([indexPath section]) {
         case RegexSection: {
-            EVSEditTextCell *cell = [tableView dequeueReusableCellWithIdentifier:@"EditTextCell" forIndexPath:indexPath];
+            L0EditTextCell *cell = [tableView dequeueReusableCellWithIdentifier:@"EditTextCell" forIndexPath:indexPath];
             [[cell textLabel] setText:@"Regex"];
             [[cell field] setText:[self regex]];
             [cell setDelegate:self];
@@ -52,8 +52,14 @@ NS_ENUM(NSInteger, OutlineTextFieldTags) {
         }
         case PortionSection: {
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LabelCell" forIndexPath:indexPath];
-            id<EVKURLPortion> item = [self outline][[indexPath row]];
-            [[cell textLabel] setText:[item stringRepresentation]];
+            if([indexPath row] < [[self outline] count]) {
+                id<EVKURLPortion> item = [self outline][[indexPath row]];
+                [[cell textLabel] setText:[item stringRepresentation]];
+                [[cell textLabel] setTextColor:[UIColor labelColor]];
+            } else {
+                [[cell textLabel] setText:@"Add new"];
+                [[cell textLabel] setTextColor:LINK_COLOR];
+            }
             return cell;
         }
     }
@@ -70,7 +76,7 @@ NS_ENUM(NSInteger, OutlineTextFieldTags) {
         case RegexSection:
             return 1;
         case PortionSection:
-            return [[self outline] count];
+            return [[self outline] count] + 1;
         default:
             return 0;
     }
@@ -115,11 +121,28 @@ NS_ENUM(NSInteger, OutlineTextFieldTags) {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if([indexPath section] == PortionSection) {
-        //EVSPortionVC *ctrl = [[EVSPortionVC alloc] init];
-        //[ctrl setPortion:[self outline][[indexPath row]]];
-        //[ctrl setModalPresentationStyle:UIModalPresentationFormSheet];
-        //[ctrl setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-        //[self presentViewController:ctrl animated:YES completion:nil];
+        if([indexPath row] < [[self outline] count]) {
+        } else {
+            UIAlertController *ctrl = [UIAlertController alertControllerWithTitle:@"Add new"
+                                                                          message:@"Choose a type"
+                                                                   preferredStyle:UIAlertControllerStyleActionSheet];
+            NSArray<UIAlertAction *> *actions = @[
+                [UIAlertAction actionWithTitle:@"Cancel"
+                                         style:UIAlertActionStyleCancel
+                                       handler:^void(UIAlertAction *action) {
+                    NSLog(@"Cancel");
+                }],
+                [UIAlertAction actionWithTitle:@"Constant string"
+                                         style:UIAlertActionStyleDefault
+                                       handler:^void(UIAlertAction *action) {
+                    NSLog(@"String");
+                }]
+            ];
+            for(UIAlertAction *action in actions) {
+                [ctrl addAction:action];
+            }
+            [self presentViewController:ctrl animated:YES completion:nil];
+        }
     }
     [[self tableView] deselectRowAtIndexPath:indexPath animated:YES];
 }

@@ -1,0 +1,80 @@
+[
+  {
+    "directory": "/Users/lpane/Desktop/ios/tweaks/EvilScheme/Prefs",
+    "command": "clang++ -arch arm64 -I$DRAGONBUILD/include -I$DRAGONBUILD/vendor/include -I$DRAGONBUILD/include/_fallback -I/headers/ -I. -fmodules -fcxx-modules -fmodule-name=EvilSchemePrefs -fbuild-session-file=.dragon/modules/ -fmodules-prune-after=345600 -fmodules-prune-interval=86400 -fmodules-validate-once-per-build-session -fobjc-arc -F$DRAGONBUILD/sdks/iPhoneOS.sdk/System/Library/Frameworks -F$DRAGONBUILD/sdks/iPhoneOS.sdk/System/Library/PrivateFrameworks -F$DRAGONBUILD/frameworks -miphoneos-version-min=13.0 -isysroot $DRAGONBUILD/sdks/iPhoneOS.sdk -DTARGET_IPHONE=1 -Wall -O0 -fcolor-diagnostics   -c ../Prefs/EVSAppAlternativeVC.m -o .dragon/build/arm64/EVSAppAlternativeVC.m.o",
+    "file": "../Prefs/EVSAppAlternativeVC.m",
+    "output": ".dragon/build/arm64/EVSAppAlternativeVC.m.o"
+  },
+  {
+    "directory": "/Users/lpane/Desktop/ios/tweaks/EvilScheme/Prefs",
+    "command": "clang++ -arch arm64 -I$DRAGONBUILD/include -I$DRAGONBUILD/vendor/include -I$DRAGONBUILD/include/_fallback -I/headers/ -I. -fmodules -fcxx-modules -fmodule-name=EvilSchemePrefs -fbuild-session-file=.dragon/modules/ -fmodules-prune-after=345600 -fmodules-prune-interval=86400 -fmodules-validate-once-per-build-session -fobjc-arc -F$DRAGONBUILD/sdks/iPhoneOS.sdk/System/Library/Frameworks -F$DRAGONBUILD/sdks/iPhoneOS.sdk/System/Library/PrivateFrameworks -F$DRAGONBUILD/frameworks -miphoneos-version-min=13.0 -isysroot $DRAGONBUILD/sdks/iPhoneOS.sdk -DTARGET_IPHONE=1 -Wall -O0 -fcolor-diagnostics   -c ../Prefs/EVSAppAlternativeWrapper.m -o .dragon/build/arm64/EVSAppAlternativeWrapper.m.o",
+    "file": "../Prefs/EVSAppAlternativeWrapper.m",
+    "output": ".dragon/build/arm64/EVSAppAlternativeWrapper.m.o"
+  },
+  {
+    "directory": "/Users/lpane/Desktop/ios/tweaks/EvilScheme/Prefs",
+    "command": "clang++ -arch arm64 -I$DRAGONBUILD/include -I$DRAGONBUILD/vendor/include -I$DRAGONBUILD/include/_fallback -I/headers/ -I. -fmodules -fcxx-modules -fmodule-name=EvilSchemePrefs -fbuild-session-file=.dragon/modules/ -fmodules-prune-after=345600 -fmodules-prune-interval=86400 -fmodules-validate-once-per-build-session -fobjc-arc -F$DRAGONBUILD/sdks/iPhoneOS.sdk/System/Library/Frameworks -F$DRAGONBUILD/sdks/iPhoneOS.sdk/System/Library/PrivateFrameworks -F$DRAGONBUILD/frameworks -miphoneos-version-min=13.0 -isysroot $DRAGONBUILD/sdks/iPhoneOS.sdk -DTARGET_IPHONE=1 -Wall -O0 -fcolor-diagnostics   -c ../Prefs/EVSOutlineVC.m -o .dragon/build/arm64/EVSOutlineVC.m.o",
+    "file": "../Prefs/EVSOutlineVC.m",
+    "output": ".dragon/build/arm64/EVSOutlineVC.m.o"
+  },
+  {
+    "directory": "/Users/lpane/Desktop/ios/tweaks/EvilScheme/Prefs",
+    "command": "clang++ -arch arm64 -I$DRAGONBUILD/include -I$DRAGONBUILD/vendor/include -I$DRAGONBUILD/include/_fallback -I/headers/ -I. -fmodules -fcxx-modules -fmodule-name=EvilSchemePrefs -fbuild-session-file=.dragon/modules/ -fmodules-prune-after=345600 -fmodules-prune-interval=86400 -fmodules-validate-once-per-build-session -fobjc-arc -F$DRAGONBUILD/sdks/iPhoneOS.sdk/System/Library/Frameworks -F$DRAGONBUILD/sdks/iPhoneOS.sdk/System/Library/PrivateFrameworks -F$DRAGONBUILD/frameworks -miphoneos-version-min=13.0 -isysroot $DRAGONBUILD/sdks/iPhoneOS.sdk -DTARGET_IPHONE=1 -Wall -O0 -fcolor-diagnostics   -c ../Prefs/EVSPreferenceManager.m -o .dragon/build/arm64/EVSPreferenceManager.m.o",
+    "file": "../Prefs/EVSPreferenceManager.m",
+    "output": ".dragon/build/arm64/EVSPreferenceManager.m.o"
+  },
+  {
+    "directory": "/Users/lpane/Desktop/ios/tweaks/EvilScheme/Prefs",
+    "command": "clang++ -arch arm64 -I$DRAGONBUILD/include -I$DRAGONBUILD/vendor/include -I$DRAGONBUILD/include/_fallback -I/headers/ -I. -fmodules -fcxx-modules -fmodule-name=EvilSchemePrefs -fbuild-session-file=.dragon/modules/ -fmodules-prune-after=345600 -fmodules-prune-interval=86400 -fmodules-validate-once-per-build-session -fobjc-arc -F$DRAGONBUILD/sdks/iPhoneOS.sdk/System/Library/Frameworks -F$DRAGONBUILD/sdks/iPhoneOS.sdk/System/Library/PrivateFrameworks -F$DRAGONBUILD/frameworks -miphoneos-version-min=13.0 -isysroot $DRAGONBUILD/sdks/iPhoneOS.sdk -DTARGET_IPHONE=1 -Wall -O0 -fcolor-diagnostics   -c ../Prefs/EVSRootVC.m -o .dragon/build/arm64/EVSRootVC.m.o",
+    "file": "../Prefs/EVSRootVC.m",
+    "output": ".dragon/build/arm64/EVSRootVC.m.o"
+  },
+  {
+    "directory": "/Users/lpane/Desktop/ios/tweaks/EvilScheme/Prefs",
+    "command": "clang++ -arch arm64 -I$DRAGONBUILD/include -I$DRAGONBUILD/vendor/include -I$DRAGONBUILD/include/_fallback -I/headers/ -I. -fmodules -fcxx-modules -fmodule-name=EvilSchemePrefs -fbuild-session-file=.dragon/modules/ -fmodules-prune-after=345600 -fmodules-prune-interval=86400 -fmodules-validate-once-per-build-session -fobjc-arc -F$DRAGONBUILD/sdks/iPhoneOS.sdk/System/Library/Frameworks -F$DRAGONBUILD/sdks/iPhoneOS.sdk/System/Library/PrivateFrameworks -F$DRAGONBUILD/frameworks -miphoneos-version-min=13.0 -isysroot $DRAGONBUILD/sdks/iPhoneOS.sdk -DTARGET_IPHONE=1 -Wall -O0 -fcolor-diagnostics   -c ../Prefs/L0EditTextCell.m -o .dragon/build/arm64/L0EditTextCell.m.o",
+    "file": "../Prefs/L0EditTextCell.m",
+    "output": ".dragon/build/arm64/L0EditTextCell.m.o"
+  },
+  {
+    "directory": "/Users/lpane/Desktop/ios/tweaks/EvilScheme/Prefs",
+    "command": "clang++ -arch arm64 -I$DRAGONBUILD/include -I$DRAGONBUILD/vendor/include -I$DRAGONBUILD/include/_fallback -I/headers/ -I. -fmodules -fcxx-modules -fmodule-name=EvilSchemePrefs -fbuild-session-file=.dragon/modules/ -fmodules-prune-after=345600 -fmodules-prune-interval=86400 -fmodules-validate-once-per-build-session -fobjc-arc -F$DRAGONBUILD/sdks/iPhoneOS.sdk/System/Library/Frameworks -F$DRAGONBUILD/sdks/iPhoneOS.sdk/System/Library/PrivateFrameworks -F$DRAGONBUILD/frameworks -miphoneos-version-min=13.0 -isysroot $DRAGONBUILD/sdks/iPhoneOS.sdk -DTARGET_IPHONE=1 -Wall -O0 -fcolor-diagnostics   -c ../Prefs/L0PrefVC.m -o .dragon/build/arm64/L0PrefVC.m.o",
+    "file": "../Prefs/L0PrefVC.m",
+    "output": ".dragon/build/arm64/L0PrefVC.m.o"
+  },
+  {
+    "directory": "/Users/lpane/Desktop/ios/tweaks/EvilScheme/Prefs",
+    "command": "clang++ -arch arm64 -I$DRAGONBUILD/include -I$DRAGONBUILD/vendor/include -I$DRAGONBUILD/include/_fallback -I/headers/ -I. -fmodules -fcxx-modules -fmodule-name=EvilSchemePrefs -fbuild-session-file=.dragon/modules/ -fmodules-prune-after=345600 -fmodules-prune-interval=86400 -fmodules-validate-once-per-build-session -fobjc-arc -F$DRAGONBUILD/sdks/iPhoneOS.sdk/System/Library/Frameworks -F$DRAGONBUILD/sdks/iPhoneOS.sdk/System/Library/PrivateFrameworks -F$DRAGONBUILD/frameworks -miphoneos-version-min=13.0 -isysroot $DRAGONBUILD/sdks/iPhoneOS.sdk -DTARGET_IPHONE=1 -Wall -O0 -fcolor-diagnostics   -install_name /Library/PreferenceBundles/EvilSchemePrefs.bundle/EvilSchemePrefs -framework Preferences -framework UIKit -framework EvilKit -framework CoreFoundation -framework Foundation -framework UIKit -framework CoreGraphics -framework QuartzCore -framework CoreImage -framework AudioToolbox -lobjc -lc++ -dynamiclib -ggdb -Xlinker -segalign -Xlinker 4000 -L$DRAGONBUILD/lib -L.  -o .dragon/build/EvilSchemePrefs.arm64 .dragon/build/arm64/EVSAppAlternativeVC.m.o .dragon/build/arm64/EVSAppAlternativeWrapper.m.o .dragon/build/arm64/EVSOutlineVC.m.o .dragon/build/arm64/EVSPreferenceManager.m.o .dragon/build/arm64/EVSRootVC.m.o .dragon/build/arm64/L0EditTextCell.m.o .dragon/build/arm64/L0PrefVC.m.o",
+    "file": ".dragon/build/arm64/EVSAppAlternativeVC.m.o",
+    "output": ".dragon/build/EvilSchemePrefs.arm64"
+  },
+  {
+    "directory": "/Users/lpane/Desktop/ios/tweaks/EvilScheme/Prefs",
+    "command": "mkdir -p \".dragon/_/Library/PreferenceBundles/EvilSchemePrefs.bundle//\" && cp -r \"Resources/\" \".dragon/_/Library/PreferenceBundles/EvilSchemePrefs.bundle/\" && cp build.ninja .dragon/build/trash/bundles",
+    "file": "build.ninja",
+    "output": ".dragon/build/trash/bundles"
+  },
+  {
+    "directory": "/Users/lpane/Desktop/ios/tweaks/EvilScheme/Prefs",
+    "command": "mkdir -p .dragon/_/Library/PreferenceLoader/Preferences/ && cp entry.plist .dragon/_/Library/PreferenceLoader/Preferences/EvilSchemePrefs.plist ",
+    "file": ".dragon/_/Library/PreferenceBundles/EvilSchemePrefs.bundle/EvilSchemePrefs",
+    "output": ".dragon/build/trash/stage"
+  },
+  {
+    "directory": "/Users/lpane/Desktop/ios/tweaks/EvilScheme/Prefs",
+    "command": "lipo -create .dragon/build/EvilSchemePrefs.arm64 -output .dragon/sign/.dragon/_/Library/PreferenceBundles/EvilSchemePrefs.bundle/EvilSchemePrefs.unsym",
+    "file": ".dragon/build/EvilSchemePrefs.arm64",
+    "output": ".dragon/sign/.dragon/_/Library/PreferenceBundles/EvilSchemePrefs.bundle/EvilSchemePrefs.unsym"
+  },
+  {
+    "directory": "/Users/lpane/Desktop/ios/tweaks/EvilScheme/Prefs",
+    "command": "dsymutil \".dragon/sign/.dragon/_/Library/PreferenceBundles/EvilSchemePrefs.bundle/EvilSchemePrefs.unsym\" 2&> /dev/null; cp .dragon/sign/.dragon/_/Library/PreferenceBundles/EvilSchemePrefs.bundle/EvilSchemePrefs.unsym .dragon/sign/.dragon/_/Library/PreferenceBundles/EvilSchemePrefs.bundle/EvilSchemePrefs.unsigned",
+    "file": ".dragon/sign/.dragon/_/Library/PreferenceBundles/EvilSchemePrefs.bundle/EvilSchemePrefs.unsym",
+    "output": ".dragon/sign/.dragon/_/Library/PreferenceBundles/EvilSchemePrefs.bundle/EvilSchemePrefs.unsigned"
+  },
+  {
+    "directory": "/Users/lpane/Desktop/ios/tweaks/EvilScheme/Prefs",
+    "command": "ldid -S .dragon/sign/.dragon/_/Library/PreferenceBundles/EvilSchemePrefs.bundle/EvilSchemePrefs.unsigned && cp .dragon/sign/.dragon/_/Library/PreferenceBundles/EvilSchemePrefs.bundle/EvilSchemePrefs.unsigned .dragon/_/Library/PreferenceBundles/EvilSchemePrefs.bundle/EvilSchemePrefs",
+    "file": ".dragon/sign/.dragon/_/Library/PreferenceBundles/EvilSchemePrefs.bundle/EvilSchemePrefs.unsigned",
+    "output": ".dragon/_/Library/PreferenceBundles/EvilSchemePrefs.bundle/EvilSchemePrefs"
+  }
+]

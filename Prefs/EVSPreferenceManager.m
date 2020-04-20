@@ -32,7 +32,7 @@
                                 @"^mailto:.*\?.*$" : @[
                                         [EVKStaticStringPortion portionWithString:@"readdle-spark://compose?recipient=" percentEncoded:YES],
                                         [EVKTrimmedPathPortion new],
-                                        [EVKStaticStringPortion portionWithString:@"&" percentEncoded:YES],
+                                        [EVKStaticStringPortion portionWithString:@"&" percentEncoded:NO],
                                         [EVKTranslatedQueryPortion portionWithDictionary:@{
                                             @"bcc"     : [EVKQueryItemLexicon identityLexiconWithName:@"bcc"],
                                             @"body"    : [EVKQueryItemLexicon identityLexiconWithName:@"body"],
@@ -48,7 +48,7 @@
                                substituteBundleID:@"com.google.Maps"
                                       urlOutlines:@{
                                           @"^(((http(s?)://)?maps.apple.com)|(maps:))" : @[
-                                                  [EVKStaticStringPortion portionWithString:@"comgooglemaps://?" percentEncoded:YES],
+                                                  [EVKStaticStringPortion portionWithString:@"comgooglemaps://?" percentEncoded:NO],
                                                   [EVKTranslatedQueryPortion portionWithDictionary:@{
                                                       @"t" : [[EVKQueryItemLexicon alloc] initWithKeyName:@"directionsmode"
                                                                                                dictionary:@{
@@ -63,7 +63,7 @@
                                                                                                         @"r": @"transit",
                                                                                                     }
                                                                                                   defaultState:URLQueryStateNull],
-                                                      @"address" : [EVKQueryItemLexicon identityLexiconWithName:@"daddr"],
+                                                      @"address" : [EVKQueryItemLexicon identityLexiconWithName:@"q"],
                                                       @"daddr" : [EVKQueryItemLexicon identityLexiconWithName:@"daddr"],
                                                       @"saddr" : [EVKQueryItemLexicon identityLexiconWithName:@"saddr"],
                                                       @"q" : [EVKQueryItemLexicon identityLexiconWithName:@"q"],
@@ -80,5 +80,7 @@
                                                             name:@"Mail Client"],
     ];
 }
+
+
 
 @end

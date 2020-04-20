@@ -45,14 +45,11 @@ NS_ENUM(NSInteger, RootVCSection) {
 
 - (void)setupNav {
     [self setTitle:@"EvilScheme"];
-    [[[self navigationController] navigationBar] setTintColor:LINK_COLOR];
     UIBarButtonItem *applyButton = [[UIBarButtonItem alloc] initWithTitle:@"Save/Apply"
                                                                      style:UIBarButtonItemStylePlain
                                                                     target:self
                                                                     action:@selector(saveSettings)];
-    [applyButton setTintColor:LINK_COLOR];
     [[self navigationItem] setRightBarButtonItem:applyButton];
-    [[[self navigationItem] backBarButtonItem] setTintColor:LINK_COLOR];
 }
 
 - (void)setupTable {
@@ -93,11 +90,7 @@ NS_ENUM(NSInteger, RootVCSection) {
             break;
         }
         case FuckYouSection: {
-            //EVSDefaultBrowserVC *ctrl = [[EVSDefaultBrowserVC alloc] init];
-            //[ctrl setModalPresentationStyle:UIModalPresentationFormSheet];
-            //[ctrl setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-            //[self presentViewController:ctrl animated:YES completion:nil];
-            //break;
+            break;
         }
         default:
             break;

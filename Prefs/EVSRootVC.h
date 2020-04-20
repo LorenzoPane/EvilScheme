@@ -1,10 +1,9 @@
 #import <UIKit/UIKit.h>
-#import <Preferences/PSViewController.h>
 #import "EVSAppAlternativeVC.h"
+#import "L0PrefVC.h"
 
 #define LINK_COLOR [UIColor colorWithRed:0.776 green:0.471 blue:0.867 alpha:1]
 
-@interface EVSRootVC : PSViewController <UITableViewDelegate, UITableViewDataSource, EVSAppAlternativeVCDelegate>
-@property (nonatomic, retain) UITableView *tableView;
+@interface EVSRootVC : L0PrefVC <UITableViewDelegate, UITableViewDataSource, EVSAppAlternativeVCDelegate>
 - (void)saveSettings;
 @end

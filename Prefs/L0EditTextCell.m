@@ -1,6 +1,6 @@
-#import "EVSEditTextCell.h"
+#import "L0EditTextCell.h"
 
-@implementation EVSEditTextCell
+@implementation L0EditTextCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style
               reuseIdentifier:(NSString *)reuseIdentifier {
@@ -69,7 +69,7 @@
     return [[self textLabel] text];
 }
 
-- (void)setDelegate:(id<EVSEditTextCellDelegate>)delegate {
+- (void)setDelegate:(id<L0TextCellDelegate>)delegate {
     _delegate = delegate;
     [[self field] addTarget:delegate
                      action:@selector(textFieldDidChange:)

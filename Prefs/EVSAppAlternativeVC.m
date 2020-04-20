@@ -1,5 +1,5 @@
 #import "EVSAppAlternativeVC.h"
-#import "EVSEditTextCell.h"
+#import "L0EditTextCell.h"
 
 NS_ENUM(NSInteger, AppVCSection) {
     NameSection,
@@ -40,13 +40,12 @@ NS_ENUM(NSInteger, AppTextFieldTags) {
     [[self tableView] setDataSource:self];
     [[self tableView] setDelegate:self];
     [[self tableView] registerClass:[UITableViewCell class] forCellReuseIdentifier:@"LabelCell"];
-    [[self tableView] registerClass:[EVSEditTextCell class] forCellReuseIdentifier:@"EditTextCell"];
+    [[self tableView] registerClass:[L0EditTextCell class] forCellReuseIdentifier:@"EditTextCell"];
     [[self tableView] setRowHeight:44];
     [self setView:[self tableView]];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    
     return 3;
 }
 
@@ -66,7 +65,7 @@ NS_ENUM(NSInteger, AppTextFieldTags) {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch ([indexPath section]) {
         case NameSection: {
-            EVSEditTextCell *cell = [tableView dequeueReusableCellWithIdentifier:@"EditTextCell" forIndexPath:indexPath];
+            L0EditTextCell *cell = [tableView dequeueReusableCellWithIdentifier:@"EditTextCell" forIndexPath:indexPath];
             [cell setLabelText:@"Name"];
             [[cell field] setText:[[self appAlternative] name]];
             [[cell field] setTag:NameTag];
@@ -74,7 +73,7 @@ NS_ENUM(NSInteger, AppTextFieldTags) {
             return cell;
         }
         case BundleIDSection: {
-            EVSEditTextCell *cell = [tableView dequeueReusableCellWithIdentifier:@"EditTextCell" forIndexPath:indexPath];
+            L0EditTextCell *cell = [tableView dequeueReusableCellWithIdentifier:@"EditTextCell" forIndexPath:indexPath];
             [cell setLabelText:([indexPath row] ? @"New" : @"Old")];
             [cell setFieldPlaceholder:@"ex: com.apple.mobilesafari"];
             [[cell field] setText:([indexPath row] ? [[self appAlternative] substituteBundleID] : [[self appAlternative] targetBundleID])];
@@ -144,11 +143,16 @@ NS_ENUM(NSInteger, AppTextFieldTags) {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if([indexPath section] == OutlineSection) {
         EVSOutlineVC *ctrl = [[EVSOutlineVC alloc] init];
-        NSDictionary *outlines = [[self appAlternative] urlOutlines];
-        NSString *key = [outlines allKeys][[indexPath row]];
-        [ctrl setKey:key];
-        [ctrl setRegex:key];
-        [ctrl setOutline:[[outlines objectForKey:key] mutableCopy]];
+        if([indexPath row] < [[[self appAlternative] urlOutlines] count]) {
+            NSDictionary *outlines = [[self appAlternative] urlOutlines];
+            NSString *key = [outlines allKeys][[indexPath row]];
+            [ctrl setKey:key];
+            [ctrl setRegex:key];
+            [ctrl setOutline:[[outlines objectForKey:key] mutableCopy]];
+        } else {
+            [ctrl setKey:@""];
+            [ctrl setRegex:@""];
+        }
         [ctrl setDelegate:self];
         [[self navigationController] pushViewController:ctrl animated:YES];
     }

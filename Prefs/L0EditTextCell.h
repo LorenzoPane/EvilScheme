@@ -1,12 +1,12 @@
 #import <UIKit/UIKit.h>
 
-@protocol EVSEditTextCellDelegate <UITextFieldDelegate>
+@protocol L0TextCellDelegate <UITextFieldDelegate>
 - (void)textFieldDidChange:(UITextField *)field;
 @end
 
-@interface EVSEditTextCell : UITableViewCell <UITextFieldDelegate>
+@interface L0EditTextCell : UITableViewCell <UITextFieldDelegate>
 @property (nonatomic) UITextField *field;
 @property (nonatomic) NSString *labelText;
 @property (nonatomic) NSString *fieldPlaceholder;
-@property (nonatomic) id<EVSEditTextCellDelegate> delegate;
+@property (nonatomic) id<L0TextCellDelegate> delegate;
 @end
