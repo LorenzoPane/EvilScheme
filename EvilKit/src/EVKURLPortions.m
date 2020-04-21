@@ -1,9 +1,11 @@
 #import "EVKURLPortions.h"
 #import "NSURL+ComponentAdditions.h"
 
-#define maybePercentEncode(str) ([self isPercentEncoded] ? [str stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet characterSetWithCharactersInString:@""]] : str)
-
 @implementation EVKPercentEncodablePortion
+
++ (instancetype)portionWithPercentEncoding:(BOOL)percentEncoded {
+    return [[[self class] alloc] initWithPercentEncoding:percentEncoded];
+}
 
 - (instancetype)initWithPercentEncoding:(BOOL)percentEncoded {
     if((self = [super init])) {
@@ -13,6 +15,18 @@
     return self;
 }
 
+- (NSString *)stringRepresentation { return @""; }
+
+- (NSString *)evaluateUnencodedWithURL:(NSURL *)url { return nil; }
+
+- (NSString *)evaluateWithURL:(NSURL *)url {
+    NSString *ret = [self evaluateUnencodedWithURL:url];
+    return ([self isPercentEncoded] ? percentEncode(ret) : ret) ? : @"";
+}
+
+// coding {{{
++ (BOOL)supportsSecureCoding { return YES; }
+
 - (void)encodeWithCoder:(NSCoder *)coder {
     [coder encodeBool:[self isPercentEncoded] forKey:@"percentEncoded"];
 }
@@ -20,6 +34,7 @@
 - (instancetype)initWithCoder:(NSCoder *)coder {
     return [self initWithPercentEncoding:[coder decodeBoolForKey:@"percentEncoded"]];
 }
+// }}}
 
 @end
 
@@ -37,9 +52,7 @@
     return [[EVKStaticStringPortion alloc] initWithString:str percentEncoded:percentEncoded];
 }
 
-- (NSString *)evaluateWithURL:(NSURL *)url {
-    return maybePercentEncode([self string]);
-}
+- (NSString *)evaluateUnencodedWithURL:(NSURL *)url { return [self string]; }
 
 - (NSString *)stringRepresentation {
     return [NSString stringWithFormat:@"Text: %@", [self string]];
@@ -49,8 +62,8 @@
 + (BOOL)supportsSecureCoding { return YES; }
 
 - (void)encodeWithCoder:(NSCoder *)coder {
+    [super encodeWithCoder:coder];
     [coder encodeObject:[self string] forKey:@"string"];
-    [coder encodeBool:[self isPercentEncoded] forKey:@"percentEncoded"];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)coder {
@@ -63,37 +76,23 @@
 
 @implementation EVKFullURLPortion
 
-+ (instancetype)portionWithPercentEncoding:(BOOL)encoded {
-    return [[EVKFullURLPortion alloc] initWithPercentEncoding:encoded];
-}
-
-- (NSString *)evaluateWithURL:(NSURL *)url {
-    NSString *ret = maybePercentEncode([url absoluteString]);
-    return ret ? : @"";
-}
+- (NSString *)evaluateUnencodedWithURL:(NSURL *)url { return [url absoluteString]; }
 
 - (NSString *)stringRepresentation { return @"Full URL"; }
 
 // Coding {{{
 + (BOOL)supportsSecureCoding { return YES; }
 
-- (void)encodeWithCoder:(NSCoder *)coder {
-    [coder encodeBool:[self isPercentEncoded] forKey:@"percentEncoded"];
-}
+- (void)encodeWithCoder:(NSCoder *)coder { [super encodeWithCoder:coder]; }
 
-- (instancetype)initWithCoder:(NSCoder *)coder {
-    return [self initWithPercentEncoding:[coder decodeBoolForKey:@"percentEncoded"]];
-}
+- (instancetype)initWithCoder:(NSCoder *)coder { return [super initWithCoder:coder]; }
 // }}}
 
 @end
 
 @implementation EVKTrimmedPathPortion
 
-- (NSString *)evaluateWithURL:(NSURL *)url {
-    NSString *ret = maybePercentEncode([url trimmedPathComponent]);
-    return ret ? : @"";
-}
+- (NSString *)evaluateUnencodedWithURL:(NSURL *)url { return [url trimmedPathComponent]; }
 
 - (NSString *)stringRepresentation { return @"Path"; }
 
@@ -109,10 +108,7 @@
 
 @implementation EVKTrimmedResourceSpecifierPortion
 
-- (NSString *)evaluateWithURL:(NSURL *)url {
-    NSString * ret = maybePercentEncode([url trimmedResourceSpecifier]);
-    return ret ? : @"";
-}
+- (NSString *)evaluateUnencodedWithURL:(NSURL *)url { return [url trimmedResourceSpecifier]; }
 
 - (NSString *)stringRepresentation { return @"Resource specifier"; }
 
@@ -126,122 +122,9 @@
 
 @end
 
-@implementation EVKQueryPortion
-
-- (NSString *)evaluateWithURL:(NSURL *)url {
-    NSString *ret = [url queryString];
-    return ret ? : @"";
-}
-
-- (NSString *)stringRepresentation { return @"Original query"; }
-
-// Coding {{{
-+ (BOOL)supportsSecureCoding { return YES; }
-
-- (void)encodeWithCoder:(NSCoder *)coder { return; }
-
-- (instancetype)initWithCoder:(NSCoder *)coder { return [self init]; }
-// }}}
-
-@end
-
-@implementation EVKRegexSubstitutionPortion
-
-- (instancetype)initWithRegex:(NSRegularExpression *)regex template:(NSString *)str {
-    if((self = [super init])) {
-        _regex = regex;
-        _templet = str;
-    }
-
-    return self;
-}
-
-+ (instancetype)portionWithRegex:(NSRegularExpression *)regex template:(NSString *)templet {
-    return [[EVKRegexSubstitutionPortion alloc] initWithRegex:regex template:templet];
-}
-
-- (NSString *)evaluateWithURL:(NSURL *)url {
-    NSMatchingOptions opts = NSMatchingWithTransparentBounds | NSMatchingWithoutAnchoringBounds;
-    NSString * ret =  [_regex stringByReplacingMatchesInString:[url absoluteString]
-                                                       options:opts
-                                                         range:NSMakeRange(0, [[url absoluteString] length])
-                                                  withTemplate:_templet];
-    return ret ? : @"";
-}
-
-- (NSString *)stringRepresentation { return @"Regex substitution"; }
-
-// Coding {{{
-+ (BOOL)supportsSecureCoding { return YES; }
-
-- (void)encodeWithCoder:(NSCoder *)coder {
-    [coder encodeObject:_regex forKey:@"regex"];
-    [coder encodeObject:_templet forKey:@"templet"];
-}
-
-- (instancetype)initWithCoder:(NSCoder *)coder {
-    return [self initWithRegex:[coder decodeObjectOfClass:[NSRegularExpression class] forKey:@"regex"]
-                      template:[coder decodeObjectOfClass:[NSString class] forKey:@"templet"]];
-}
-// }}}
-
-@end
-
-@implementation EVKTranslatedQueryPortion
-
-- (instancetype)initWithDictionary:(NSDictionary<NSString *, EVKQueryItemLexicon *> *)dict {
-    if((self = [super init])) {
-        _paramTranslations = dict;
-    }
-
-    return self;
-}
-
-+ (instancetype)portionWithDictionary:(NSDictionary<NSString *,EVKQueryItemLexicon *> *)dict {
-    return [[EVKTranslatedQueryPortion alloc] initWithDictionary:dict];
-}
-
-- (NSString *)evaluateWithURL:(NSURL *)url {
-    NSMutableArray *items = [NSMutableArray new];
-    EVKQueryItemLexicon *t;
-    NSURLQueryItem *translatedItem;
-
-    for(NSURLQueryItem *item in [url queryItems]) {
-        if((t = _paramTranslations[[item name]]) &&
-            (translatedItem = [t translateItem:item])) {
-            [items addObject:translatedItem];
-        }
-    }
-
-    NSURLComponents *c = [[NSURLComponents alloc] init];
-    [c setQueryItems:items];
-
-    NSString *ret = [c percentEncodedQuery];
-    return ret ? ret : @"";
-}
-
-- (NSString *)stringRepresentation { return @"Translated query"; }
-
-// Coding {{{
-+ (BOOL)supportsSecureCoding { return YES; }
-
-- (void)encodeWithCoder:(NSCoder *)coder {
-    [coder encodeObject:_paramTranslations forKey:@"paramTranslations"];
-}
-
-- (instancetype)initWithCoder:(NSCoder *)coder {
-    return [self initWithDictionary:[coder decodeObjectOfClass:[NSDictionary class] forKey:@"paramTranslations"]];
-}
-// }}}
-
-@end
-
 @implementation EVKHostPortion
 
-- (NSString *)evaluateWithURL:(NSURL *)url {
-    NSString *ret = [url hostComponent];;
-    return ret ? : @"";
-}
+- (NSString *)evaluateUnencodedWithURL:(NSURL *)url { return [url hostComponent]; }
 
 - (NSString *)stringRepresentation { return @"Host (domain)"; }
 
@@ -257,9 +140,8 @@
 
 @implementation EVKSchemePortion
 
-- (NSString *)evaluateWithURL:(NSURL *)url {
-    NSString *ret = [url scheme];
-    return ret ? : @"";
+- (NSString *)evaluateUnencodedWithURL:(NSURL *)url {
+    return [url scheme];
 }
 
 - (NSString *)stringRepresentation { return @"Original scheme"; }
@@ -270,6 +152,124 @@
 - (void)encodeWithCoder:(NSCoder *)coder { return; }
 
 - (instancetype)initWithCoder:(NSCoder *)coder { return [self init]; };
+// }}}
+
+@end
+
+@implementation EVKQueryPortion
+
+- (NSString *)evaluateUnencodedWithURL:(NSURL *)url { return [url queryString]; }
+
+- (NSString *)stringRepresentation { return @"Original query"; }
+
+// Coding {{{
++ (BOOL)supportsSecureCoding { return YES; }
+
+- (void)encodeWithCoder:(NSCoder *)coder { return; }
+
+- (instancetype)initWithCoder:(NSCoder *)coder { return [self init]; }
+// }}}
+
+@end
+
+@implementation EVKTranslatedQueryPortion
+
+- (instancetype)initWithDictionary:(NSDictionary<NSString *, EVKQueryItemLexicon *> *)dict
+                    percentEncoded:(BOOL)percentEncoded {
+    if((self = [super initWithPercentEncoding:percentEncoded])) {
+        _paramTranslations = dict;
+    }
+
+    return self;
+}
+
++ (instancetype)portionWithDictionary:(NSDictionary<NSString *,EVKQueryItemLexicon *> *)dict
+                       percentEncoded:(BOOL)percentEncoded {
+    return [[[self class] alloc] initWithDictionary:dict percentEncoded:percentEncoded];
+}
+
+- (NSString *)evaluateUnencodedWithURL:(NSURL *)url {
+    NSMutableArray *items = [NSMutableArray new];
+    EVKQueryItemLexicon *t;
+    NSURLQueryItem *translatedItem;
+
+    for(NSURLQueryItem *item in [url queryItems]) {
+        if((t = _paramTranslations[[item name]]) &&
+            (translatedItem = [t translateItem:item])) {
+            [items addObject:translatedItem];
+        }
+    }
+
+    NSURLComponents *c = [[NSURLComponents alloc] init];
+    [c setQueryItems:items];
+
+    return [c percentEncodedQuery];
+}
+
+- (NSString *)stringRepresentation { return @"Translated query"; }
+
+// Coding {{{
++ (BOOL)supportsSecureCoding { return YES; }
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+    [super encodeWithCoder:coder];
+    [coder encodeObject:_paramTranslations forKey:@"paramTranslations"];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)coder {
+    return [self initWithDictionary:[coder decodeObjectOfClass:[NSDictionary class]
+                                                        forKey:@"paramTranslations"]
+                     percentEncoded:[coder decodeBoolForKey:@"percentEncoded"]];
+}
+// }}}
+
+@end
+
+@implementation EVKRegexSubstitutionPortion
+
+- (instancetype)initWithRegex:(NSRegularExpression *)regex
+                     template:(NSString *)templet
+               percentEncoded:(BOOL)percentEncoded {
+    if((self = [super initWithPercentEncoding:percentEncoded])) {
+        _regex = regex;
+        _templet = templet;
+    }
+
+    return self;
+}
+
++ (instancetype)portionWithRegex:(NSRegularExpression *)regex
+                        template:(NSString *)templet
+                  percentEncoded:(BOOL)percentEncoded {
+    return [[[self class] alloc] initWithRegex:regex
+                                      template:templet
+                                percentEncoded:percentEncoded];
+}
+
+- (NSString *)evaluateUnencodedWithURL:(NSURL *)url {
+    NSMatchingOptions opts = NSMatchingWithTransparentBounds | NSMatchingWithoutAnchoringBounds;
+    return [_regex stringByReplacingMatchesInString:[url absoluteString]
+                                            options:opts
+                                              range:NSMakeRange(0, [[url absoluteString] length])
+                                       withTemplate:[self templet]];
+}
+
+- (NSString *)stringRepresentation { return @"Regex substitution"; }
+
+// Coding {{{
++ (BOOL)supportsSecureCoding { return YES; }
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+    [super encodeWithCoder:coder];
+    [coder encodeObject:_regex forKey:@"regex"];
+    [coder encodeObject:_templet forKey:@"templet"];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)coder {
+    return [self initWithRegex:[coder decodeObjectOfClass:[NSRegularExpression class] forKey:@"regex"]
+                      template:[coder decodeObjectOfClass:[NSString class] forKey:@"templet"]
+                percentEncoded:[coder decodeBoolForKey:@"percentEncoded"] ];
+}
 // }}}
 
 @end

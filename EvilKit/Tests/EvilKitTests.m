@@ -29,7 +29,7 @@
         @"x-web-search://?this%20is%20a%20test",
         @"x-web-search://?this%20is%20a%20test-/:;()$$&%E2%80%9D@,?%E2%80%99%20n%5D+%E2%82%AC%23!%7C",
         @"mailto:test@example.com",
-        @"mailto:test@example.com?cc=othertest@example.com",
+        @"mailto:test@example.com?cc=bar@example.com&subject=Greetings%20from%20Cupertino!&body=Wish%20you%20were%20here!",
         @"https://youtu.be/dQw4w9WgXc",
         @"https://example.com/?n1=one&n2=two",
         @"https://example.com/?nOne=1&nTwo=2",
@@ -42,7 +42,7 @@
 
 // Trivial portion tests {{{
 - (void)testQuery {
-    NSArray<NSString *> *schemes = @[
+    NSArray<NSString *> *queries = @[
         @"",
         @"",
         @"",
@@ -59,7 +59,7 @@
         @"this%20is%20a%20test",
         @"this%20is%20a%20test-/:;()$$&%E2%80%9D@,?%E2%80%99%20n%5D+%E2%82%AC%23!%7C",
         @"",
-        @"cc=othertest@example.com",
+        @"cc=bar@example.com&subject=Greetings%20from%20Cupertino!&body=Wish%20you%20were%20here!",
         @"",
         @"n1=one&n2=two",
         @"nOne=1&nTwo=2",
@@ -68,7 +68,7 @@
     NSString *target;
     NSString *result;
     for(int i = 0; i < [urlStrings count]; i++) {
-        target = schemes[i];
+        target = queries[i];
         result = [[EVKQueryPortion new] evaluateWithURL:urls[i]];
         XCTAssertTrue([target isEqualToString:result]);
     }
@@ -92,7 +92,7 @@
         @"?this%20is%20a%20test",
         @"?this%20is%20a%20test-/:;()$$&%E2%80%9D@,?%E2%80%99%20n%5D+%E2%82%AC%23!%7C",
         @"test@example.com",
-        @"test@example.com?cc=othertest@example.com",
+        @"test@example.com?cc=bar@example.com&subject=Greetings%20from%20Cupertino!&body=Wish%20you%20were%20here!",
         @"youtu.be/dQw4w9WgXc",
         @"example.com/?n1=one&n2=two",
         @"example.com/?nOne=1&nTwo=2",
@@ -102,7 +102,7 @@
     NSString *result;
     for(int i = 0; i < [urlStrings count]; i++) {
         target = schemes[i];
-        result = [[[EVKTrimmedResourceSpecifierPortion alloc] initWithPercentEncoding:NO] evaluateWithURL:urls[i]];
+        result = [[EVKTrimmedResourceSpecifierPortion new] evaluateWithURL:urls[i]];
         XCTAssertTrue([target isEqualToString:result]);
     }
 }
@@ -168,7 +168,7 @@
     NSString *result;
     for(int i = 0; i < [urlStrings count]; i++) {
         target = schemes[i];
-        result = [[[EVKTrimmedPathPortion alloc] initWithPercentEncoding:NO] evaluateWithURL:urls[i]];
+        result = [[EVKTrimmedPathPortion portionWithPercentEncoding:NO] evaluateWithURL:urls[i]];
         XCTAssertTrue([target isEqualToString:result]);
     }
 }
@@ -211,7 +211,7 @@
     NSString *result;
     for(int i = 0; i < [urlStrings count]; i++) {
         target = urlStrings[i];
-        result = [[[EVKFullURLPortion alloc] initWithPercentEncoding:NO] evaluateWithURL:urls[i]];
+        result = [[EVKFullURLPortion portionWithPercentEncoding:NO] evaluateWithURL:urls[i]];
         XCTAssertTrue([target isEqualToString:result]);
     }
 }
@@ -228,7 +228,7 @@
         @"n2" : [[EVKQueryItemLexicon alloc] initWithKeyName:@"nTwo"
                                                   dictionary:@{@"two" : @"2"}
                                                 defaultState:URLQueryStateNull],
-    }];
+    } percentEncoded:NO];
     EVKTranslatedQueryPortion *maps = [EVKTranslatedQueryPortion portionWithDictionary:@{
         @"t" : [[EVKQueryItemLexicon alloc] initWithKeyName:@"directionsmode"
                                                  dictionary:@{
@@ -249,7 +249,7 @@
         @"q" : [EVKQueryItemLexicon identityLexiconWithName:@"q"],
         @"ll" : [EVKQueryItemLexicon identityLexiconWithName:@"q"],
         @"z" : [EVKQueryItemLexicon identityLexiconWithName:@"zoom"],
-    }];
+    } percentEncoded:NO];
 
     XCTAssertTrue([[example evaluateWithURL:urls[18]] isEqualToString:@"nOne=1&nTwo=2"]);
     XCTAssertTrue([[maps evaluateWithURL:urls[10]] isEqualToString:@"daddr=1%20Infinite%20Loop%20Cupertino%20CA%2095014%20United%20States"]);
@@ -260,12 +260,12 @@
 - (void)testRegexSubstitution {/* apple's behaviour */}
 // }}}
 
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 - (void)testArchive {
     NSError *error;
 
     NSString *ffx = @"firefox-focus://open-url?url=";
     NSString *ddg = @"https://ddg.gg/?q=";
-
     EVKAppAlternative *browser = [EVKAppAlternative alloc];
     browser = [browser initWithTargetBundleID:@"com.apple.mobilesafari"
                            substituteBundleID:@"org.mozilla.ios.Focus"
@@ -273,7 +273,7 @@
                                       @"^x-web-search:" : @[
                                               [EVKStaticStringPortion portionWithString:ffx percentEncoded:NO],
                                               [EVKStaticStringPortion portionWithString:ddg percentEncoded:YES],
-                                              [EVKQueryPortion new],
+                                              [EVKQueryPortion portionWithPercentEncoding:YES],
                                       ],
                                       @"^http(s?):" : @[
                                           [EVKStaticStringPortion portionWithString:ffx percentEncoded:NO],
@@ -287,11 +287,11 @@
                             urlOutlines:@{
                                 @"^mailto:[^\?]*$" : @[
                                         [EVKStaticStringPortion portionWithString:@"readdle-spark://compose?recipient=" percentEncoded:NO],
-                                        [EVKTrimmedPathPortion new],
+                                        [EVKTrimmedPathPortion portionWithPercentEncoding:NO],
                                 ],
                                 @"^mailto:.*\?.*$" : @[
                                         [EVKStaticStringPortion portionWithString:@"readdle-spark://compose?recipient=" percentEncoded:NO],
-                                        [EVKTrimmedPathPortion new],
+                                        [EVKTrimmedPathPortion portionWithPercentEncoding:NO],
                                         [EVKStaticStringPortion portionWithString:@"&" percentEncoded:NO],
                                         [EVKTranslatedQueryPortion portionWithDictionary:@{
                                             @"bcc"     : [EVKQueryItemLexicon identityLexiconWithName:@"bcc"],
@@ -299,7 +299,7 @@
                                             @"cc"      : [EVKQueryItemLexicon identityLexiconWithName:@"cc"],
                                             @"subject" : [EVKQueryItemLexicon identityLexiconWithName:@"subject"],
                                             @"to"      : [EVKQueryItemLexicon identityLexiconWithName:@"recipient"],
-                                        }],
+                                        } percentEncoded:NO],
                                 ],
                             }];
 
@@ -310,26 +310,27 @@
                                           @"^(((http(s?)://)?maps.apple.com)|(maps:))" : @[
                                                   [EVKStaticStringPortion portionWithString:@"comgooglemaps://?" percentEncoded:NO],
                                                   [EVKTranslatedQueryPortion portionWithDictionary:@{
-                                                      @"t" : [[EVKQueryItemLexicon alloc] initWithKeyName:@"directionsmode"
-                                                                                               dictionary:@{
-                                                                                                   @"d": @"driving",
-                                                                                                   @"w": @"walking",
-                                                                                                   @"r": @"transit",
-                                                                                               }
-                                                                                             defaultState:URLQueryStateNull],
-                                                      @"dirflg":  [[EVKQueryItemLexicon alloc] initWithKeyName:@"views"
-                                                                                                    dictionary:@{
-                                                                                                        @"k": @"satelite",
-                                                                                                        @"r": @"transit",
-                                                                                                    }
-                                                                                                  defaultState:URLQueryStateNull],
+                                                      @"t"       : [[EVKQueryItemLexicon alloc] initWithKeyName:@"directionsmode"
+                                                                                                     dictionary:@{
+                                                                                                         @"d": @"driving",
+                                                                                                         @"w": @"walking",
+                                                                                                         @"r": @"transit",
+                                                                                                     }
+                                                                                                   defaultState:URLQueryStateNull],
+                                                      @"dirflg"  : [[EVKQueryItemLexicon alloc] initWithKeyName:@"views"
+                                                                                                     dictionary:@{
+                                                                                                         @"k": @"satelite",
+                                                                                                         @"r": @"transit",
+                                                                                                     }
+                                                                                                   defaultState:URLQueryStateNull],
                                                       @"address" : [EVKQueryItemLexicon identityLexiconWithName:@"daddr"],
-                                                      @"daddr" : [EVKQueryItemLexicon identityLexiconWithName:@"daddr"],
-                                                      @"saddr" : [EVKQueryItemLexicon identityLexiconWithName:@"saddr"],
-                                                      @"q" : [EVKQueryItemLexicon identityLexiconWithName:@"q"],
-                                                      @"ll" : [EVKQueryItemLexicon identityLexiconWithName:@"q"],
-                                                      @"z" : [EVKQueryItemLexicon identityLexiconWithName:@"zoom"],
-                                                  }]]}];
+                                                      @"daddr"   : [EVKQueryItemLexicon identityLexiconWithName:@"daddr"],
+                                                      @"saddr"   : [EVKQueryItemLexicon identityLexiconWithName:@"saddr"],
+                                                      @"q"       : [EVKQueryItemLexicon identityLexiconWithName:@"q"],
+                                                      @"ll"      : [EVKQueryItemLexicon identityLexiconWithName:@"q"],
+                                                      @"z"       : [EVKQueryItemLexicon identityLexiconWithName:@"zoom"],
+                                                  } percentEncoded:NO]
+                                          ]}];
 
     NSDictionary *appAlternatives =  @{
         @"com.apple.mobilesafari" : browser,
@@ -359,5 +360,6 @@
 
     XCTAssertNil(error);
 }
+#pragma GCC diagnostic pop
 
 @end
