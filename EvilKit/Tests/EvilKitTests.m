@@ -362,4 +362,157 @@
 }
 #pragma GCC diagnostic pop
 
+- (void)testFocus {
+    NSArray *targets = @[
+        @"",
+        @"mB*RTDCwT7kVYmyM4(dr5c6jxTr%83ICoHEXdKn7Z$~ABHq#B=3n82WuUResWcGK",
+        @"example.com",
+        @"www.example.com",
+        @"firefox-focus://open-url?url=%68%74%74%70%3A%2F%2F%65%78%61%6D%70%6C%65%2E%63%6F%6D",
+        @"firefox-focus://open-url?url=%68%74%74%70%73%3A%2F%2F%77%77%77%2E%65%78%61%6D%70%6C%65%2E%63%6F%6D",
+        @"firefox-focus://open-url?url=%68%74%74%70%73%3A%2F%2F%77%77%77%2E%65%78%61%6D%70%6C%65%2E%63%6F%6D%2F%70%61%74%68%2F%74%6F%2F%6E%65%61%74%2F%66%69%6C%65%2E%74%78%74",
+        @"firefox-focus://open-url?url=%68%74%74%70%73%3A%2F%2F%77%77%77%2E%65%78%61%6D%70%6C%65%2E%63%6F%6D%2F%3F%61%72%67%31%3D%34%32%30%26%61%72%67%32%3D%36%39",
+        @"firefox-focus://open-url?url=%68%74%74%70%73%3A%2F%2F%6A%6F%68%6E%6E%79%3A%70%34%73%73%77%30%72%64%40%77%77%77%2E%65%78%61%6D%70%6C%65%2E%63%6F%6D%3A%34%34%33%2F%73%63%72%69%70%74%2E%65%78%74%3B%70%61%72%61%6D%3D%76%61%6C%75%65%3F%71%75%65%72%79%3D%76%61%6C%75%65%23%72%65%66",
+        @"firefox-focus://open-url?url=http%3A%2F%2Fexample%2Ecom%2F%3Farg1%3D420%26arg2%3D69",
+        @"firefox-focus://open-url?url=%68%74%74%70%73%3A%2F%2F%6D%61%70%73%2E%61%70%70%6C%65%2E%63%6F%6D%2F%3F%61%64%64%72%65%73%73%3D%31%25%32%30%49%6E%66%69%6E%69%74%65%25%32%30%4C%6F%6F%70%25%32%30%43%75%70%65%72%74%69%6E%6F%25%32%30%43%41%25%32%30%39%35%30%31%34%25%32%30%55%6E%69%74%65%64%25%32%30%53%74%61%74%65%73%26%61%62%50%65%72%73%6F%6E%49%44%3D%33",
+        @"maps:?saddr=San+Jose&daddr=San+Francisco&dirflg=r",
+        @"maps://?q=Mexican+Restaurant&sll=50.894967,4.341626&z=10&t=r",
+        @"firefox-focus://open-url?url=%68%74%74%70%73%3A%2F%2F%64%64%67%2E%67%67%2F%3F%71%3D%74%68%69%73%25%32%30%69%73%25%32%30%61%25%32%30%74%65%73%74",
+        @"firefox-focus://open-url?url=%68%74%74%70%73%3A%2F%2F%64%64%67%2E%67%67%2F%3F%71%3D%74%68%69%73%25%32%30%69%73%25%32%30%61%25%32%30%74%65%73%74%2D%2F%3A%3B%28%29%24%24%26%25%45%32%25%38%30%25%39%44%40%2C%3F%25%45%32%25%38%30%25%39%39%25%32%30%6E%25%35%44%2B%25%45%32%25%38%32%25%41%43%25%32%33%21%25%37%43",
+        @"mailto:test@example.com",
+        @"mailto:test@example.com?cc=bar@example.com&subject=Greetings%20from%20Cupertino!&body=Wish%20you%20were%20here!",
+        @"firefox-focus://open-url?url=%68%74%74%70%73%3A%2F%2F%79%6F%75%74%75%2E%62%65%2F%64%51%77%34%77%39%57%67%58%63",
+        @"firefox-focus://open-url?url=%68%74%74%70%73%3A%2F%2F%65%78%61%6D%70%6C%65%2E%63%6F%6D%2F%3F%6E%31%3D%6F%6E%65%26%6E%32%3D%74%77%6F",
+        @"firefox-focus://open-url?url=%68%74%74%70%73%3A%2F%2F%65%78%61%6D%70%6C%65%2E%63%6F%6D%2F%3F%6E%4F%6E%65%3D%31%26%6E%54%77%6F%3D%32"
+    ];
+
+    NSString *ffx = @"firefox-focus://open-url?url=";
+    NSString *ddg = @"https://ddg.gg/?q=";
+    EVKAppAlternative *browser = [EVKAppAlternative alloc];
+    browser = [browser initWithTargetBundleID:@"com.apple.mobilesafari"
+                           substituteBundleID:@"org.mozilla.ios.Focus"
+                                  urlOutlines:@{
+                                      @"^x-web-search:" : @[
+                                              [EVKStaticStringPortion portionWithString:ffx percentEncoded:NO],
+                                              [EVKStaticStringPortion portionWithString:ddg percentEncoded:YES],
+                                              [EVKQueryPortion portionWithPercentEncoding:YES],
+                                      ],
+                                      @"^http(s?):" : @[
+                                              [EVKStaticStringPortion portionWithString:ffx percentEncoded:NO],
+                                              [EVKFullURLPortion portionWithPercentEncoding:YES],
+                                      ],
+                                  }];
+    NSString *target;
+    NSString *result;
+    for(int i = 0; i < [urlStrings count]; i++) {
+        target = targets[i];
+        result = [[browser transformURL:[NSURL URLWithString:urlStrings[i]]] absoluteString];
+        XCTAssertTrue([result isEqualToString:target]);
+    }
+}
+
+- (void)testChrome {
+    NSArray *targets = @[
+        @"",
+        @"mB*RTDCwT7kVYmyM4(dr5c6jxTr%83ICoHEXdKn7Z$~ABHq#B=3n82WuUResWcGK",
+        @"example.com",
+        @"www.example.com",
+        @"googlechrome://example.com",
+        @"googlechromes://www.example.com",
+        @"googlechromes://www.example.com/path/to/neat/file.txt",
+        @"googlechromes://www.example.com/?arg1=420&arg2=69",
+        @"googlechromes://johnny:p4ssw0rd@www.example.com:443/script.ext;param=value?query=value#ref",
+        @"firefox-focus://open-url?url=http%3A%2F%2Fexample%2Ecom%2F%3Farg1%3D420%26arg2%3D69",
+        @"googlechromes://maps.apple.com/?address=1%20Infinite%20Loop%20Cupertino%20CA%2095014%20United%20States&abPersonID=3",
+        @"maps:?saddr=San+Jose&daddr=San+Francisco&dirflg=r",
+        @"maps://?q=Mexican+Restaurant&sll=50.894967,4.341626&z=10&t=r",
+        @"googlechromes://ddg.gg/?q=%74%68%69%73%25%32%30%69%73%25%32%30%61%25%32%30%74%65%73%74",
+        @"googlechromes://ddg.gg/?q=%74%68%69%73%25%32%30%69%73%25%32%30%61%25%32%30%74%65%73%74%2D%2F%3A%3B%28%29%24%24%26%25%45%32%25%38%30%25%39%44%40%2C%3F%25%45%32%25%38%30%25%39%39%25%32%30%6E%25%35%44%2B%25%45%32%25%38%32%25%41%43%25%32%33%21%25%37%43",
+        @"mailto:test@example.com",
+        @"mailto:test@example.com?cc=bar@example.com&subject=Greetings%20from%20Cupertino!&body=Wish%20you%20were%20here!",
+        @"googlechromes://youtu.be/dQw4w9WgXc",
+        @"googlechromes://example.com/?n1=one&n2=two",
+        @"googlechromes://example.com/?nOne=1&nTwo=2",
+    ];
+
+
+    NSString *chr = @"googlechrome://";
+    NSString *chrs = @"googlechromes://";
+    NSString *ddg = @"ddg.gg/?q=";
+    EVKAppAlternative *browser = [EVKAppAlternative alloc];
+    browser = [browser initWithTargetBundleID:@"com.apple.mobilesafari"
+                           substituteBundleID:@"com.google.chrome.ios"
+                                  urlOutlines:@{
+                                      @"^http:" : @[
+                                              [EVKStaticStringPortion portionWithString:chr percentEncoded:NO],
+                                              [EVKTrimmedResourceSpecifierPortion portionWithPercentEncoding:NO],
+                                      ],
+                                      @"^https:" : @[
+                                              [EVKStaticStringPortion portionWithString:chrs percentEncoded:NO],
+                                              [EVKTrimmedResourceSpecifierPortion portionWithPercentEncoding:NO],
+                                      ],
+                                      @"^x-web-search:" : @[
+                                              [EVKStaticStringPortion portionWithString:chrs percentEncoded:NO],
+                                              [EVKStaticStringPortion portionWithString:ddg percentEncoded:NO],
+                                              [EVKQueryPortion portionWithPercentEncoding:YES],
+                                      ],
+                                  }];
+    NSString *target;
+    NSString *result;
+    for(int i = 0; i < [urlStrings count]; i++) {
+        target = targets[i];
+        result = [[browser transformURL:[NSURL URLWithString:urlStrings[i]]] absoluteString];
+        XCTAssertTrue([result isEqualToString:target]);
+    }
+}
+
+- (void)testBrave {
+    NSArray *targets = @[
+        @"",
+        @"mB*RTDCwT7kVYmyM4(dr5c6jxTr%83ICoHEXdKn7Z$~ABHq#B=3n82WuUResWcGK",
+        @"example.com",
+        @"www.example.com",
+        @"brave://open-url?url=%68%74%74%70%3A%2F%2F%65%78%61%6D%70%6C%65%2E%63%6F%6D",
+        @"brave://open-url?url=%68%74%74%70%73%3A%2F%2F%77%77%77%2E%65%78%61%6D%70%6C%65%2E%63%6F%6D",
+        @"brave://open-url?url=%68%74%74%70%73%3A%2F%2F%77%77%77%2E%65%78%61%6D%70%6C%65%2E%63%6F%6D%2F%70%61%74%68%2F%74%6F%2F%6E%65%61%74%2F%66%69%6C%65%2E%74%78%74",
+        @"brave://open-url?url=%68%74%74%70%73%3A%2F%2F%77%77%77%2E%65%78%61%6D%70%6C%65%2E%63%6F%6D%2F%3F%61%72%67%31%3D%34%32%30%26%61%72%67%32%3D%36%39",
+        @"brave://open-url?url=%68%74%74%70%73%3A%2F%2F%6A%6F%68%6E%6E%79%3A%70%34%73%73%77%30%72%64%40%77%77%77%2E%65%78%61%6D%70%6C%65%2E%63%6F%6D%3A%34%34%33%2F%73%63%72%69%70%74%2E%65%78%74%3B%70%61%72%61%6D%3D%76%61%6C%75%65%3F%71%75%65%72%79%3D%76%61%6C%75%65%23%72%65%66",
+        @"firefox-focus://open-url?url=http%3A%2F%2Fexample%2Ecom%2F%3Farg1%3D420%26arg2%3D69",
+        @"brave://open-url?url=%68%74%74%70%73%3A%2F%2F%6D%61%70%73%2E%61%70%70%6C%65%2E%63%6F%6D%2F%3F%61%64%64%72%65%73%73%3D%31%25%32%30%49%6E%66%69%6E%69%74%65%25%32%30%4C%6F%6F%70%25%32%30%43%75%70%65%72%74%69%6E%6F%25%32%30%43%41%25%32%30%39%35%30%31%34%25%32%30%55%6E%69%74%65%64%25%32%30%53%74%61%74%65%73%26%61%62%50%65%72%73%6F%6E%49%44%3D%33",
+        @"maps:?saddr=San+Jose&daddr=San+Francisco&dirflg=r",
+        @"maps://?q=Mexican+Restaurant&sll=50.894967,4.341626&z=10&t=r",
+        @"brave://open-url?url=%68%74%74%70%73%3A%2F%2F%64%64%67%2E%67%67%2F%3F%71%3D%74%68%69%73%25%32%30%69%73%25%32%30%61%25%32%30%74%65%73%74",
+        @"brave://open-url?url=%68%74%74%70%73%3A%2F%2F%64%64%67%2E%67%67%2F%3F%71%3D%74%68%69%73%25%32%30%69%73%25%32%30%61%25%32%30%74%65%73%74%2D%2F%3A%3B%28%29%24%24%26%25%45%32%25%38%30%25%39%44%40%2C%3F%25%45%32%25%38%30%25%39%39%25%32%30%6E%25%35%44%2B%25%45%32%25%38%32%25%41%43%25%32%33%21%25%37%43",
+        @"mailto:test@example.com",
+        @"mailto:test@example.com?cc=bar@example.com&subject=Greetings%20from%20Cupertino!&body=Wish%20you%20were%20here!",
+        @"brave://open-url?url=%68%74%74%70%73%3A%2F%2F%79%6F%75%74%75%2E%62%65%2F%64%51%77%34%77%39%57%67%58%63",
+        @"brave://open-url?url=%68%74%74%70%73%3A%2F%2F%65%78%61%6D%70%6C%65%2E%63%6F%6D%2F%3F%6E%31%3D%6F%6E%65%26%6E%32%3D%74%77%6F",
+        @"brave://open-url?url=%68%74%74%70%73%3A%2F%2F%65%78%61%6D%70%6C%65%2E%63%6F%6D%2F%3F%6E%4F%6E%65%3D%31%26%6E%54%77%6F%3D%32"
+    ];
+
+    NSString *ffx = @"brave://open-url?url=";
+    NSString *ddg = @"https://ddg.gg/?q=";
+    EVKAppAlternative *browser = [EVKAppAlternative alloc];
+    browser = [browser initWithTargetBundleID:@"com.apple.mobilesafari"
+                           substituteBundleID:@"com.brave.ios.browser"
+                                  urlOutlines:@{
+                                      @"^x-web-search:" : @[
+                                              [EVKStaticStringPortion portionWithString:ffx percentEncoded:NO],
+                                              [EVKStaticStringPortion portionWithString:ddg percentEncoded:YES],
+                                              [EVKQueryPortion portionWithPercentEncoding:YES],
+                                      ],
+                                      @"^http(s?):" : @[
+                                              [EVKStaticStringPortion portionWithString:ffx percentEncoded:NO],
+                                              [EVKFullURLPortion portionWithPercentEncoding:YES],
+                                      ],
+                                  }];
+    NSString *target;
+    NSString *result;
+    for(int i = 0; i < [urlStrings count]; i++) {
+        target = targets[i];
+        result = [[browser transformURL:[NSURL URLWithString:urlStrings[i]]] absoluteString];
+        XCTAssertTrue([result isEqualToString:target]);
+    }
+}
+
 @end

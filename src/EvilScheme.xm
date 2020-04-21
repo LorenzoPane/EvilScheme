@@ -24,7 +24,7 @@ static NSURL *urlFromActions(NSArray *actions) {
              originator:(BSProcessHandle *)source
               requestID:(NSUInteger)req
              completion:(id)completion {
-    NSLog(@"[EVS] From: %@", options);
+    NSLog(@"[EVS] From: %@\n%@", bundleID, options);
     EVKAppAlternative *app = [%c(EVSPreferenceManager) appAlternatives][bundleID];
     if(app) {
         NSURL *url;
@@ -38,7 +38,7 @@ static NSURL *urlFromActions(NSArray *actions) {
             bundleID = [app substituteBundleID];
         }
     }
-    NSLog(@"[EVS] To:   %@", options);
+    NSLog(@"[EVS] To:   %@\n%@", bundleID, options);
     %orig;
 }
 
