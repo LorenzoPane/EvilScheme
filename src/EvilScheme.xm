@@ -31,11 +31,13 @@ static NSURL *urlFromActions(NSArray *actions) {
         if((url = [options dictionary][@"__PayloadURL"])
         || (url = [[options dictionary][@"__AppLink4LS"] URL])
         || (url = urlFromActions([options dictionary][@"__Actions"]))) {
-            NSMutableDictionary *opts = [NSMutableDictionary new];
-            opts[@"__PayloadURL"]     = [app transformURL:url];
-            opts[@"__PayloadOptions"] = [options dictionary][@"__PayloadOptions"];
-            [options setDictionary:opts];
-            bundleID = [app substituteBundleID];
+            if((url = [app transformURL:url])) {
+                NSMutableDictionary *opts = [NSMutableDictionary new];
+                opts[@"__PayloadURL"]     = [app transformURL:url];
+                opts[@"__PayloadOptions"] = [options dictionary][@"__PayloadOptions"];
+                [options setDictionary:opts];
+                bundleID = [app substituteBundleID];
+            }
         }
     }
     NSLog(@"[EVS] To:   %@\n%@", bundleID, options);
