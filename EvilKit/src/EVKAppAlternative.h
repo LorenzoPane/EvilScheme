@@ -11,7 +11,7 @@
 @property (copy) NSString *substituteBundleID;
 
 /// Dictionary of regular expression patterns for URLs and the corrosponding url blueprints
-@property (copy) NSDictionary<NSString *, NSArray<id <EVKURLPortion>> *> *urlOutlines;
+@property (copy) NSDictionary<NSString *, NSArray<NSObject<EVKURLPortion> *> *> *urlOutlines;
 
 /// Initializes a newly allocated alternative with all properties
 /// @param targetBundleID Bundle ID of the default scheme endpoint
@@ -19,7 +19,7 @@
 /// @param outlines Dictionary of prefixes to URLs and the corrosponding arrays of portions
 - (instancetype)initWithTargetBundleID:(NSString *)targetBundleID
                     substituteBundleID:(NSString *)substituteBundleID
-                           urlOutlines:(NSDictionary<NSString *, NSArray<id <EVKURLPortion>> *> *)outlines;
+                           urlOutlines:(NSDictionary<NSString *, NSArray<NSObject<EVKURLPortion> *> *> *)outlines;
 
 /// Transforms given URL with the proper outline
 /// @param url URL to transform

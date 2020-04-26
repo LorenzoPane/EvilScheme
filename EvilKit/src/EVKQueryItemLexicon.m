@@ -20,6 +20,10 @@
     return self;
 }
 
+- (instancetype)init {
+    return [self initWithKeyName:@"" dictionary:@{} defaultState:URLQueryStateNull];
+}
+
 - (NSURLQueryItem *)translateItem:(NSURLQueryItem *)item {
     NSString *value;
 

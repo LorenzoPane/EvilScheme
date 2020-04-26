@@ -7,7 +7,7 @@
 
 - (instancetype)initWithTargetBundleID:(NSString *)targetBundleID
                     substituteBundleID:(NSString *)substituteBundleID
-                           urlOutlines:(NSDictionary<NSString *, NSArray<id <EVKURLPortion>> *> *)outlines {
+                           urlOutlines:(NSDictionary<NSString *, NSArray<NSObject<EVKURLPortion> *> *> *)outlines {
     if((self = [super init])) {
         _targetBundleID = targetBundleID;
         _substituteBundleID = substituteBundleID;
@@ -17,8 +17,14 @@
     return self;
 }
 
+- (instancetype)init {
+    return [self initWithTargetBundleID:@""
+                     substituteBundleID:@""
+                            urlOutlines:@{}];
+}
+
 - (NSURL *)transformURL:(NSURL *)url {
-    NSArray<id <EVKURLPortion>> *outline;
+    NSArray<NSObject<EVKURLPortion> *> *outline;
 
     for(NSString *pattern in [self urlOutlines]) {
         if(regex(pattern) && [url matchesRegularExpression:regex(pattern)]) {
@@ -29,7 +35,7 @@
 
     if(outline) {
         NSMutableString *ret = [NSMutableString new];
-        for(id <EVKURLPortion> portion in outline) {
+        for(NSObject<EVKURLPortion> *portion in outline) {
             [ret appendString:[portion evaluateWithURL:url]];
         }
         return [NSURL URLWithString:ret];

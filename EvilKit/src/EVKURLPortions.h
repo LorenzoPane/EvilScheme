@@ -12,12 +12,14 @@
 - (NSString *)evaluateWithURL:(NSURL *)url;
 /// Returns a human-readable string representation of the un-evaluated portion
 - (NSString *)stringRepresentation;
+/// Returns an array of stridngs to be used to access KVC-compliant properties
+- (NSOrderedSet<NSString *> *)endUserAccessibleKeys;
 @end
 
 /// Protocol to represent URL portions thay optionally may be percent encoded
 @protocol EVKPercentEncodable <EVKURLPortion>
 /// Method to be overridden with the intended unencoded output of evaluateWithURL:
-/// @param url Original URL///
+/// @param url Original URL
 /// @seealso evaluateWithURL:
 - (NSString *)evaluateUnencodedWithURL:(NSURL *)url;
 @end
@@ -27,7 +29,7 @@
 /// @seealso EVKPercentEncodable
 /// @discussion When subclassed, evaluateUnencodedWithURL: should be overridden rather than evaluateWithURL:
 @interface EVKPercentEncodablePortion : NSObject <EVKPercentEncodable>
-@property (getter=isPercentEncoded) BOOL percentEncoded;
+@property (getter=isPercentEncoded) NSNumber *percentEncoded;
 - (instancetype)initWithPercentEncoding:(BOOL)percentEncoded;
 + (instancetype)portionWithPercentEncoding:(BOOL)percentEncoded;
 @end

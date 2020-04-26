@@ -1,5 +1,6 @@
 #import "EVKURLPortions.h"
 #import "NSURL+ComponentAdditions.h"
+#define set(...) [NSOrderedSet orderedSetWithObjects:__VA_ARGS__, nil]
 
 @implementation EVKPercentEncodablePortion
 
@@ -9,10 +10,14 @@
 
 - (instancetype)initWithPercentEncoding:(BOOL)percentEncoded {
     if((self = [super init])) {
-        _percentEncoded = percentEncoded;
+        _percentEncoded = @(percentEncoded);
     }
 
     return self;
+}
+
+- (instancetype)init {
+    return [self initWithPercentEncoding:NO];
 }
 
 - (NSString *)stringRepresentation { return @""; }
@@ -21,14 +26,18 @@
 
 - (NSString *)evaluateWithURL:(NSURL *)url {
     NSString *ret = [self evaluateUnencodedWithURL:url];
-    return ([self isPercentEncoded] ? percentEncode(ret) : ret) ? : @"";
+    return ([[self isPercentEncoded] boolValue] ? percentEncode(ret) : ret) ? : @"";
 }
 
-// coding {{{
+// Coding {{{
+- (NSOrderedSet<NSString *> *)endUserAccessibleKeys {
+    return set(@"percentEncoded");
+}
+
 + (BOOL)supportsSecureCoding { return YES; }
 
 - (void)encodeWithCoder:(NSCoder *)coder {
-    [coder encodeBool:[self isPercentEncoded] forKey:@"percentEncoded"];
+    [coder encodeBool:[[self isPercentEncoded] boolValue] forKey:@"percentEncoded"];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)coder {
@@ -48,6 +57,10 @@
     return self;
 }
 
+- (instancetype)init {
+    return [self initWithString:@"" percentEncoded:NO];
+}
+
 + (instancetype)portionWithString:(NSString *)str percentEncoded:(BOOL)percentEncoded {
     return [[EVKStaticStringPortion alloc] initWithString:str percentEncoded:percentEncoded];
 }
@@ -59,6 +72,10 @@
 }
 
 // Coding {{{
+- (NSOrderedSet<NSString *> *)endUserAccessibleKeys {
+    return set(@"string", @"percentEncoded");
+}
+
 + (BOOL)supportsSecureCoding { return YES; }
 
 - (void)encodeWithCoder:(NSCoder *)coder {
@@ -183,6 +200,10 @@
     return self;
 }
 
+- (instancetype)init {
+    return [self initWithDictionary:@{} percentEncoded:NO];
+}
+
 + (instancetype)portionWithDictionary:(NSDictionary<NSString *,EVKQueryItemLexicon *> *)dict
                        percentEncoded:(BOOL)percentEncoded {
     return [[[self class] alloc] initWithDictionary:dict percentEncoded:percentEncoded];
@@ -209,6 +230,10 @@
 - (NSString *)stringRepresentation { return @"Translated query"; }
 
 // Coding {{{
+- (NSOrderedSet<NSString *> *)endUserAccessibleKeys {
+    return set(@"percentEncoded", @"paramTranslations");
+}
+
 + (BOOL)supportsSecureCoding { return YES; }
 
 - (void)encodeWithCoder:(NSCoder *)coder {
@@ -246,6 +271,10 @@
                                 percentEncoded:percentEncoded];
 }
 
+- (instancetype)init {
+    return [self initWithRegex:[NSRegularExpression new] template:@"" percentEncoded:NO];
+}
+
 - (NSString *)evaluateUnencodedWithURL:(NSURL *)url {
     NSMatchingOptions opts = NSMatchingWithTransparentBounds | NSMatchingWithoutAnchoringBounds;
     return [_regex stringByReplacingMatchesInString:[url absoluteString]
@@ -257,6 +286,10 @@
 - (NSString *)stringRepresentation { return @"Regex substitution"; }
 
 // Coding {{{
+- (NSOrderedSet<NSString *> *)endUserAccessibleKeys {
+    return set(@"percentEncoded", @"regex", @"templet");
+}
+
 + (BOOL)supportsSecureCoding { return YES; }
 
 - (void)encodeWithCoder:(NSCoder *)coder {
