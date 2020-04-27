@@ -3,9 +3,9 @@
 
 @interface EVSAppAlternativeWrapper : NSObject
 
-@property EVKAppAlternative *orig;
-@property NSString *name;
-@property(getter=isEnabled) BOOL enabled;
+@property (atomic, strong) EVKAppAlternative *orig;
+@property (atomic, strong) NSString *name;
+@property (atomic, assign, getter=isEnabled) BOOL enabled;
 
 - (instancetype)initWithAppAlternative:(EVKAppAlternative *)app
                                   name:(NSString *)name;

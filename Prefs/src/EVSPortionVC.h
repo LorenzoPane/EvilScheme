@@ -4,6 +4,6 @@
 #import "EVSPortionVM.h"
 
 @interface EVSPortionVC : L0PrefVC <L0TextCellDelegate, L0ToggleCellDelegate, UITableViewDelegate, UITableViewDataSource>
-@property NSInteger index;
-@property EVSPortionVM *portion;
+@property (atomic, assign) NSInteger index;
+@property (atomic, strong) EVSPortionVM *portion;
 @end

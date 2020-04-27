@@ -2,8 +2,8 @@
 
 @interface L0DataCell : UITableViewCell
 
-@property UIView *detailView;
-@property (nonatomic) NSString *labelText;
+@property (atomic, strong) UIView *detailView;
+@property (nonatomic, strong) NSString *labelText;
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style
               reuseIdentifier:(NSString *)reuseIdentifier

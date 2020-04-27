@@ -15,20 +15,20 @@
 @interface L0PrefVC : PSViewController <L0PrefVCDelegate, UITableViewDelegate, UITableViewDataSource>
 
 /// Delegate to implement model changes
-@property id<L0PrefVCDelegate> delegate;
-
-- (void)setupTable;
+@property (atomic, weak) id<L0PrefVCDelegate> delegate;
 
 /// Primary view
-@property (nonatomic, retain) UITableView *tableView;
+@property (atomic, strong) UITableView *tableView;
 
 /// Dictionary of reuse identifiers and corrosponding classes
-@property NSDictionary<NSString *, Class> *cells;
+@property (atomic, strong) NSDictionary<NSString *, Class> *cells;
 
 /// Convenience method for finding the apps key window
 + (UIWindow *)keyWindow;
 
 /// Method to be overridden if the subclass is the root view controller
 - (BOOL)isRootVC;
+
+- (void)setupTable;
 
 @end

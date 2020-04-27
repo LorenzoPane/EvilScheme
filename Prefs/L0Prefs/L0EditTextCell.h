@@ -6,6 +6,6 @@
 @end
 
 @interface L0EditTextCell : L0DataCell <UITextFieldDelegate>
-@property (nonatomic) UITextField *field;
-@property (nonatomic) id<L0TextCellDelegate> delegate;
+@property (atomic, strong) UITextField *field;
+@property (nonatomic, weak) id<L0TextCellDelegate> delegate;
 @end

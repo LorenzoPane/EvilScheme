@@ -3,7 +3,7 @@
 
 @interface EVSPortionVM : NSObject
 
-@property NSObject<EVKURLPortion> *portion;
+@property (atomic, strong) NSObject<EVKURLPortion> *portion;
 
 + (NSDictionary<NSString *, NSString *> *)propertyNameMappings;
 + (NSDictionary<NSString *, Class> *)classNameMappings;

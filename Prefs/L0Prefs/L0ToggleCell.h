@@ -5,6 +5,6 @@
 @end
 
 @interface L0ToggleCell : L0DataCell
-@property UISwitch *toggle;
-@property id<L0ToggleCellDelegate> delegate;
+@property (atomic, strong) UISwitch *toggle;
+@property (atomic, weak) id<L0ToggleCellDelegate> delegate;
 @end
