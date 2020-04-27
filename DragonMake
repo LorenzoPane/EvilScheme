@@ -1,10 +1,12 @@
 package_name: EvilScheme
-install_command: sbreload || killall -9 SpringBoard
+install_command: sbreload || killall backboardd
 
 EvilScheme:
     type: tweak
     logos_files:
-        - $wildcard("./src/", "*.xm")
+        - $eval("find ./src -name '*.xm'")
+    files:
+        - $eval("find ./src -name '*.m'")
     targetios: 13.0
     c_header_search_dirs:
         - ./src
@@ -17,7 +19,7 @@ EvilKit:
     type: bundle
     install_location: "/Library/Frameworks/EvilKit.framework/"
     files:
-      - $wildcard("./EvilKit/src/", "*.m")
+        - $eval("find ./EvilKit/src -name '*.m'")
     archs:
         - arm64
     stage:
@@ -28,8 +30,7 @@ EvilSchemePrefs:
     type: bundle
     targetios: 13.0
     files:
-        - $wildcard("./Prefs/src/", "*.m")
-        - $wildcard("./Prefs/L0Prefs/", "*.m")
+        - $eval("find ./Prefs/src ./Prefs/L0Prefs -name '*.m'")
     c_header_search_dirs:
         - ./Prefs/L0Prefs
         - ./Prefs/src
@@ -37,7 +38,6 @@ EvilSchemePrefs:
         - arm64
     frameworks:
         - Preferences
-        - UIKit
         - EvilKit
     stage:
         - mkdir -p .dragon/_/Library/PreferenceLoader/Preferences/
