@@ -14,7 +14,9 @@
                     reuseIdentifier:reuseIdentifier
                          detailView:textField])) {
         _field = textField;
-        [[self contentView] addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:_field action:@selector(becomeFirstResponder)]];
+        [[self contentView] addGestureRecognizer:[[UITapGestureRecognizer alloc]
+                                                  initWithTarget:_field
+                                                  action:@selector(becomeFirstResponder)]];
     }
 
     return self;

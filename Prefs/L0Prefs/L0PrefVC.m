@@ -28,7 +28,8 @@
         @"EditTextCell" : [L0EditTextCell class],
     }];
 
-    [self setTableView:[[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped]];
+    [self setTableView:[[UITableView alloc] initWithFrame:CGRectZero
+                                                    style:UITableViewStyleGrouped]];
     
     [[self tableView] setDataSource:self];
     [[self tableView] setDelegate:self];
@@ -36,7 +37,8 @@
     [[self tableView] setAllowsMultipleSelectionDuringEditing:NO];
 
     for(NSString *reuseID in [self cells]) {
-        [[self tableView] registerClass:[self cells][reuseID] forCellReuseIdentifier:reuseID];
+        [[self tableView] registerClass:[self cells][reuseID]
+                 forCellReuseIdentifier:reuseID];
     }
 
     [self setView:[self tableView]];
@@ -71,12 +73,23 @@
     [[self delegate] controllerDidChangeModel:self];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section { return 1; }
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 1;
+}
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath { return nil; }
+- (UITableViewCell *)tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return nil;
+}
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView { return 1; }
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
 
 - (BOOL)isRootVC { return NO; }
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [[self tableView] deselectRowAtIndexPath:indexPath animated:YES];
+}
 
 @end

@@ -2,7 +2,8 @@
 
 @implementation L0ButtonCell
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+- (instancetype)initWithStyle:(UITableViewCellStyle)style
+              reuseIdentifier:(NSString *)reuseIdentifier {
     if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])) {
         [[self textLabel] setTextColor:LINK_COLOR];
     }

@@ -5,7 +5,8 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style
               reuseIdentifier:(NSString *)reuseIdentifier
                    detailView:(UIView *)detailView {
-    if((self = [super initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseIdentifier])) {
+    if((self = [super initWithStyle:UITableViewCellStyleValue1
+                    reuseIdentifier:reuseIdentifier])) {
         [[self detailTextLabel] setHidden:YES];
 
         _detailView = detailView;

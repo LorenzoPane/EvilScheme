@@ -9,7 +9,9 @@
                     reuseIdentifier:reuseIdentifier
                          detailView:toggle])) {
         _toggle = toggle;
-        [_toggle addTarget:self action:@selector(switchValueDidChange:) forControlEvents:UIControlEventValueChanged];
+        [_toggle addTarget:self
+                    action:@selector(switchValueDidChange:)
+          forControlEvents:UIControlEventValueChanged];
     }
     
     return self;
