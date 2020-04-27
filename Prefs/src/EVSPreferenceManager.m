@@ -3,12 +3,11 @@
 @implementation EVSPreferenceManager
 
 + (NSArray<EVSAppAlternativeWrapper *> *)appAlternatives {
-
-    NSString *ffx = @"firefox-focus://open-url?url=";
+    NSString *ffx = @"brave://open-url?url=";
     NSString *ddg = @"https://ddg.gg/?q=";
     EVKAppAlternative *browser = [EVKAppAlternative alloc];
     browser = [browser initWithTargetBundleID:@"com.apple.mobilesafari"
-                           substituteBundleID:@"org.mozilla.ios.Focus"
+                           substituteBundleID:@"com.brave.ios.browser"
                                   urlOutlines:@{
                                       @"^x-web-search:" : @[
                                               [EVKStaticStringPortion portionWithString:ffx percentEncoded:NO],
@@ -72,7 +71,6 @@
                                                   } percentEncoded:NO]
                                           ]}];
 
-
     return @[
         [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:browser
                                                             name:@"Web Browser"],
@@ -82,7 +80,5 @@
                                                             name:@"Mail Client"],
     ];
 }
-
-
 
 @end

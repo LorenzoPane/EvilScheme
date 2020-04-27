@@ -13,7 +13,7 @@
 - (void)setTargetBundleID:(NSString *)bundleID;
 - (NSString *)substituteBundleID;
 - (void)setSubstituteBundleID:(NSString *)bundleID;
-- (NSDictionary<NSString *, NSArray<id <EVKURLPortion>> *> *)urlOutlines;
-- (void)setUrlOutlines:(NSDictionary<NSString *, NSArray<id <EVKURLPortion>> *> *)outlines;
+- (NSDictionary<NSString *, NSArray<NSObject<EVKURLPortion> *> *> *)urlOutlines;
+- (void)setUrlOutlines:(NSDictionary<NSString *, NSArray<NSObject<EVKURLPortion> *> *> *)outlines;
 
 @end

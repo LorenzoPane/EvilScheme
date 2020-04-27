@@ -5,8 +5,8 @@ include $(THEOS)/makefiles/common.mk
 
 BUNDLE_NAME = EvilSchemePrefs
 
-SAUCE = $(wildcard *.m)
-HEADERS = $(wildcard *.h)
+SAUCE = $(shell find src -name "*.m") $(shell find L0Prefs -name "*.m")
+HEADERS = $(shell find src -name "*.h") $(shell find L0Prefs -name "*.h")
 
 EvilSchemePrefs_FILES = $(SAUCE)
 EvilSchemePrefs_HEADERS = $(HEADERS)

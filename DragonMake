@@ -12,12 +12,27 @@ EvilScheme:
         - arm64
     frameworks:
         - UserActivity
+EvilKit:
+    dir: EvilKit
+    type: bundle
+    install_location: "/Library/Frameworks/EvilKit.framework/"
+    files:
+      - $wildcard("./EvilKit/src/", "*.m")
+    archs:
+        - arm64
+    stage:
+        - mkdir -p .dragon/_/Library/Frameworks/EvilKit.framework/Headers
+        - cp src/*.h .dragon/_/Library/Frameworks/EvilKit.framework/Headers
 EvilSchemePrefs:
     dir: Prefs
     type: bundle
     targetios: 13.0
     files:
-        - $wildcard("./Prefs/", "*.m")
+        - $wildcard("./Prefs/src/", "*.m")
+        - $wildcard("./Prefs/L0Prefs/", "*.m")
+    c_header_search_dirs:
+        - ./Prefs/L0Prefs
+        - ./Prefs/src
     archs:
         - arm64
     frameworks:
@@ -27,14 +42,3 @@ EvilSchemePrefs:
     stage:
         - mkdir -p .dragon/_/Library/PreferenceLoader/Preferences/
         - cp entry.plist .dragon/_/Library/PreferenceLoader/Preferences/$name.plist
-EvilKit:
-    dir: EvilKit
-    type: bundle
-    install_location: '/Library/Frameworks/EvilKit.framework/'
-    files:
-      - $wildcard("./EvilKit/src/", "*.m")
-    archs:
-        - arm64
-    stage:
-        - mkdir -p .dragon/_/Library/Frameworks/EvilKit.framework/Headers
-        - cp src/*.h .dragon/_/Library/Frameworks/EvilKit.framework/Headers

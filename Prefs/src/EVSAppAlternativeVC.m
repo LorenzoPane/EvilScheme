@@ -1,5 +1,5 @@
 #import "EVSAppAlternativeVC.h"
-#import "L0EditTextCell.h"
+#import "../L0Prefs/L0Prefs.h"
 
 NS_ENUM(NSInteger, AppVCSection) {
     NameSection,
@@ -13,16 +13,11 @@ NS_ENUM(NSInteger, AppTextFieldTags) {
     NameTag,
 };
 
-@interface EVSAppAlternativeVC ()
-
-@end
-
 @implementation EVSAppAlternativeVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupNav];
-    [self setupTable];
 }
 
 - (void)setupNav {
@@ -31,18 +26,7 @@ NS_ENUM(NSInteger, AppTextFieldTags) {
                                                                      style:UIBarButtonItemStylePlain
                                                                     target:self
                                                                     action:@selector(showPresetView)];
-    [presetButton setTintColor:LINK_COLOR];
     [[self navigationItem] setRightBarButtonItem:presetButton];
-}
-
-- (void)setupTable {
-    [self setTableView:[[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped]];
-    [[self tableView] setDataSource:self];
-    [[self tableView] setDelegate:self];
-    [[self tableView] registerClass:[UITableViewCell class] forCellReuseIdentifier:@"LabelCell"];
-    [[self tableView] registerClass:[L0EditTextCell class] forCellReuseIdentifier:@"EditTextCell"];
-    [[self tableView] setRowHeight:44];
-    [self setView:[self tableView]];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -62,6 +46,16 @@ NS_ENUM(NSInteger, AppTextFieldTags) {
     }
 }
 
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if(editingStyle == UITableViewCellEditingStyleDelete) {
+        NSMutableDictionary* dict = [[[self appAlternative] urlOutlines] mutableCopy];
+        [dict removeObjectForKey:[dict allKeys][[indexPath row]]];
+        [[self appAlternative] setUrlOutlines:dict];
+        [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:OutlineSection]
+                        withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch ([indexPath section]) {
         case NameSection: {
@@ -75,36 +69,36 @@ NS_ENUM(NSInteger, AppTextFieldTags) {
         case BundleIDSection: {
             L0EditTextCell *cell = [tableView dequeueReusableCellWithIdentifier:@"EditTextCell" forIndexPath:indexPath];
             [cell setLabelText:([indexPath row] ? @"New" : @"Old")];
-            [cell setFieldPlaceholder:@"ex: com.apple.mobilesafari"];
+            [[cell field] setPlaceholder:@"ex: com.apple.mobilesafari"];
             [[cell field] setText:([indexPath row] ? [[self appAlternative] substituteBundleID] : [[self appAlternative] targetBundleID])];
             [[cell field] setTag:[indexPath row]];
             [cell setDelegate:self];
             return cell;
         }
         case OutlineSection: {
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LabelCell" forIndexPath:indexPath];
             if([indexPath row] < [[[self appAlternative] urlOutlines] count]) {
+                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LinkCell" forIndexPath:indexPath];
                 [[cell textLabel] setText:[[[self appAlternative] urlOutlines] allKeys][[indexPath row]]];
-                [[cell textLabel] setTextColor:[UIColor labelColor]];
+                return cell;
             } else {
+                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ButtonCell" forIndexPath:indexPath];
                 [[cell textLabel] setText:@"Add new"];
-                [[cell textLabel] setTextColor:LINK_COLOR];
+                return cell;
             }
-            [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-            return cell;
         }
         default:
             return nil;
     }
 }
 
-- (void)controllerDidChangeModel:(EVSOutlineVC *)viewController {
+- (void)controllerDidChangeModel:(EVSOutlineVC *)controller {
     NSMutableDictionary* dict = [[[self appAlternative] urlOutlines] mutableCopy];
-    [dict removeObjectForKey:[viewController key]];
-    [dict setObject:[viewController outline] forKey:[viewController regex]];
+    [dict removeObjectForKey:[controller key]];
+    [dict setObject:[controller outline] forKey:[controller regex]];
+    [controller setKey:[controller regex]];
     [[self appAlternative] setUrlOutlines:dict];
-    [[self tableView] reloadData];
-    [[self delegate] controllerDidChangeModel:self];
+
+    [super controllerDidChangeModel:controller];
 }
 
 - (void)textFieldDidChange:(UITextField *)textField {
@@ -138,6 +132,10 @@ NS_ENUM(NSInteger, AppTextFieldTags) {
     }
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [indexPath section] == OutlineSection && [indexPath row] < [[[self appAlternative] urlOutlines] count];
+}
+
 - (void)showPresetView {}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -152,6 +150,7 @@ NS_ENUM(NSInteger, AppTextFieldTags) {
         } else {
             [ctrl setKey:@""];
             [ctrl setRegex:@""];
+            [ctrl setOutline:[NSMutableArray new]];
         }
         [ctrl setDelegate:self];
         [[self navigationController] pushViewController:ctrl animated:YES];

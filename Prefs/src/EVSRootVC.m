@@ -1,14 +1,13 @@
 #import <EvilKit/EvilKit.h>
 #import <UIKit/UIKit.h>
+#import "../L0Prefs/L0Prefs.h"
 #import "EVSRootVC.h"
+#import "EVSAppAlternativeVC.h"
 #import "EVSPreferenceManager.h"
-
-#define LINK_COLOR [UIColor colorWithRed:0.776 green:0.471 blue:0.867 alpha:1]
 
 NS_ENUM(NSInteger, RootVCSection) {
     MetaSection,
     AppAlternativeSection,
-    FuckYouSection,
 };
 
 @implementation EVSRootVC {
@@ -17,11 +16,12 @@ NS_ENUM(NSInteger, RootVCSection) {
     NSArray<NSString *> *linkURLs;
 }
 
+- (BOOL)isRootVC { return YES; }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupData];
     [self setupNav];
-    [self setupTable];
     [self setupHeader];
 }
 
@@ -52,15 +52,6 @@ NS_ENUM(NSInteger, RootVCSection) {
     [[self navigationItem] setRightBarButtonItem:applyButton];
 }
 
-- (void)setupTable {
-    [self setTableView:[[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped]];
-    [[self tableView] setDataSource:self];
-    [[self tableView] setDelegate:self];
-    [[self tableView] registerClass:[UITableViewCell class] forCellReuseIdentifier:@"LabelCell"];
-    [[self tableView] setAllowsMultipleSelectionDuringEditing:NO];
-    [self setView:[self tableView]];
-}
-
 - (void)setupHeader {
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, 70)];
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 300, 70)];
@@ -89,9 +80,6 @@ NS_ENUM(NSInteger, RootVCSection) {
             [[self navigationController] pushViewController:ctrl animated:YES];
             break;
         }
-        case FuckYouSection: {
-            break;
-        }
         default:
             break;
     }
@@ -99,31 +87,26 @@ NS_ENUM(NSInteger, RootVCSection) {
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LabelCell" forIndexPath:indexPath];
-
     switch([indexPath section]) {
-        case MetaSection:
+        case MetaSection: {
+            L0ButtonCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ButtonCell" forIndexPath:indexPath];
             [[cell textLabel] setText:linkTitles[[indexPath row]]];
-            [[cell textLabel] setTextColor:LINK_COLOR];
-            break;
-        case AppAlternativeSection:
-            if([indexPath row] < [appAlternatives count]) {
-                [[cell textLabel] setText:[appAlternatives[[indexPath row]] name]];
-                [[cell textLabel] setTextColor:[UIColor labelColor]];
-            } else {
-                [[cell textLabel] setText:@"Add new"];
-                [[cell textLabel] setTextColor:LINK_COLOR];
-            }
-            [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-            break;
-        case FuckYouSection: {
-            [[cell textLabel] setText:@"Just let me change my default browser!"];
-            [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-            break;
+            return cell;
         }
+        case AppAlternativeSection: {
+            if([indexPath row] < [appAlternatives count]) {
+                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LinkCell" forIndexPath:indexPath];
+                [[cell textLabel] setText:[appAlternatives[[indexPath row]] name]];
+                return cell;
+            } else {
+                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ButtonCell" forIndexPath:indexPath];
+                [[cell textLabel] setText:@"Add new"];
+                return cell;
+            };
+        }
+        default:
+            return nil;
     }
-
-    return cell;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -132,23 +115,19 @@ NS_ENUM(NSInteger, RootVCSection) {
             return 4;
         case AppAlternativeSection:
             return [appAlternatives count] + 1;
-        case FuckYouSection:
-            return 1;
         default:
             return 0;
     }
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    return 2;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch(section) {
         case AppAlternativeSection:
             return @"Default Apps";
-        case FuckYouSection:
-            return @"This is all too complecated!";
         default:
             return @"";
     }
@@ -161,13 +140,14 @@ NS_ENUM(NSInteger, RootVCSection) {
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if(editingStyle == UITableViewCellEditingStyleDelete) {
         [appAlternatives removeObjectAtIndex:[indexPath row]];
-        [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
+        [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:AppAlternativeSection]
+                        withRowAnimation:UITableViewRowAnimationAutomatic];
     }
 }
 
-- (void)controllerDidChangeModel:(EVSAppAlternativeVC *)viewController {
-    [appAlternatives setObject:[viewController appAlternative] atIndexedSubscript:[viewController index]];
-    [[self tableView] reloadData];
+- (void)controllerDidChangeModel:(EVSAppAlternativeVC *)controller {
+    [appAlternatives setObject:[controller appAlternative] atIndexedSubscript:[controller index]];
+    [super controllerDidChangeModel:controller];
 }
 
 - (void)saveSettings {}

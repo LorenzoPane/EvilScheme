@@ -3,7 +3,7 @@
 @implementation EVSAppAlternativeWrapper
 
 - (instancetype)init {
-    return [self initWithAppAlternative:nil name:nil];
+    return [self initWithAppAlternative:[EVKAppAlternative new] name:@""];
 }
 
 - (instancetype)initWithAppAlternative:(EVKAppAlternative *)app
@@ -22,7 +22,7 @@
 }
 
 - (void)setTargetBundleID:(NSString *)bundleID {
-    return [[self orig] setTargetBundleID:bundleID];
+    [[self orig] setTargetBundleID:bundleID];
 }
 
 - (NSString *)substituteBundleID {
@@ -30,15 +30,15 @@
 }
 
 - (void)setSubstituteBundleID:(NSString *)bundleID {
-    return [[self orig] setSubstituteBundleID:bundleID];
+    [[self orig] setSubstituteBundleID:bundleID];
 }
 
-- (NSDictionary<NSString *, NSArray<id <EVKURLPortion>> *> *)urlOutlines {
+- (NSDictionary<NSString *, NSArray<NSObject<EVKURLPortion> *> *> *)urlOutlines {
     return [[self orig] urlOutlines];
 }
 
-- (void)setUrlOutlines:(NSDictionary<NSString *, NSArray<id <EVKURLPortion>> *> *)outlines {
-    return [[self orig] setUrlOutlines:outlines];
+- (void)setUrlOutlines:(NSDictionary<NSString *, NSArray<NSObject <EVKURLPortion> *> *> *)outlines {
+   [[self orig] setUrlOutlines:outlines];
 }
 
 @end
