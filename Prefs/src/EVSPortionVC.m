@@ -72,7 +72,7 @@ NS_ENUM(NSInteger, PortionVCSection) {
     if([field tag] == -1) {
         [self setPortion:[[EVSPortionVM alloc] initWithPortion:[[EVSPortionVM classNameMappings][[field text]] new]]];
         [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:PropertiesSection]
-                        withRowAnimation:UITableViewRowAnimationAutomatic];
+                        withRowAnimation:UITableViewRowAnimationFade];
     } else {
         [[self portion] setObject:[field text] forPropertyIndex:[field tag]];
     }

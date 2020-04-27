@@ -51,8 +51,8 @@ NS_ENUM(NSInteger, AppTextFieldTags) {
         NSMutableDictionary* dict = [[[self appAlternative] urlOutlines] mutableCopy];
         [dict removeObjectForKey:[dict allKeys][[indexPath row]]];
         [[self appAlternative] setUrlOutlines:dict];
-        [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:OutlineSection]
-                        withRowAnimation:UITableViewRowAnimationAutomatic];
+        [[self tableView] deleteRowsAtIndexPaths:@[indexPath]
+                                withRowAnimation:UITableViewRowAnimationMiddle];
     }
 }
 

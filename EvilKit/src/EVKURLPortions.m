@@ -231,7 +231,7 @@
 
 // Coding {{{
 - (NSOrderedSet<NSString *> *)endUserAccessibleKeys {
-    return set(@"percentEncoded", @"paramTranslations");
+    return set(@"paramTranslations", @"percentEncoded");
 }
 
 + (BOOL)supportsSecureCoding { return YES; }
@@ -287,7 +287,7 @@
 
 // Coding {{{
 - (NSOrderedSet<NSString *> *)endUserAccessibleKeys {
-    return set(@"percentEncoded", @"regex", @"templet");
+    return set(@"regex", @"templet", @"percentEncoded");
 }
 
 + (BOOL)supportsSecureCoding { return YES; }

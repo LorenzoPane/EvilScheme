@@ -34,8 +34,8 @@ NS_ENUM(NSInteger, OutlineTextFieldTags) {
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if(editingStyle == UITableViewCellEditingStyleDelete) {
         [[self outline] removeObjectAtIndex:[indexPath row]];
-        [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:PortionSection]
-                        withRowAnimation:UITableViewRowAnimationAutomatic];
+        [[self tableView] deleteRowsAtIndexPaths:@[indexPath]
+                                withRowAnimation:UITableViewRowAnimationMiddle];
     }
 }
 
@@ -127,27 +127,31 @@ NS_ENUM(NSInteger, OutlineTextFieldTags) {
             [ctrl setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
             [self presentViewController:ctrl animated:YES completion:nil];
         } else {
-            UIAlertController *ctrl = [UIAlertController alertControllerWithTitle:@"Add new URL fragment"
-                                                                          message:@"Choose a fragment type"
-                                                                   preferredStyle:UIAlertControllerStyleActionSheet];
-            [ctrl addAction:[UIAlertAction actionWithTitle:@"Cancel"
-                                                     style:UIAlertActionStyleCancel
-                                                   handler:^void(UIAlertAction *action) {}]];
+            UIAlertController *alertCtrl = [UIAlertController alertControllerWithTitle:@"Add new URL fragment"
+                                                                               message:@"Choose a fragment type"
+                                                                        preferredStyle:UIAlertControllerStyleActionSheet];
+            [alertCtrl addAction:[UIAlertAction actionWithTitle:@"Cancel"
+                                                          style:UIAlertActionStyleCancel
+                                                        handler:^void(UIAlertAction *action) {}]];
 
             for(NSString *key in [EVSPortionVM classNameMappings]) {
-                [ctrl addAction:[UIAlertAction actionWithTitle:key
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^void(UIAlertAction *action) {
+                [alertCtrl addAction:[UIAlertAction actionWithTitle:key
+                                                              style:UIAlertActionStyleDefault
+                                                            handler:^void(UIAlertAction *action) {
                     EVSPortionVC *ctrl = [[EVSPortionVC alloc] init];
                     [ctrl setDelegate:self];
                     [ctrl setIndex:[indexPath row]];
                     [ctrl setPortion:[[EVSPortionVM alloc] initWithPortion:[[EVSPortionVM classNameMappings][key] new]]];
                     [ctrl setModalPresentationStyle:UIModalPresentationFormSheet];
                     [ctrl setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-                    [self presentViewController:ctrl animated:YES completion:nil]; }]];
+                    [self presentViewController:ctrl animated:YES completion:nil];
+                    [self controllerDidChangeModel:ctrl];
+                    [[self tableView] reloadRowsAtIndexPaths:@[indexPath]
+                                            withRowAnimation:UITableViewRowAnimationMiddle];
+                }]];
             }
 
-            [self presentViewController:ctrl animated:YES completion:nil];
+            [self presentViewController:alertCtrl animated:YES completion:nil];
         }
     }
     [[self tableView] deselectRowAtIndexPath:indexPath animated:YES];

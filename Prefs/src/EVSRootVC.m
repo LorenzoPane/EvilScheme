@@ -140,8 +140,8 @@ NS_ENUM(NSInteger, RootVCSection) {
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if(editingStyle == UITableViewCellEditingStyleDelete) {
         [appAlternatives removeObjectAtIndex:[indexPath row]];
-        [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:AppAlternativeSection]
-                        withRowAnimation:UITableViewRowAnimationAutomatic];
+        [[self tableView] deleteRowsAtIndexPaths:@[indexPath]
+                                withRowAnimation:UITableViewRowAnimationMiddle];
     }
 }
 
