@@ -5,7 +5,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style
               reuseIdentifier:(NSString *)reuseIdentifier {
     if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])) {
-        [[self textLabel] setTextColor:LINK_COLOR];
+        [[self textLabel] setTextColor:TINT_COLOR];
     }
 
     return self;

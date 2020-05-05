@@ -41,4 +41,11 @@
    [[self orig] setUrlOutlines:outlines];
 }
 
+- (NSDictionary *)dict {
+    return [self urlOutlines];
+}
+- (void)setDict:(NSDictionary *)dict {
+    [self setUrlOutlines:dict];
+}
+
 @end

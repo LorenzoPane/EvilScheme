@@ -12,7 +12,7 @@
                      dictionary:(NSDictionary<NSString *, NSString *> *)dictionary
                    defaultState:(URLQueryState)state {
     if((self = [super init])) {
-        _key = key;
+        _param = key;
         _substitutions = dictionary;
         _defaultState = state;
     }
@@ -37,14 +37,14 @@
         }
     }
 
-    return [NSURLQueryItem queryItemWithName:[self key] value:value];
+    return [NSURLQueryItem queryItemWithName:[self param] value:value];
 }
 
 // Coding {{{
 + (BOOL)supportsSecureCoding { return YES; }
 
 - (void)encodeWithCoder:(NSCoder *)coder {
-    [coder encodeObject:[self key] forKey:@"key"];
+    [coder encodeObject:[self param] forKey:@"key"];
     [coder encodeObject:[self substitutions] forKey:@"substitutions"];
     [coder encodeInteger:[self defaultState] forKey:@"defaultState"];
 }

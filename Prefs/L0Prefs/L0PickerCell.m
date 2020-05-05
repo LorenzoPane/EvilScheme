@@ -20,9 +20,16 @@
 
         [[self field] setInputView:_picker];
         [[self field] setInputAccessoryView:bar];
+        [[self field] setTintColor:[UIColor clearColor]];
     }
 
     return self;
+}
+
+- (bool)textField:(UITextField *)textField
+    shouldChangeCharactersInRange:(NSRange)range
+                replacementString:(NSString *)string {
+    return NO;
 }
 
 - (void)dismissPicker {

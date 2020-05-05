@@ -1,14 +1,28 @@
 #import <UIKit/UIKit.h>
 #import <Preferences/PSViewController.h>
 
-#define LINK_COLOR [UIColor colorWithRed:0.776 green:0.471 blue:0.867 alpha:1]
+/// Default tint color
+#define TINT_COLOR [UIColor colorWithRed:0.776 green:0.471 blue:0.867 alpha:1]
+
+/// Default reuse identifiers
+#define LINK_CELL_ID      @"L0LinkCell"
+#define BASIC_CELL_ID     @"L0BasicCell"
+#define PICKER_CELL_ID    @"L0PickerCell"
+#define BUTTON_CELL_ID    @"L0ButtonCell"
+#define TOGGLE_CELL_ID    @"L0ToggleCell"
+#define EDIT_TEXT_CELL_ID @"L0EditTextCell"
 
 @class L0PrefVC;
 
 @protocol L0PrefVCDelegate <NSObject>
+
 /// Method to be called when a member of the implementing delegate controller has changed it's model
 /// @param controller View controller that has been changed
-- (void)controllerDidChangeModel:(L0PrefVC *)controller;
+@required - (void)controllerDidChangeModel:(L0PrefVC *)controller;
+
+@optional - (BOOL)controller:(L0PrefVC *)controller canMoveFromKey:(NSString *)from toKey:(NSString *)to;
+@optional - (void)controller:(L0PrefVC *)controller willMoveFromKey:(NSString *)from toKey:(NSString *)to;
+
 @end
 
 /// Abstract class for all view table view controllers

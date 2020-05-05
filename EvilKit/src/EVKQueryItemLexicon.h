@@ -13,7 +13,7 @@ typedef NS_ENUM(NSInteger, URLQueryState) {
 @interface EVKQueryItemLexicon : NSObject <NSSecureCoding>
 
 /// The name with which to substitute
-@property (nonatomic, copy) NSString *key;
+@property (nonatomic, copy) NSString *param;
 
 /// Dictionary of substitutions for values
 @property (nonatomic, copy) NSDictionary<NSString *, NSString *> *substitutions;

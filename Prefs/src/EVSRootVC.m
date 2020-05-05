@@ -1,14 +1,9 @@
 #import <EvilKit/EvilKit.h>
 #import <UIKit/UIKit.h>
 #import "../L0Prefs/L0Prefs.h"
-#import "EVSRootVC.h"
 #import "EVSAppAlternativeVC.h"
 #import "EVSPreferenceManager.h"
-
-NS_ENUM(NSInteger, RootVCSection) {
-    MetaSection,
-    AppAlternativeSection,
-};
+#import "EVSRootVC.h"
 
 @implementation EVSRootVC {
     NSMutableArray<EVSAppAlternativeWrapper *> *appAlternatives;
@@ -16,7 +11,7 @@ NS_ENUM(NSInteger, RootVCSection) {
     NSArray<NSString *> *linkURLs;
 }
 
-- (BOOL)isRootVC { return YES; }
+#pragma mark - setup
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -45,11 +40,9 @@ NS_ENUM(NSInteger, RootVCSection) {
 
 - (void)setupNav {
     [self setTitle:@"EvilScheme"];
-    UIBarButtonItem *applyButton = [[UIBarButtonItem alloc] initWithTitle:@"Save/Apply"
-                                                                     style:UIBarButtonItemStylePlain
-                                                                    target:self
-                                                                    action:@selector(saveSettings)];
-    [[self navigationItem] setRightBarButtonItem:applyButton];
+    [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
+                                                                                               target:self
+                                                                                               action:@selector(saveSettings)]];
 }
 
 - (void)setupHeader {
@@ -59,6 +52,64 @@ NS_ENUM(NSInteger, RootVCSection) {
     [titleLabel setFont:[UIFont monospacedSystemFontOfSize:28 weight:UIFontWeightThin]];
     [headerView addSubview:titleLabel];
     [[self tableView] setTableHeaderView:headerView];
+}
+
+- (BOOL)isRootVC { return YES; }
+
+#pragma mark - table
+
+NS_ENUM(NSInteger, RootVCSection) {
+    MetaSection,
+    AppAlternativeSection,
+};
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 2;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    switch(section) {
+        case MetaSection:
+            return 4;
+        case AppAlternativeSection:
+            return [appAlternatives count] + 1;
+        default:
+            return 0;
+    }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    switch(section) {
+        case AppAlternativeSection:
+            return @"Default Apps";
+        default:
+            return @"";
+    }
+}
+
+#pragma mark - cells
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    switch([indexPath section]) {
+        case MetaSection: {
+            L0ButtonCell *cell = [tableView dequeueReusableCellWithIdentifier:BUTTON_CELL_ID forIndexPath:indexPath];
+            [[cell textLabel] setText:linkTitles[[indexPath row]]];
+            return cell;
+        }
+        case AppAlternativeSection: {
+            if([indexPath row] < [appAlternatives count]) {
+                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:LINK_CELL_ID forIndexPath:indexPath];
+                [[cell textLabel] setText:[appAlternatives[[indexPath row]] name]];
+                return cell;
+            } else {
+                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:BUTTON_CELL_ID forIndexPath:indexPath];
+                [[cell textLabel] setText:@"Add new"];
+                return cell;
+            };
+        }
+        default:
+            return nil;
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -83,58 +134,14 @@ NS_ENUM(NSInteger, RootVCSection) {
         default:
             break;
     }
-    [[self tableView] deselectRowAtIndexPath:indexPath animated:YES];
+    
+    [super tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    switch([indexPath section]) {
-        case MetaSection: {
-            L0ButtonCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ButtonCell" forIndexPath:indexPath];
-            [[cell textLabel] setText:linkTitles[[indexPath row]]];
-            return cell;
-        }
-        case AppAlternativeSection: {
-            if([indexPath row] < [appAlternatives count]) {
-                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LinkCell" forIndexPath:indexPath];
-                [[cell textLabel] setText:[appAlternatives[[indexPath row]] name]];
-                return cell;
-            } else {
-                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ButtonCell" forIndexPath:indexPath];
-                [[cell textLabel] setText:@"Add new"];
-                return cell;
-            };
-        }
-        default:
-            return nil;
-    }
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    switch(section) {
-        case MetaSection:
-            return 4;
-        case AppAlternativeSection:
-            return [appAlternatives count] + 1;
-        default:
-            return 0;
-    }
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    switch(section) {
-        case AppAlternativeSection:
-            return @"Default Apps";
-        default:
-            return @"";
-    }
-}
+#pragma mark - editing
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [indexPath section] == 1 && [indexPath row] < [appAlternatives count];
+    return [indexPath section] == AppAlternativeSection && [indexPath row] < [appAlternatives count];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -145,9 +152,22 @@ NS_ENUM(NSInteger, RootVCSection) {
     }
 }
 
+#pragma mark - model
+
 - (void)controllerDidChangeModel:(EVSAppAlternativeVC *)controller {
     [appAlternatives setObject:[controller appAlternative] atIndexedSubscript:[controller index]];
     [super controllerDidChangeModel:controller];
+}
+
+- (BOOL)controller:(L0PrefVC *)controller canMoveFromKey:(NSString *)from toKey:(NSString *)to {
+    if([to isEqualToString:@""])
+        return NO;
+
+    for(EVSAppAlternativeWrapper *wrapper in appAlternatives)
+        if([[wrapper name] isEqualToString:to])
+            return NO;
+
+    return YES;
 }
 
 - (void)saveSettings {}

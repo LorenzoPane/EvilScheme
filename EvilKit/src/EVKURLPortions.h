@@ -29,7 +29,7 @@
 /// @seealso EVKPercentEncodable
 /// @discussion When subclassed, evaluateUnencodedWithURL: should be overridden rather than evaluateWithURL:
 @interface EVKPercentEncodablePortion : NSObject <EVKPercentEncodable>
-@property (getter=isPercentEncoded) NSNumber *percentEncoded;
+@property (getter=isPercentEncoded, copy) NSNumber *percentEncoded;
 - (instancetype)initWithPercentEncoding:(BOOL)percentEncoded;
 + (instancetype)portionWithPercentEncoding:(BOOL)percentEncoded;
 @end

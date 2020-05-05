@@ -4,7 +4,10 @@
 #import "EVSOutlineVC.h"
 
 @interface EVSAppAlternativeVC : L0PrefVC <L0PrefVCDelegate, L0TextCellDelegate, UITableViewDelegate, UITableViewDataSource>
+
 @property (atomic, strong) EVSAppAlternativeWrapper *appAlternative;
 @property (atomic, assign) NSInteger index;
+
 - (void)showPresetView;
+
 @end

@@ -65,8 +65,8 @@
     NSString *str = [NSString stringWithFormat:@"%@", obj];
     if([obj isKindOfClass:objc_getClass("__NSCFBoolean")])
         str = [(NSNumber *)obj boolValue] ? @"True" : @"False";
-    else if([obj isKindOfClass:[EVKQueryPortion class]])
-        str = @"";
+    else if([obj isKindOfClass:[NSDictionary class]])
+        str = @"Query Tranlator";
 
     return str;
 }
@@ -83,7 +83,7 @@
     NSObject *obj = [[self portion] valueForKey:key];
     if([obj isKindOfClass:objc_getClass("__NSCFBoolean")])
         return [L0ToggleCell class];
-    else if([obj isKindOfClass:[EVKQueryItemLexicon class]])
+    else if([obj isKindOfClass:[NSDictionary class]])
         return [L0LinkCell class];
     else if([obj isKindOfClass:[NSString class]])
         return [L0EditTextCell class];

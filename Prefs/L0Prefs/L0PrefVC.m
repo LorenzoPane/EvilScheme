@@ -21,11 +21,12 @@
 
 - (void)setupTable {
     [self setCells:@{
-        @"LinkCell"     : [L0LinkCell class],
-        @"PickerCell"   : [L0PickerCell class],
-        @"ButtonCell"   : [L0ButtonCell class],
-        @"ToggleCell"   : [L0ToggleCell class],
-        @"EditTextCell" : [L0EditTextCell class],
+        LINK_CELL_ID      : [L0LinkCell class],
+        BASIC_CELL_ID     : [L0DataCell class],
+        PICKER_CELL_ID    : [L0PickerCell class],
+        BUTTON_CELL_ID    : [L0ButtonCell class],
+        TOGGLE_CELL_ID    : [L0ToggleCell class],
+        EDIT_TEXT_CELL_ID : [L0EditTextCell class],
     }];
 
     [self setTableView:[[UITableView alloc] initWithFrame:CGRectZero
@@ -51,7 +52,7 @@
         window = [[[UIApplication sharedApplication] windows] firstObject];
     }
     if ([window respondsToSelector:@selector(setTintColor:)]) {
-        [window setTintColor:LINK_COLOR];
+        [window setTintColor:TINT_COLOR];
     }
 }
 
@@ -73,7 +74,8 @@
     [[self delegate] controllerDidChangeModel:self];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView
+ numberOfRowsInSection:(NSInteger)section {
     return 1;
 }
 
@@ -88,7 +90,8 @@
 
 - (BOOL)isRootVC { return NO; }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView
+    didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [[self tableView] deselectRowAtIndexPath:indexPath animated:YES];
 }
 

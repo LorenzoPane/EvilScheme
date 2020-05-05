@@ -1,7 +1,8 @@
 #import <Foundation/Foundation.h>
 #import <EvilKit/EvilKit.h>
+#import "../L0Prefs/L0Prefs.h"
 
-@interface EVSAppAlternativeWrapper : NSObject
+@interface EVSAppAlternativeWrapper : L0DictionaryController
 
 @property (atomic, strong) EVKAppAlternative *orig;
 @property (atomic, strong) NSString *name;

@@ -1,17 +1,9 @@
 #import "EVSOutlineVC.h"
 #import "EVSPortionVC.h"
 
-NS_ENUM(NSInteger, OutlineVCSection) {
-    RegexSection,
-    PortionSection,
-};
-
-NS_ENUM(NSInteger, OutlineTextFieldTags) {
-    RegexTag,
-    TestURLTag,
-};
-
 @implementation EVSOutlineVC
+
+#pragma mark - setup
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -21,48 +13,17 @@ NS_ENUM(NSInteger, OutlineTextFieldTags) {
 - (void)setupNav {
     [self setTitle:@"Edit URL Outline"];
     [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Edit"
-                                                                                  style:UIBarButtonItemStylePlain
+                                                                                  style:UIBarButtonItemStyleDone
                                                                                  target:self
                                                                                  action:@selector(toggleEditing)]];
 }
 
-- (void)toggleEditing {
-    [[self tableView] setEditing:![[self tableView] isEditing] animated:YES];
-    [[[self navigationItem] rightBarButtonItem] setTitle:([[self tableView] isEditing] ? @"Done" : @"Edit")];
-}
+#pragma mark - table
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if(editingStyle == UITableViewCellEditingStyleDelete) {
-        [[self outline] removeObjectAtIndex:[indexPath row]];
-        [[self tableView] deleteRowsAtIndexPaths:@[indexPath]
-                                withRowAnimation:UITableViewRowAnimationMiddle];
-    }
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    switch([indexPath section]) {
-        case RegexSection: {
-            L0EditTextCell *cell = [tableView dequeueReusableCellWithIdentifier:@"EditTextCell" forIndexPath:indexPath];
-            [[cell textLabel] setText:@"Regex"];
-            [[cell field] setText:[self regex]];
-            [cell setDelegate:self];
-            return cell;
-        }
-        case PortionSection: {
-            if([indexPath row] < [[self outline] count]) {
-                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LinkCell" forIndexPath:indexPath];
-                NSObject<EVKURLPortion> *item = [self outline][[indexPath row]];
-                [[cell textLabel] setText:[item stringRepresentation]];
-                return cell;
-            } else {
-                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ButtonCell" forIndexPath:indexPath];
-                [[cell textLabel] setText:@"Add new fragment"];
-                return cell;
-            }
-        }
-    }
-    return nil;
-}
+NS_ENUM(NSInteger, OutlineVCSection) {
+    RegexSection,
+    PortionSection,
+};
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 3;
@@ -90,6 +51,91 @@ NS_ENUM(NSInteger, OutlineTextFieldTags) {
     }
 }
 
+#pragma mark - cells
+
+NS_ENUM(NSInteger, OutlineTextFieldTags) {
+    RegexTag,
+    TestURLTag,
+};
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    switch([indexPath section]) {
+        case RegexSection: {
+            L0EditTextCell *cell = [tableView dequeueReusableCellWithIdentifier:EDIT_TEXT_CELL_ID forIndexPath:indexPath];
+            [[cell textLabel] setText:@"Regex"];
+            [[cell field] setText:[self regex]];
+            [cell setDelegate:self];
+            return cell;
+        }
+        case PortionSection: {
+            if([indexPath row] < [[self outline] count]) {
+                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:LINK_CELL_ID forIndexPath:indexPath];
+                NSObject<EVKURLPortion> *item = [self outline][[indexPath row]];
+                [[cell textLabel] setText:[item stringRepresentation]];
+                return cell;
+            } else {
+                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:BUTTON_CELL_ID forIndexPath:indexPath];
+                [[cell textLabel] setText:@"Add new fragment"];
+                return cell;
+            }
+        }
+    }
+    return nil;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if([indexPath section] == PortionSection) {
+            NSInteger row = [indexPath row];
+        if(row < [[self outline] count]) {
+            [self presentVCForPortion:[self outline][row] withIndex:row];
+        } else {
+            UIAlertController *alertCtrl = [UIAlertController alertControllerWithTitle:@"Add new URL fragment"
+                                                                               message:@"Choose a fragment type"
+                                                                        preferredStyle:UIAlertControllerStyleActionSheet];
+            [alertCtrl addAction:[UIAlertAction actionWithTitle:@"Cancel"
+                                                          style:UIAlertActionStyleCancel
+                                                        handler:^void(UIAlertAction *action) {}]];
+
+            for(NSString *key in [EVSPortionVM classNameMappings]) {
+                [alertCtrl addAction:[UIAlertAction actionWithTitle:key
+                                                              style:UIAlertActionStyleDefault
+                                                            handler:^void(UIAlertAction *action) {
+                    [self presentVCForPortion:[[EVSPortionVM classNameMappings][key] new]
+                                    withIndex:row];
+                    [[self tableView] reloadRowsAtIndexPaths:@[indexPath]
+                                            withRowAnimation:UITableViewRowAnimationMiddle];
+                }]];
+            }
+            [self presentViewController:alertCtrl animated:YES completion:nil];
+        }
+    }
+
+    [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+}
+
+- (void)presentVCForPortion:(NSObject<EVKURLPortion> *)portion withIndex:(NSInteger)idx {
+    EVSPortionVC *ctrl = [[EVSPortionVC alloc] initWithPortion:[[EVSPortionVM alloc] initWithPortion:portion]
+                                                     withIndex:idx];
+    [ctrl setDelegate:self];
+    [self controllerDidChangeModel:ctrl];
+    [[self navigationController] pushViewController:ctrl animated:YES];
+}
+
+#pragma mark - editing
+
+- (void)toggleEditing {
+    [[self tableView] setEditing:![[self tableView] isEditing] animated:YES];
+    [[[self navigationItem] rightBarButtonItem] setTitle:([[self tableView] isEditing] ? @"Done" : @"Edit")];
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if(editingStyle == UITableViewCellEditingStyleDelete) {
+        [[self outline] removeObjectAtIndex:[indexPath row]];
+        [[self tableView] deleteRowsAtIndexPaths:@[indexPath]
+                                withRowAnimation:UITableViewRowAnimationMiddle];
+    }
+}
+
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
     return ([proposedDestinationIndexPath section] == PortionSection && [proposedDestinationIndexPath row] < [[self outline] count]) ? proposedDestinationIndexPath : sourceIndexPath;
 }
@@ -109,52 +155,13 @@ NS_ENUM(NSInteger, OutlineTextFieldTags) {
     [[self delegate] controllerDidChangeModel:self];
 }
 
+#pragma mark - model
+
 - (void)textFieldDidChange:(UITextField *)field {
-    if([field tag] == RegexTag) {
+    if([field tag] == RegexTag && [[self delegate] controller:self canMoveFromKey:[self regex] toKey:[field text]]) {
         [self setRegex:[field text]];
         [[self delegate] controllerDidChangeModel:self];
     }
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if([indexPath section] == PortionSection) {
-        if([indexPath row] < [[self outline] count]) {
-            EVSPortionVC *ctrl = [[EVSPortionVC alloc] init];
-            [ctrl setDelegate:self];
-            [ctrl setPortion:[[EVSPortionVM alloc] initWithPortion:[self outline][[indexPath row]]]];
-            [ctrl setIndex:[indexPath row]];
-            [ctrl setModalPresentationStyle:UIModalPresentationFormSheet];
-            [ctrl setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-            [self presentViewController:ctrl animated:YES completion:nil];
-        } else {
-            UIAlertController *alertCtrl = [UIAlertController alertControllerWithTitle:@"Add new URL fragment"
-                                                                               message:@"Choose a fragment type"
-                                                                        preferredStyle:UIAlertControllerStyleActionSheet];
-            [alertCtrl addAction:[UIAlertAction actionWithTitle:@"Cancel"
-                                                          style:UIAlertActionStyleCancel
-                                                        handler:^void(UIAlertAction *action) {}]];
-
-            for(NSString *key in [EVSPortionVM classNameMappings]) {
-                [alertCtrl addAction:[UIAlertAction actionWithTitle:key
-                                                              style:UIAlertActionStyleDefault
-                                                            handler:^void(UIAlertAction *action) {
-                    EVSPortionVC *ctrl = [[EVSPortionVC alloc] init];
-                    [ctrl setDelegate:self];
-                    [ctrl setIndex:[indexPath row]];
-                    [ctrl setPortion:[[EVSPortionVM alloc] initWithPortion:[[EVSPortionVM classNameMappings][key] new]]];
-                    [ctrl setModalPresentationStyle:UIModalPresentationFormSheet];
-                    [ctrl setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-                    [self presentViewController:ctrl animated:YES completion:nil];
-                    [self controllerDidChangeModel:ctrl];
-                    [[self tableView] reloadRowsAtIndexPaths:@[indexPath]
-                                            withRowAnimation:UITableViewRowAnimationMiddle];
-                }]];
-            }
-
-            [self presentViewController:alertCtrl animated:YES completion:nil];
-        }
-    }
-    [[self tableView] deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (void)controllerDidChangeModel:(EVSPortionVC *)controller {
