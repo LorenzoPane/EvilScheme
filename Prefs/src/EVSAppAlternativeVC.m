@@ -1,4 +1,5 @@
 #import "../L0Prefs/L0Prefs.h"
+#import "EVSPresetListVC.h"
 #import "EVSAppAlternativeVC.h"
 
 @implementation EVSAppAlternativeVC
@@ -140,6 +141,13 @@ NS_ENUM(NSInteger, AppTextFieldTags) {
 
 }
 
+- (void)showPresetView {
+    EVSPresetListVC *ctrl = [EVSPresetListVC new];
+    [ctrl setDelegate:self];
+    UINavigationController *child = [[UINavigationController alloc] initWithRootViewController:ctrl];
+    [self presentViewController:child animated:YES completion:nil];
+}
+
 #pragma mark - model
 
 - (void)controllerDidChangeModel:(EVSOutlineVC *)controller {
@@ -148,6 +156,7 @@ NS_ENUM(NSInteger, AppTextFieldTags) {
     [dict setObject:[controller outline] forKey:[controller regex]];
     [controller setKey:[controller regex]];
     [[self appAlternative] setUrlOutlines:dict];
+    [self setTitle:[[self appAlternative] name]];
 
     [super controllerDidChangeModel:controller];
 }
@@ -157,7 +166,6 @@ NS_ENUM(NSInteger, AppTextFieldTags) {
         case NameTag:
             if([[self delegate] controller:self canMoveFromKey:[[self appAlternative] name] toKey:[textField text]]) {
                 [[self appAlternative] setName:[textField text]];
-                [self setTitle:[textField text]];
             }
             break;
         case TargetBundleIDTag:
@@ -167,9 +175,8 @@ NS_ENUM(NSInteger, AppTextFieldTags) {
             [[self appAlternative] setSubstituteBundleID:[textField text]];
             break;
     }
+    
     [[self delegate] controllerDidChangeModel:self];
 }
-
-- (void)showPresetView {}
 
 @end

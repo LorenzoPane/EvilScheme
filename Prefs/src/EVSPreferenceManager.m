@@ -81,4 +81,50 @@
     ];
 }
 
++ (void)storeAppAlternative:(EVSAppAlternativeWrapper *)appAlternative {
+    NSLog(@"Storing %@", appAlternative);
+}
+
++ (L0DictionaryController<NSArray<EVSAppAlternativeWrapper *> *> *)presets {
+    return [[L0DictionaryController alloc] initWithDict: @{
+        @"Web Browsers": @[
+            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Brave"],
+            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Cake"],
+            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"DuckDuckGo"],
+            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Google Chrome"],
+            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Firefox Focus"],
+            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Firefox"],
+            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Opera"],
+        ],
+        @"Maps": @[
+            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Google Maps"],
+            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Magic Earth"],
+            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Waze"],
+        ],
+        @"Mail Clients": @[
+            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Airmail"],
+            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Edison"],
+            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Outlook"],
+            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"PolyMail"],
+            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Proton Mail"],
+            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Spark"],
+            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Yahoo Mail"],
+        ],
+        @"Package Manager": @[
+            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Installer"],
+            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Sileo"],
+            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Zebra"],
+        ],
+        @"Reddit Client": @[
+            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Alien Blue"],
+            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Apollo"],
+        ],
+        @"Twitter Client": @[
+            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"TweetDeck"],
+            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"TweetBot"],
+        ],
+        @"User Added": @[],
+    }];
+}
+
 @end

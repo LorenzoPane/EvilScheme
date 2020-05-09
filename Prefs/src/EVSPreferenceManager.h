@@ -3,5 +3,9 @@
 #import "EVSAppAlternativeWrapper.h"
 
 @interface EVSPreferenceManager : NSObject
+
 + (NSArray<EVSAppAlternativeWrapper *> *)appAlternatives;
++ (void)storeAppAlternative:(EVSAppAlternativeWrapper *)appAlternative;
++ (L0DictionaryController<NSArray<EVSAppAlternativeWrapper *> *> *)presets;
+
 @end
