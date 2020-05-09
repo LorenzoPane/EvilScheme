@@ -45,7 +45,7 @@
     [self setView:[self tableView]];
 }
 
--(void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     UIWindow *window = [L0PrefVC keyWindow];
     if (!window) {
@@ -56,7 +56,7 @@
     }
 }
 
--(void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     if([self isRootVC]) {
         UIWindow *window = [L0PrefVC keyWindow];

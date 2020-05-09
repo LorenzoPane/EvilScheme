@@ -32,7 +32,7 @@
         @"https://github.com/lorenzopane/evilscheme",
         @"https://github.com/lorenzopane/evilscheme",
         @"https://opensource.org/licenses/BSD-3-Clause",
-        @"https://twitter.com/L0Dev",
+        @"https://twitter.com/mushyware",
     ];
 
     appAlternatives = [[EVSPreferenceManager appAlternatives] mutableCopy];

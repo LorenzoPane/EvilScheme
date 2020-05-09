@@ -30,6 +30,7 @@
 - (NSDictionary *)dict {
     return [[self lex] substitutions];
 }
+
 - (void)setDict:(NSDictionary *)dict {
     [[self lex] setSubstitutions:dict];
 }

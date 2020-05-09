@@ -15,7 +15,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setupNav];
     [self setTitle:[self key]];
+}
+
+- (void)setupNav {
+    [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                               target:self
+                                                                                               action:@selector(dismiss)]];
 }
 
 #pragma mark - table
@@ -71,6 +78,12 @@ NS_ENUM(NSUInteger, KeyValuePairVCTags) {
             [[self delegate] controllerDidChangeModel:self];
         }
     }
+}
+
+#pragma mark - Teardown
+
+- (void)dismiss {
+    [[self navigationController] dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
