@@ -17,6 +17,9 @@
 /// Returns the host parsed by NSURLComponents
 - (NSString *)hostComponent;
 
+/// Returns the fragment parsed by NSURLComponents
+- (NSString *)fragmentString;
+
 /// Returns YES if the absolute string contains a match for a given regular expression
 /// @param regex regular expression to use
 - (BOOL)matchesRegularExpression:(NSRegularExpression *)regex;

@@ -49,6 +49,10 @@
 @interface EVKTrimmedPathPortion : EVKPercentEncodablePortion
 @end
 
+/// Portion which returns the URL's fragment
+@interface EVKFragmentPortion : EVKPercentEncodablePortion
+@end
+
 /// Portion which returns the URL's resource specifier, excluding leading and trailing slashes
 @interface EVKTrimmedResourceSpecifierPortion : EVKPercentEncodablePortion
 @end
@@ -76,12 +80,12 @@
 
 /// Portion which returns the result of a substitution being performed on the url with a given regex and template
 @interface EVKRegexSubstitutionPortion : EVKPercentEncodablePortion
-@property (copy) NSRegularExpression *regex;
+@property (copy) NSString *regex;
 @property (copy) NSString *templet;
-- (instancetype)initWithRegex:(NSRegularExpression *)regex
+- (instancetype)initWithRegex:(NSString *)regex
                      template:(NSString *)templet
                percentEncoded:(BOOL)percentEncoded;
-+ (instancetype)portionWithRegex:(NSRegularExpression *)regex
++ (instancetype)portionWithRegex:(NSString *)regex
                         template:(NSString *)templet
                   percentEncoded:(BOOL)percentEncoded;
 @end

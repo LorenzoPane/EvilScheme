@@ -1,3 +1,4 @@
+#import <Foundation/Foundation.h>
 #import "EVSPreferenceManager.h"
 
 @implementation EVSPreferenceManager
@@ -71,10 +72,21 @@
                                                   } percentEncoded:NO]
                                           ]}];
 
+    EVKAppAlternative *pacman = [EVKAppAlternative alloc];
+    pacman = [pacman initWithTargetBundleID:@"com.saurik.Cydia"
+                         substituteBundleID:@"xyz.willy.Zebra"
+                                urlOutlines:@{
+                                    @"^cydia://url/http(s?)://cydia.saurik.com/api/share.*" : @[
+                                        [EVKStaticStringPortion portionWithString:@"zbra://sources/add/" percentEncoded:NO],
+                                        [EVKRegexSubstitutionPortion portionWithRegex:@"(.*)=(.*)" template:@"$2" percentEncoded:NO],
+                                ]}];
+
+
     return @{
         @"com.apple.mobilesafari" : browser,
         @"com.apple.Maps"         : navigator,
         @"com.apple.mobilemail"   : mail,
+        @"com.saurik.Cydia"       : pacman,
     };
 }
 

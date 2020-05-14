@@ -12,6 +12,11 @@
                        resolvingAgainstBaseURL:NO] percentEncodedQuery];
 }
 
+- (NSString *)fragmentString {
+    return [[NSURLComponents componentsWithURL:self
+                       resolvingAgainstBaseURL:NO] percentEncodedFragment];
+}
+
 - (NSString *)trimmedPathComponent {
     NSCharacterSet *set = [NSCharacterSet characterSetWithCharactersInString:@"/"];
     return [[[NSURLComponents componentsWithURL:self

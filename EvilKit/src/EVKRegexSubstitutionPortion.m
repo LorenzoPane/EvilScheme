@@ -4,7 +4,7 @@
 
 @implementation EVKRegexSubstitutionPortion
 
-- (instancetype)initWithRegex:(NSRegularExpression *)regex
+- (instancetype)initWithRegex:(NSString *)regex
                      template:(NSString *)templet
                percentEncoded:(BOOL)percentEncoded {
     if((self = [super initWithPercentEncoding:percentEncoded])) {
@@ -15,7 +15,7 @@
     return self;
 }
 
-+ (instancetype)portionWithRegex:(NSRegularExpression *)regex
++ (instancetype)portionWithRegex:(NSString *)regex
                         template:(NSString *)templet
                   percentEncoded:(BOOL)percentEncoded {
     return [[[self class] alloc] initWithRegex:regex
@@ -24,15 +24,18 @@
 }
 
 - (instancetype)init {
-    return [self initWithRegex:[NSRegularExpression new] template:@"" percentEncoded:NO];
+    return [self initWithRegex:@"" template:@"" percentEncoded:NO];
 }
 
 - (NSString *)evaluateUnencodedWithURL:(NSURL *)url {
     NSMatchingOptions opts = NSMatchingWithTransparentBounds | NSMatchingWithoutAnchoringBounds;
-    return [_regex stringByReplacingMatchesInString:[url absoluteString]
-                                            options:opts
-                                              range:NSMakeRange(0, [[url absoluteString] length])
-                                       withTemplate:[self templet]];
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:_regex
+                                                                           options:0
+                                                                             error:nil];
+    return [regex stringByReplacingMatchesInString:[url absoluteString]
+                                           options:opts
+                                             range:NSMakeRange(0, [[url absoluteString] length])
+                                      withTemplate:[self templet]];
 }
 
 - (NSString *)stringRepresentation { return @"Regex substitution"; }

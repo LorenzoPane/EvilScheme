@@ -100,3 +100,11 @@
 // }}}
 
 @end
+
+@implementation EVKFragmentPortion : EVKPercentEncodablePortion
+
+- (NSString *)evaluateUnencodedWithURL:(NSURL *)url {
+    return [url fragmentString];
+}
+
+@end
