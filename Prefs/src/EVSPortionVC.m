@@ -4,7 +4,7 @@
 
 @implementation EVSPortionVC
 
-#pragma mark - setup
+#pragma mark - lifecycle
 
 - (instancetype)initWithPortion:(EVSPortionVM *)portion withIndex:(NSInteger)idx {
     if((self = [super init])) {

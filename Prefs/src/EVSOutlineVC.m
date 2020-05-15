@@ -3,7 +3,7 @@
 
 @implementation EVSOutlineVC
 
-#pragma mark - setup
+#pragma mark - lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];

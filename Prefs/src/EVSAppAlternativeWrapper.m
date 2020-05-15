@@ -6,12 +6,10 @@
     return [self initWithAppAlternative:[EVKAppAlternative new] name:@""];
 }
 
-- (instancetype)initWithAppAlternative:(EVKAppAlternative *)app
-                                  name:(NSString *)name {
+- (instancetype)initWithAppAlternative:(EVKAppAlternative *)app name:(NSString *)name {
     if((self = [super init])) {
         _orig = app;
         _name = name;
-        _enabled = YES;
     }
 
     return self;
@@ -47,5 +45,21 @@
 - (void)setDict:(NSDictionary *)dict {
     [self setUrlOutlines:dict];
 }
+
+// Coding {{{
+
++ (BOOL)supportsSecureCoding { return YES; }
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+    [coder encodeObject:[self orig] forKey:@"orig"];
+    [coder encodeObject:[self name] forKey:@"name"];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)coder {
+    return [self initWithAppAlternative:[coder decodeObjectForKey:@"orig"]
+                                   name:[coder decodeObjectForKey:@"name"]];
+}
+
+// }}}
 
 @end

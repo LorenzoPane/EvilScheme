@@ -2,7 +2,7 @@
 
 @implementation EVSKeyValuePairVC
 
-#pragma mark - setup
+#pragma mark - lifecycle
 
 - (instancetype)initWithKey:(NSString *)key value:(NSString *)value {
     if((self = [super init])) {
@@ -23,6 +23,10 @@
     [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                                target:self
                                                                                                action:@selector(dismiss)]];
+}
+
+- (void)dismiss {
+    [[self navigationController] dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - table
@@ -78,12 +82,6 @@ NS_ENUM(NSUInteger, KeyValuePairVCTags) {
             [[self delegate] controllerDidChangeModel:self];
         }
     }
-}
-
-#pragma mark - Teardown
-
-- (void)dismiss {
-    [[self navigationController] dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

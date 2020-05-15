@@ -4,7 +4,7 @@
 
 @implementation EVSQueryLexiconVC
 
-#pragma mark - setup
+#pragma mark - lifecycle
 
 - (instancetype)initWithKey:(NSString *)key lexicon:(EVSQueryLexiconWrapper *)lex {
     if((self = [super init])) {

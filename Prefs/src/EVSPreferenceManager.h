@@ -4,8 +4,9 @@
 
 @interface EVSPreferenceManager : NSObject
 
-+ (NSArray<EVSAppAlternativeWrapper *> *)appAlternatives;
-+ (void)storeAppAlternative:(EVSAppAlternativeWrapper *)appAlternative;
++ (void)ensureDirExists:(NSString *)dirString;
++ (NSArray<EVSAppAlternativeWrapper *> *)activeAlternatives;
++ (void)setActiveAlternatives:(NSArray<EVSAppAlternativeWrapper *> *)alternatives;
 + (L0DictionaryController<NSArray<EVSAppAlternativeWrapper *> *> *)presets;
 
 @end

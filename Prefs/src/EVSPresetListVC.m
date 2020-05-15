@@ -4,7 +4,7 @@
 
 @implementation EVSPresetListVC
 
-#pragma mark - Setup
+#pragma mark - lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -15,23 +15,16 @@
 
 - (void)setupNav {
     [self setTitle:@"Presets"];
-    [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Save New Preset"
-                                                                                  style:UIBarButtonItemStylePlain
-                                                                                 target:self
-                                                                                 action:@selector(store)]];
     [[self navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                               target:self
                                                                                               action:@selector(dismiss)]];
 }
 
-
-#pragma mark - Model
-
-- (void)store {
-    [[EVSPreferenceManager class] storeAppAlternative:[(EVSAppAlternativeVC *)[self delegate] appAlternative]];
+- (void)dismiss {
+    [[self navigationController] dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark - Table View
+#pragma mark - table
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     return [[self presets] keyAtIndex:section];
@@ -45,6 +38,8 @@
     return [[[self presets] objectAtIndex:section] count];
 }
 
+#pragma mark - cells
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     L0LinkCell *cell = [[self tableView] dequeueReusableCellWithIdentifier:LINK_CELL_ID forIndexPath:indexPath];
     [[cell textLabel] setText:[[[[self presets] objectAtIndex:[indexPath section]] objectAtIndex:[indexPath row]] name]];
@@ -57,12 +52,6 @@
     [[self delegate] controllerDidChangeModel:nil];
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
     [self dismiss];
-}
-
-#pragma mark - Teardown
-
-- (void)dismiss {
-    [[self navigationController] dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

@@ -4,7 +4,7 @@
 
 @implementation EVSAppAlternativeVC
 
-#pragma mark - setup
+#pragma mark - lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -151,12 +151,14 @@ NS_ENUM(NSInteger, AppTextFieldTags) {
 #pragma mark - model
 
 - (void)controllerDidChangeModel:(EVSOutlineVC *)controller {
-    NSMutableDictionary* dict = [[[self appAlternative] urlOutlines] mutableCopy];
-    [dict removeObjectForKey:[controller key]];
-    [dict setObject:[controller outline] forKey:[controller regex]];
-    [controller setKey:[controller regex]];
-    [[self appAlternative] setUrlOutlines:dict];
-    [self setTitle:[[self appAlternative] name]];
+    if([controller isKindOfClass:[EVSOutlineVC class]]) {
+        NSMutableDictionary* dict = [[[self appAlternative] urlOutlines] mutableCopy];
+        [dict removeObjectForKey:[controller key]];
+        [dict setObject:[controller outline] forKey:[controller regex]];
+        [controller setKey:[controller regex]];
+        [[self appAlternative] setUrlOutlines:dict];
+        [self setTitle:[[self appAlternative] name]];
+    }
 
     [super controllerDidChangeModel:controller];
 }

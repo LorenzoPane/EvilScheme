@@ -1,6 +1,5 @@
+#import <EvilKit/EvilKit.h>
 #import "PrivateFrameworks.h"
-#import "EVSPreferenceManager.h"
-#include <time.h>
 
 static NSURL *urlFromActions(NSArray *actions) {
     __block NSURL *ret;
@@ -17,6 +16,23 @@ static NSURL *urlFromActions(NSArray *actions) {
     return ret;
 }
 
+#pragma GCC diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
+static NSDictionary<NSString *, EVKAppAlternative *> *prefs() {
+    NSError *err;
+
+    NSString *path = @"/var/mobile/Library/Preferences/EvilScheme/alternatives.plist";
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    NSDictionary *ret = [NSKeyedUnarchiver unarchiveTopLevelObjectWithData:data error:&err];
+
+    if(err) NSLog(@"[EVS] ERROR LOADING PREFS: %@", [err localizedDescription]);
+
+    return ret ? : @{};
+}
+
+#pragma GCC diagnostic pop
+
 %hook FBSystemService
 
 - (void)openApplication:(NSString *)bundleID
@@ -25,7 +41,7 @@ static NSURL *urlFromActions(NSArray *actions) {
               requestID:(NSUInteger)req
              completion:(id)completion {
     NSLog(@"[EVS] From: %@\n%@", bundleID, options);
-    EVKAppAlternative *app = [%c(EVSPreferenceManager) appAlternatives][bundleID];
+    EVKAppAlternative *app = prefs()[bundleID];
     if(app) {
         NSURL *url;
         if((url = [options dictionary][@"__PayloadURL"])

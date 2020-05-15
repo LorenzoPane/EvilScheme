@@ -11,7 +11,7 @@
     NSArray<NSString *> *linkURLs;
 }
 
-#pragma mark - setup
+#pragma mark - lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -35,7 +35,7 @@
         @"https://twitter.com/mushyware",
     ];
 
-    appAlternatives = [[EVSPreferenceManager appAlternatives] mutableCopy];
+    appAlternatives = [[EVSPreferenceManager activeAlternatives] mutableCopy];
 }
 
 - (void)setupNav {
@@ -55,6 +55,11 @@
 }
 
 - (BOOL)isRootVC { return YES; }
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [self saveSettings];
+    [super viewWillDisappear:animated];
+}
 
 #pragma mark - table
 
@@ -170,6 +175,8 @@ NS_ENUM(NSInteger, RootVCSection) {
     return YES;
 }
 
-- (void)saveSettings {}
+- (void)saveSettings {
+    [EVSPreferenceManager setActiveAlternatives:appAlternatives];
+}
 
 @end

@@ -2,14 +2,12 @@
 #import <EvilKit/EvilKit.h>
 #import "../L0Prefs/L0Prefs.h"
 
-@interface EVSAppAlternativeWrapper : L0DictionaryController
+@interface EVSAppAlternativeWrapper : L0DictionaryController <NSSecureCoding>
 
 @property (atomic, strong) EVKAppAlternative *orig;
 @property (atomic, strong) NSString *name;
-@property (atomic, assign, getter=isEnabled) BOOL enabled;
 
-- (instancetype)initWithAppAlternative:(EVKAppAlternative *)app
-                                  name:(NSString *)name;
+- (instancetype)initWithAppAlternative:(EVKAppAlternative *)app name:(NSString *)name;
 - (NSString *)targetBundleID;
 - (void)setTargetBundleID:(NSString *)bundleID;
 - (NSString *)substituteBundleID;

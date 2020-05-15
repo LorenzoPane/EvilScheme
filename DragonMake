@@ -4,16 +4,13 @@ install_command: sbreload || killall backboardd
 EvilScheme:
     type: tweak
     logos_files:
-        - $eval("find ./src -name '*.xm'")
-    files:
-        - $eval("find ./src -name '*.m'")
+        - $eval("find . -name '*.xm'")
     targetios: 13.0
-    c_header_search_dirs:
-        - ./src
     archs:
         - arm64
     frameworks:
         - UserActivity
+        - EvilKit
 EvilKit:
     dir: EvilKit
     type: bundle

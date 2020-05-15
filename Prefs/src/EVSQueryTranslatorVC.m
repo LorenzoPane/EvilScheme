@@ -4,7 +4,7 @@
 
 @implementation EVSQueryTranslatorVC
 
-#pragma mark - setup
+#pragma mark - lifecycle
 
 - (instancetype)initWithDictionary:(NSDictionary<NSString *,EVKQueryItemLexicon *> *)dict {
     if((self = [super init])) {
