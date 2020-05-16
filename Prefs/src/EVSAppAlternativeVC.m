@@ -157,9 +157,9 @@ NS_ENUM(NSInteger, AppTextFieldTags) {
         [dict setObject:[controller outline] forKey:[controller regex]];
         [controller setKey:[controller regex]];
         [[self appAlternative] setUrlOutlines:dict];
-        [self setTitle:[[self appAlternative] name]];
     }
 
+    [self setTitle:[[self appAlternative] name]];
     [super controllerDidChangeModel:controller];
 }
 

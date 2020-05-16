@@ -66,12 +66,29 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
 }
 
 + (L0DictionaryController<NSArray<EVSAppAlternativeWrapper *> *> *)presets {
+    NSString *aloha = @"alohabrowser://open?link=";
     NSString *brv = @"brave://open-url?url=";
-    NSString *ffx = @"firefox-focus://open-url?url=";
+    NSString *cake = @"cakebrowser://open-url?url=";
     NSString *ddg = @"https://ddg.gg/?q=";
+    NSString *ddgBrowser = @"ddgQuickLink://";
+    NSString *ffx = @"firefox://open-url?url=";
+    NSString *focus = @"firefox-focus://open-url?url=";
 
     return [[L0DictionaryController alloc] initWithDict: @{
         @"Web Browsers": @[
+                [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
+                                                                                     substituteBundleID:@"com.alohabrowser.alohabrowser"
+                                                                                            urlOutlines:@{
+                                                                                                @"^x-web-search:" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:aloha percentEncoded:NO],
+                                                                                                        [EVKStaticStringPortion portionWithString:ddg percentEncoded:YES],
+                                                                                                        [EVKQueryPortion portionWithPercentEncoding:YES],
+                                                                                                ],
+                                                                                                @"^http(s?):" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:aloha percentEncoded:NO],
+                                                                                                        [EVKFullURLPortion portionWithPercentEncoding:YES],
+                                                                                                ],
+                                                                                            }] name:@"Aloha"],
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
                                                                                      substituteBundleID:@"com.brave.ios.browser"
                                                                                             urlOutlines:@{
@@ -85,11 +102,68 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                         [EVKFullURLPortion portionWithPercentEncoding:YES],
                                                                                                 ],
                                                                                             }] name:@"Brave"],
-                //            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Cake"],
-                //            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"DuckDuckGo"],
-                //            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Google Chrome"],
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
-                                                                                     substituteBundleID:@"org.mozilla.ios.Focus"
+                                                                                     substituteBundleID:@"com.lipslabs.cake"
+                                                                                            urlOutlines:@{
+                                                                                                @"^x-web-search:" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:cake percentEncoded:NO],
+                                                                                                        [EVKStaticStringPortion portionWithString:ddg percentEncoded:YES],
+                                                                                                        [EVKQueryPortion portionWithPercentEncoding:YES],
+                                                                                                ],
+                                                                                                @"^http(s?):" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:cake percentEncoded:NO],
+                                                                                                        [EVKFullURLPortion portionWithPercentEncoding:YES],
+                                                                                                ],
+                                                                                            }] name:@"Cake"],
+                [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
+                                                                                     substituteBundleID:@"com.duckduckgo.mobile.ios"
+                                                                                            urlOutlines:@{
+                                                                                                @"^x-web-search:" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:ddgBrowser percentEncoded:NO],
+                                                                                                        [EVKStaticStringPortion portionWithString:ddg percentEncoded:YES],
+                                                                                                        [EVKQueryPortion portionWithPercentEncoding:YES],
+                                                                                                ],
+                                                                                                @"^http(s?):" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:ddgBrowser percentEncoded:NO],
+                                                                                                        [EVKFullURLPortion portionWithPercentEncoding:NO],
+                                                                                                ],
+                                                                                            }] name:@"DuckDuckGo"],
+            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
+                                                                                     substituteBundleID:@"com.microsoft.msedge"
+                                                                                            urlOutlines:@{
+                                                                                                @"^x-web-search:" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:@"microsoft-edge-https://" percentEncoded:NO],
+                                                                                                        [EVKStaticStringPortion portionWithString:ddg percentEncoded:YES],
+                                                                                                        [EVKQueryPortion portionWithPercentEncoding:YES],
+                                                                                                ],
+                                                                                                @"^http:" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:@"microsoft-edge-http://" percentEncoded:NO],
+                                                                                                        [EVKTrimmedResourceSpecifierPortion portionWithPercentEncoding:NO],
+                                                                                                ],
+                                                                                                @"^https:" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:@"microsoft-edge-https://" percentEncoded:NO],
+                                                                                                        [EVKTrimmedResourceSpecifierPortion portionWithPercentEncoding:NO],
+                                                                                                ],
+                                                                                            }] name:@"Microsoft Edge"],
+                [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
+                                                                                     substituteBundleID:@"com.google.chrome.ios"
+                                                                                            urlOutlines:@{
+                                                                                                @"^x-web-search:" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:@"googlechromes://" percentEncoded:NO],
+                                                                                                        [EVKStaticStringPortion portionWithString:ddg percentEncoded:YES],
+                                                                                                        [EVKQueryPortion portionWithPercentEncoding:YES],
+                                                                                                ],
+                                                                                                @"^http:" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:@"googlechrome://" percentEncoded:NO],
+                                                                                                        [EVKTrimmedResourceSpecifierPortion portionWithPercentEncoding:NO],
+                                                                                                ],
+                                                                                                @"^https:" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:@"googlechromes://" percentEncoded:NO],
+                                                                                                        [EVKTrimmedResourceSpecifierPortion portionWithPercentEncoding:NO],
+                                                                                                ],
+                                                                                            }] name:@"Google Chrome"],
+                [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
+                                                                                     substituteBundleID:@"org.mozilla.ios.Firefox"
                                                                                             urlOutlines:@{
                                                                                                 @"^x-web-search:" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:ffx percentEncoded:NO],
@@ -100,9 +174,54 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                         [EVKStaticStringPortion portionWithString:ffx percentEncoded:NO],
                                                                                                         [EVKFullURLPortion portionWithPercentEncoding:YES],
                                                                                                 ],
+                                                                                            }] name:@"Firefox"],
+                [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
+                                                                                     substituteBundleID:@"org.mozilla.ios.Focus"
+                                                                                            urlOutlines:@{
+                                                                                                @"^x-web-search:" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:focus percentEncoded:NO],
+                                                                                                        [EVKStaticStringPortion portionWithString:ddg percentEncoded:YES],
+                                                                                                        [EVKQueryPortion portionWithPercentEncoding:YES],
+                                                                                                ],
+                                                                                                @"^http(s?):" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:focus percentEncoded:NO],
+                                                                                                        [EVKFullURLPortion portionWithPercentEncoding:YES],
+                                                                                                ],
                                                                                             }] name:@"Firefox Focus"],
-                //            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Firefox"],
-                //            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Opera"],
+                [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
+                                                                                     substituteBundleID:@"com.miketigas.OnionBrowser"
+                                                                                            urlOutlines:@{
+                                                                                                @"^x-web-search:" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:@"onionhttps://" percentEncoded:NO],
+                                                                                                        [EVKStaticStringPortion portionWithString:ddg percentEncoded:YES],
+                                                                                                        [EVKQueryPortion portionWithPercentEncoding:YES],
+                                                                                                ],
+                                                                                                @"^http:" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:@"onionhttp://" percentEncoded:NO],
+                                                                                                        [EVKTrimmedResourceSpecifierPortion portionWithPercentEncoding:NO],
+                                                                                                ],
+                                                                                                @"^https:" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:@"onionhttps://" percentEncoded:NO],
+                                                                                                        [EVKTrimmedResourceSpecifierPortion portionWithPercentEncoding:NO],
+                                                                                                ],
+                                                                                            }] name:@"OnionBrowser"],
+                [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
+                                                                                     substituteBundleID:@"com.opera.OperaTouch"
+                                                                                            urlOutlines:@{
+                                                                                                @"^x-web-search:" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:@"touch-https://" percentEncoded:NO],
+                                                                                                        [EVKStaticStringPortion portionWithString:ddg percentEncoded:YES],
+                                                                                                        [EVKQueryPortion portionWithPercentEncoding:YES],
+                                                                                                ],
+                                                                                                @"^http:" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:@"touch-http://" percentEncoded:NO],
+                                                                                                        [EVKTrimmedResourceSpecifierPortion portionWithPercentEncoding:NO],
+                                                                                                ],
+                                                                                                @"^https:" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:@"touch-https://" percentEncoded:NO],
+                                                                                                        [EVKTrimmedResourceSpecifierPortion portionWithPercentEncoding:NO],
+                                                                                                ],
+                                                                                            }] name:@"Opera"],
         ],
         @"Maps": @[
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.Maps"
@@ -185,10 +304,6 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                     [EVKTrimmedPathPortion portionWithPercentEncoding:NO],
                                                                                                 ]
                                                                                             }] name:@"Apollo"],
-        ],
-        @"Twitter Client": @[
-                //            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"TweetDeck"],
-                //            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"TweetBot"],
         ],
     }];
 }
