@@ -55,10 +55,10 @@ NS_ENUM(NSUInteger, KeyValuePairVCTags) {
     [[cell field] setTag:[indexPath row]];
     [cell setDelegate:self];
     if([indexPath row]) {
-        [cell setLabelText:@"To"];
+        [[cell textLabel] setText:@"To"];
         [[cell field] setText:[self value]];
     } else {
-        [cell setLabelText:@"From"];
+        [[cell textLabel] setText:@"From"];
         [[cell field] setText:[self key]];
     }
 

@@ -75,18 +75,18 @@ NS_ENUM(NSInteger, PortionVCSection) {
             NSInteger row = [indexPath row];
             if(cellType == [L0ToggleCell class]) {
                 L0ToggleCell *cell = [tableView dequeueReusableCellWithIdentifier:TOGGLE_CELL_ID forIndexPath:indexPath];
-                [cell setLabelText:[[self portion] propertyNameForIndex:row]];
+                [[cell textLabel] setText:[[self portion] propertyNameForIndex:row]];
                 [[cell toggle] setOn:[[[self portion] objectForPropertyIndex:row] boolValue]];
                 [cell setDelegate:self];
                 [[cell toggle] setTag:row];
                 return cell;
             } else if(cellType == [L0LinkCell class]) {
                 L0LinkCell *cell = [tableView dequeueReusableCellWithIdentifier:LINK_CELL_ID forIndexPath:indexPath];
-                [cell setLabelText:[[self portion] propertyNameForIndex:row]];
+                [[cell textLabel] setText:[[self portion] propertyNameForIndex:row]];
                 return cell;
             } else {
                 L0EditTextCell *cell = [tableView dequeueReusableCellWithIdentifier:EDIT_TEXT_CELL_ID forIndexPath:indexPath];
-                [cell setLabelText:[[self portion] propertyNameForIndex:row]];
+                [[cell textLabel] setText:[[self portion] propertyNameForIndex:row]];
                 [[cell field] setText:[[self portion] valueStringForIndex:row]];
                 [cell setDelegate:self];
                 [[cell field] setTag:[indexPath row]];

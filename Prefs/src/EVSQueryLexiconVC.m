@@ -58,19 +58,19 @@ NS_ENUM(NSUInteger, QueryLexiconTextFieldTags) {
             switch([indexPath row]) {
                 case OldParamTag: {
                     cell = [[self tableView] dequeueReusableCellWithIdentifier:EDIT_TEXT_CELL_ID forIndexPath:indexPath];
-                    [cell setLabelText:@"Old Parameter"];
+                    [[cell textLabel] setText:@"Old Parameter"];
                     [[cell field] setText:[self key]];
                     break;
                 }
                 case NewParamTag: {
                     cell = [[self tableView] dequeueReusableCellWithIdentifier:EDIT_TEXT_CELL_ID forIndexPath:indexPath];
-                    [cell setLabelText:@"New Parameter"];
+                    [[cell textLabel] setText:@"New Parameter"];
                     [[cell field] setText:[[self lex] param]];
                     break;
                 }
                 case DefaultStateTag: {
                     cell = [[self tableView] dequeueReusableCellWithIdentifier:PICKER_CELL_ID forIndexPath:indexPath];
-                    [cell setLabelText:@"Default state"];
+                    [[cell textLabel] setText:@"Default state"];
                     [[cell field] setText:[[self lex] defaultState]];
                     [(L0PickerCell *)cell setOptions:@[@"Exclude value", @"Keep original value"]];
                     break;

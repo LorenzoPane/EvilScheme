@@ -68,7 +68,7 @@ NS_ENUM(NSInteger, AppTextFieldTags) {
     switch ([indexPath section]) {
         case NameSection: {
             L0EditTextCell *cell = [tableView dequeueReusableCellWithIdentifier:EDIT_TEXT_CELL_ID forIndexPath:indexPath];
-            [cell setLabelText:@"Name"];
+            [[cell textLabel] setText:@"Name"];
             [[cell field] setText:[[self appAlternative] name]];
             [[cell field] setTag:NameTag];
             [cell setDelegate:self];
@@ -76,7 +76,7 @@ NS_ENUM(NSInteger, AppTextFieldTags) {
         }
         case BundleIDSection: {
             L0EditTextCell *cell = [tableView dequeueReusableCellWithIdentifier:EDIT_TEXT_CELL_ID forIndexPath:indexPath];
-            [cell setLabelText:([indexPath row] ? @"New" : @"Old")];
+            [[cell textLabel] setText:([indexPath row] ? @"New" : @"Old")];
             [[cell field] setPlaceholder:@"ex: com.apple.mobilesafari"];
             [[cell field] setText:([indexPath row] ? [[self appAlternative] substituteBundleID] : [[self appAlternative] targetBundleID])];
             [[cell field] setTag:[indexPath row]];

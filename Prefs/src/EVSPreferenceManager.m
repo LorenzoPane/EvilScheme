@@ -8,6 +8,7 @@
 
 NSString *const dir              = @"/var/mobile/Library/Preferences/EvilScheme/";
 NSString *const prefsPath        = @"file:/var/mobile/Library/Preferences/EvilScheme/prefs.plist";
+NSString *const blacklistPath    = @"file:/var/mobile/Library/Preferences/EvilScheme/blacklist.plist";
 NSString *const searchEnginePath = @"file:/var/mobile/Library/Preferences/EvilScheme/search.txt";
 NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilScheme/alternatives.plist";
 
@@ -352,6 +353,30 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                              encoding:NSUnicodeStringEncoding
                                                 error:&err]; handle(err);
     return ret ? : @"DuckDuckGo";
+}
+
++ (void)setBlacklistedApps:(NSArray<NSString *> *)apps {
+    NSError *err;
+    NSMutableOrderedSet *set = [NSMutableOrderedSet orderedSetWithArray:apps];
+    [set removeObject:@""];
+
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:set
+                                         requiringSecureCoding:YES
+                                                         error:&err]; handle(err);
+    [data writeToURL:[NSURL URLWithString:blacklistPath]
+             options:0
+               error:&err]; handle(err);
+}
+
++ (NSArray<NSString *> *)blacklistedApps {
+    NSError *err;
+    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:blacklistPath]
+                                         options:0
+                                           error:&err]; handle(err);
+    NSOrderedSet *set = [NSKeyedUnarchiver unarchivedObjectOfClasses:[NSSet setWithObjects:[NSOrderedSet class], [NSString class], nil]
+                                                            fromData:data
+                                                               error:&err]; handle(err);
+    return [set array] ? : @[];
 }
 
 @end

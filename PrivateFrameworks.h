@@ -18,7 +18,9 @@
 @property (copy) NSURL * webpageURL;
 @end
 
-@class BSProcessHandle;
+@interface BSProcessHandle
+@property NSString *bundleIdentifier;
+@end
 
 @interface FBSystemService : NSObject
 - (void)_activateApplication:(NSString *)bundleID

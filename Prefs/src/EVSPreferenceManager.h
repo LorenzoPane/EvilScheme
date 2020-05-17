@@ -11,5 +11,7 @@
 + (L0DictionaryController<NSArray<EVSAppAlternativeWrapper *> *> *)presets;
 + (void)setSearchEngine:(NSString *)engine;
 + (NSString *)searchEngine;
++ (void)setBlacklistedApps:(NSArray<NSString *> *)apps;
++ (NSArray<NSString *> *)blacklistedApps;
 
 @end

@@ -43,11 +43,11 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if([indexPath row] < [[self dict] count]) {
         L0LinkCell *cell = [[self tableView] dequeueReusableCellWithIdentifier:LINK_CELL_ID forIndexPath:indexPath];
-        [cell setLabelText:[[self dict] keyAtIndex:[indexPath row]]];
+        [[cell textLabel] setText:[[self dict] keyAtIndex:[indexPath row]]];
         return cell;
     } else {
         L0ButtonCell *cell = [[self tableView] dequeueReusableCellWithIdentifier:BUTTON_CELL_ID forIndexPath:indexPath];
-        [cell setLabelText:@"Add new"];
+        [[cell textLabel] setText:@"Add new"];
         return cell;
     }
 }
