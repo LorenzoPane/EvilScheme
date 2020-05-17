@@ -101,7 +101,7 @@ NS_ENUM(NSInteger, AppTextFieldTags) {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if([indexPath section] == OutlineSection) {
-        EVSOutlineVC *ctrl = [[EVSOutlineVC alloc] init];
+        EVSOutlineVC *ctrl = [EVSOutlineVC new];
         if([indexPath row] < [[[self appAlternative] urlOutlines] count]) {
             NSDictionary *outlines = [[self appAlternative] urlOutlines];
             NSString *key = [outlines allKeys][[indexPath row]];

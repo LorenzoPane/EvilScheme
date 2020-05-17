@@ -4,6 +4,7 @@
 #import "EVSAppAlternativeVC.h"
 #import "EVSPreferenceManager.h"
 #import "EVSRootVC.h"
+#import "EVSExperimentalPrefsVC.h"
 
 @implementation EVSRootVC {
     NSMutableArray<EVSAppAlternativeWrapper *> *appAlternatives;
@@ -57,7 +58,7 @@
 - (BOOL)isRootVC { return YES; }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    [self saveSettings];
+    [EVSPreferenceManager setActiveAlternatives:appAlternatives];
     [super viewWillDisappear:animated];
 }
 
@@ -66,10 +67,11 @@
 NS_ENUM(NSInteger, RootVCSection) {
     MetaSection,
     AppAlternativeSection,
+    MoreSettingsSection,
 };
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -78,6 +80,8 @@ NS_ENUM(NSInteger, RootVCSection) {
             return 4;
         case AppAlternativeSection:
             return [appAlternatives count] + 1;
+        case MoreSettingsSection:
+            return 1;
         default:
             return 0;
     }
@@ -112,6 +116,11 @@ NS_ENUM(NSInteger, RootVCSection) {
                 return cell;
             };
         }
+        case MoreSettingsSection: {
+            L0LinkCell *cell = [tableView dequeueReusableCellWithIdentifier:LINK_CELL_ID forIndexPath:indexPath];
+            [[cell textLabel] setText:@"Experimental Settings"];
+            return cell;
+        }
         default:
             return nil;
     }
@@ -119,13 +128,14 @@ NS_ENUM(NSInteger, RootVCSection) {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     switch ([indexPath section]) {
-        case MetaSection:
+        case MetaSection: {
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:linkURLs[[indexPath row]]]
                                                options:@{}
                                      completionHandler:nil];
             break;
+        }
         case AppAlternativeSection: {
-            EVSAppAlternativeVC *ctrl = [[EVSAppAlternativeVC alloc] init];
+            EVSAppAlternativeVC *ctrl = [EVSAppAlternativeVC new];
             if([indexPath row] < [appAlternatives count]) {
                 [ctrl setAppAlternative:appAlternatives[[indexPath row]]];
             } else {
@@ -133,6 +143,11 @@ NS_ENUM(NSInteger, RootVCSection) {
             }
             [ctrl setIndex:[indexPath row]];
             [ctrl setDelegate:self];
+            [[self navigationController] pushViewController:ctrl animated:YES];
+            break;
+        }
+        case MoreSettingsSection: {
+            EVSExperimentalPrefsVC *ctrl = [EVSExperimentalPrefsVC new];
             [[self navigationController] pushViewController:ctrl animated:YES];
             break;
         }
@@ -177,6 +192,12 @@ NS_ENUM(NSInteger, RootVCSection) {
 
 - (void)saveSettings {
     [EVSPreferenceManager setActiveAlternatives:appAlternatives];
+    [EVSPreferenceManager applyActiveAlternatives:appAlternatives];
+    UIAlertController *ctrl = [UIAlertController alertControllerWithTitle:@"Saved" message:@"Preferences applied" preferredStyle:UIAlertControllerStyleAlert];
+    [self presentViewController:ctrl animated:YES completion:nil];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [ctrl dismissViewControllerAnimated:YES completion:nil];
+    });
 }
 
 @end

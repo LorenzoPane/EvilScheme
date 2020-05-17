@@ -6,8 +6,9 @@
 #pragma GCC diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
-NSString *const dir = @"/var/mobile/Library/Preferences/EvilScheme/";
-NSString *const prefsPath = @"file:/var/mobile/Library/Preferences/EvilScheme/prefs.plist";
+NSString *const dir              = @"/var/mobile/Library/Preferences/EvilScheme/";
+NSString *const prefsPath        = @"file:/var/mobile/Library/Preferences/EvilScheme/prefs.plist";
+NSString *const searchEnginePath = @"file:/var/mobile/Library/Preferences/EvilScheme/search.txt";
 NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilScheme/alternatives.plist";
 
 @implementation EVSPreferenceManager
@@ -37,39 +38,47 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
     return ret ? : @[];
 }
 
++ (void)applyActiveAlternatives:(NSArray<EVSAppAlternativeWrapper *> *)alternatives {
+    NSError *err;
+
+
+    NSMutableDictionary<NSString *, EVKAppAlternative *> *dict = [NSMutableDictionary new];
+    for(EVSAppAlternativeWrapper *alt in alternatives) {
+        dict[[[alt orig] targetBundleID]] = [alt orig];
+    }
+
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:[NSDictionary dictionaryWithDictionary:dict]
+                                         requiringSecureCoding:NO
+                                                         error:&err]; handle(err);
+    [data writeToURL:[NSURL URLWithString:alternativesPath]
+             options:0
+               error:&err]; handle(err);
+}
+
 + (void)setActiveAlternatives:(NSArray<EVSAppAlternativeWrapper *> *)alternatives {
     NSError *err;
 
     [self ensureDirExists:dir];
 
-    // Write prefs to disk
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:alternatives
                                          requiringSecureCoding:NO
                                                          error:&err]; handle(err);
     [data writeToURL:[NSURL URLWithString:prefsPath]
              options:0
                error:&err]; handle(err);
-
-    // Build bundleid-indexed dict for hook
-    NSMutableDictionary<NSString *, EVKAppAlternative *> *dict = [NSMutableDictionary new];
-    for(EVSAppAlternativeWrapper *alt in alternatives) {
-        dict[[[alt orig] targetBundleID]] = [alt orig];
-    }
-
-    // Write dict to disk
-    data = [NSKeyedArchiver archivedDataWithRootObject:[NSDictionary dictionaryWithDictionary:dict]
-                                 requiringSecureCoding:NO
-                                                 error:&err]; handle(err);
-    [data writeToURL:[NSURL URLWithString:alternativesPath]
-             options:0
-               error:&err]; handle(err);
 }
 
 + (L0DictionaryController<NSArray<EVSAppAlternativeWrapper *> *> *)presets {
+    NSString *search = @{
+        @"DuckDuckGo": @"https://ddg.gg/?q=",
+        @"Google": @"https://google.com/search?q=",
+        @"Yahoo": @"https://search.yahoo.com/search?q=",
+        @"Bing": @"http://bing.com/search?q=",
+    }[[self searchEngine]];
+
     NSString *aloha = @"alohabrowser://open?link=";
     NSString *brv = @"brave://open-url?url=";
     NSString *cake = @"cakebrowser://open-url?url=";
-    NSString *ddg = @"https://ddg.gg/?q=";
     NSString *ddgBrowser = @"ddgQuickLink://";
     NSString *ffx = @"firefox://open-url?url=";
     NSString *focus = @"firefox-focus://open-url?url=";
@@ -81,7 +90,7 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                             urlOutlines:@{
                                                                                                 @"^x-web-search:" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:aloha percentEncoded:NO],
-                                                                                                        [EVKStaticStringPortion portionWithString:ddg percentEncoded:YES],
+                                                                                                        [EVKStaticStringPortion portionWithString:search percentEncoded:YES],
                                                                                                         [EVKQueryPortion portionWithPercentEncoding:YES],
                                                                                                 ],
                                                                                                 @"^http(s?):" : @[
@@ -94,7 +103,7 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                             urlOutlines:@{
                                                                                                 @"^x-web-search:" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:brv percentEncoded:NO],
-                                                                                                        [EVKStaticStringPortion portionWithString:ddg percentEncoded:YES],
+                                                                                                        [EVKStaticStringPortion portionWithString:search percentEncoded:YES],
                                                                                                         [EVKQueryPortion portionWithPercentEncoding:YES],
                                                                                                 ],
                                                                                                 @"^http(s?):" : @[
@@ -107,7 +116,7 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                             urlOutlines:@{
                                                                                                 @"^x-web-search:" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:cake percentEncoded:NO],
-                                                                                                        [EVKStaticStringPortion portionWithString:ddg percentEncoded:YES],
+                                                                                                        [EVKStaticStringPortion portionWithString:search percentEncoded:YES],
                                                                                                         [EVKQueryPortion portionWithPercentEncoding:YES],
                                                                                                 ],
                                                                                                 @"^http(s?):" : @[
@@ -120,7 +129,7 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                             urlOutlines:@{
                                                                                                 @"^x-web-search:" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:ddgBrowser percentEncoded:NO],
-                                                                                                        [EVKStaticStringPortion portionWithString:ddg percentEncoded:YES],
+                                                                                                        [EVKStaticStringPortion portionWithString:search percentEncoded:YES],
                                                                                                         [EVKQueryPortion portionWithPercentEncoding:YES],
                                                                                                 ],
                                                                                                 @"^http(s?):" : @[
@@ -128,12 +137,12 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                         [EVKFullURLPortion portionWithPercentEncoding:NO],
                                                                                                 ],
                                                                                             }] name:@"DuckDuckGo"],
-            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
+                [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
                                                                                      substituteBundleID:@"com.microsoft.msedge"
                                                                                             urlOutlines:@{
                                                                                                 @"^x-web-search:" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:@"microsoft-edge-https://" percentEncoded:NO],
-                                                                                                        [EVKStaticStringPortion portionWithString:ddg percentEncoded:YES],
+                                                                                                        [EVKStaticStringPortion portionWithString:search percentEncoded:YES],
                                                                                                         [EVKQueryPortion portionWithPercentEncoding:YES],
                                                                                                 ],
                                                                                                 @"^http:" : @[
@@ -150,7 +159,7 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                             urlOutlines:@{
                                                                                                 @"^x-web-search:" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:@"googlechromes://" percentEncoded:NO],
-                                                                                                        [EVKStaticStringPortion portionWithString:ddg percentEncoded:YES],
+                                                                                                        [EVKStaticStringPortion portionWithString:search percentEncoded:YES],
                                                                                                         [EVKQueryPortion portionWithPercentEncoding:YES],
                                                                                                 ],
                                                                                                 @"^http:" : @[
@@ -167,7 +176,7 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                             urlOutlines:@{
                                                                                                 @"^x-web-search:" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:ffx percentEncoded:NO],
-                                                                                                        [EVKStaticStringPortion portionWithString:ddg percentEncoded:YES],
+                                                                                                        [EVKStaticStringPortion portionWithString:search percentEncoded:YES],
                                                                                                         [EVKQueryPortion portionWithPercentEncoding:YES],
                                                                                                 ],
                                                                                                 @"^http(s?):" : @[
@@ -180,7 +189,7 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                             urlOutlines:@{
                                                                                                 @"^x-web-search:" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:focus percentEncoded:NO],
-                                                                                                        [EVKStaticStringPortion portionWithString:ddg percentEncoded:YES],
+                                                                                                        [EVKStaticStringPortion portionWithString:search percentEncoded:YES],
                                                                                                         [EVKQueryPortion portionWithPercentEncoding:YES],
                                                                                                 ],
                                                                                                 @"^http(s?):" : @[
@@ -193,7 +202,7 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                             urlOutlines:@{
                                                                                                 @"^x-web-search:" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:@"onionhttps://" percentEncoded:NO],
-                                                                                                        [EVKStaticStringPortion portionWithString:ddg percentEncoded:YES],
+                                                                                                        [EVKStaticStringPortion portionWithString:search percentEncoded:YES],
                                                                                                         [EVKQueryPortion portionWithPercentEncoding:YES],
                                                                                                 ],
                                                                                                 @"^http:" : @[
@@ -210,7 +219,7 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                             urlOutlines:@{
                                                                                                 @"^x-web-search:" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:@"touch-https://" percentEncoded:NO],
-                                                                                                        [EVKStaticStringPortion portionWithString:ddg percentEncoded:YES],
+                                                                                                        [EVKStaticStringPortion portionWithString:search percentEncoded:YES],
                                                                                                         [EVKQueryPortion portionWithPercentEncoding:YES],
                                                                                                 ],
                                                                                                 @"^http:" : @[
@@ -251,8 +260,21 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                             @"z"       : [EVKQueryItemLexicon identityLexiconWithName:@"zoom"],
                                                                                                         } percentEncoded:NO]
                                                                                                 ]}] name:@"Google Maps"],
-                //            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Magic Earth"],
-                //            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Waze"],
+                [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.Maps"
+                                                                                     substituteBundleID:@"com.waze.iphone"
+                                                                                            urlOutlines:@{
+                                                                                                @"^(((http(s?)://)?maps.apple.com)|(maps:))" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:@"waze://?" percentEncoded:NO],
+                                                                                                        [EVKTranslatedQueryPortion portionWithDictionary:@{
+                                                                                                            @"address" : [EVKQueryItemLexicon identityLexiconWithName:@"q"],
+                                                                                                            @"daddr"   : [EVKQueryItemLexicon identityLexiconWithName:@"q"],
+                                                                                                            @"ll"      : [EVKQueryItemLexicon identityLexiconWithName:@"ll"],
+                                                                                                            @"near"    : [EVKQueryItemLexicon identityLexiconWithName:@"ll"],
+                                                                                                            @"q"       : [EVKQueryItemLexicon identityLexiconWithName:@"q"],
+                                                                                                            @"sll"     : [EVKQueryItemLexicon identityLexiconWithName:@"ll"],
+                                                                                                            @"z"       : [EVKQueryItemLexicon identityLexiconWithName:@"z"],
+                                                                                                        } percentEncoded:NO]
+                                                                                                ]}] name:@"Waze"],
         ],
         @"Mail Clients": @[
                 //            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Airmail"],
@@ -299,13 +321,37 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.reddit.Reddit"
                                                                                      substituteBundleID:@"com.christianselig.Apollo"
                                                                                             urlOutlines:@{
-                                                                                                @".*reddit.com.*" : @[
-                                                                                                    [EVKStaticStringPortion portionWithString:@"apollo://https://reddit.com/" percentEncoded:NO],
-                                                                                                    [EVKTrimmedPathPortion portionWithPercentEncoding:NO],
-                                                                                                ]
+                                                                                                @".*reddit.com/.+$.*" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:@"apollo://" percentEncoded:NO],
+                                                                                                        [EVKTrimmedResourceSpecifierPortion portionWithPercentEncoding:NO],
+                                                                                                ],
+                                                                                                @".*reddit.com(/?)$" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:@"apollo://" percentEncoded:NO],
+                                                                                                        [EVKTrimmedPathPortion portionWithPercentEncoding:NO],
+                                                                                                ],
                                                                                             }] name:@"Apollo"],
         ],
     }];
+}
+
++ (void)setSearchEngine:(NSString *)engine {
+    [self ensureDirExists:dir];
+
+    NSError *err;
+    [engine writeToURL:[NSURL URLWithString:searchEnginePath]
+            atomically:YES
+              encoding:NSUnicodeStringEncoding
+                 error:&err]; handle(err);
+}
+
++ (NSString *)searchEngine {
+    [self ensureDirExists:dir];
+
+    NSError *err;
+    NSString *ret = [NSString stringWithContentsOfURL:[NSURL URLWithString:searchEnginePath]
+                                             encoding:NSUnicodeStringEncoding
+                                                error:&err]; handle(err);
+    return ret ? : @"DuckDuckGo";
 }
 
 @end
