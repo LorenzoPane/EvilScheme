@@ -154,7 +154,7 @@ NS_ENUM(NSInteger, RootVCSection) {
         default:
             break;
     }
-    
+
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
 

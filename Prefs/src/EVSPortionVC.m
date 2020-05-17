@@ -132,7 +132,7 @@ NS_ENUM(NSInteger, PortionVCSection) {
     } else {
         [[self portion] setObject:[field text] forPropertyIndex:[field tag]];
     }
-    
+
     [[self delegate] controllerDidChangeModel:self];
 }
 

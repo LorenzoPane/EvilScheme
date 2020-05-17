@@ -13,7 +13,7 @@
                     action:@selector(switchValueDidChange:)
           forControlEvents:UIControlEventValueChanged];
     }
-    
+
     return self;
 }
 

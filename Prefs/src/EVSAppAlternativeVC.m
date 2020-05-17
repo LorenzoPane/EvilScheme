@@ -177,7 +177,7 @@ NS_ENUM(NSInteger, AppTextFieldTags) {
             [[self appAlternative] setSubstituteBundleID:[textField text]];
             break;
     }
-    
+
     [[self delegate] controllerDidChangeModel:self];
 }
 

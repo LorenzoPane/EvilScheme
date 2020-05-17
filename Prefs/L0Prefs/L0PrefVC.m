@@ -32,7 +32,7 @@
 
     [self setTableView:[[UITableView alloc] initWithFrame:CGRectZero
                                                     style:UITableViewStyleGrouped]];
-    
+
     [[self tableView] setDataSource:self];
     [[self tableView] setDelegate:self];
     [[self tableView] setRowHeight:44];
