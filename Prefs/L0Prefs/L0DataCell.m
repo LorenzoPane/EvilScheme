@@ -16,7 +16,7 @@
         [[self contentView] addConstraint:[NSLayoutConstraint constraintWithItem:_detailView
                                                                        attribute:NSLayoutAttributeCenterY
                                                                        relatedBy:NSLayoutRelationEqual
-                                                                          toItem:[self textLabel]
+                                                                          toItem:[self contentView]
                                                                        attribute:NSLayoutAttributeCenterY
                                                                       multiplier:1
                                                                         constant:0]];
@@ -39,14 +39,6 @@
     }
 
     return self;
-}
-
-- (void)setLabelText:(NSString *)labelText {
-    [[self textLabel] setText:labelText];
-}
-
-- (NSString *)labelText {
-    return [[self textLabel] text];
 }
 
 @end

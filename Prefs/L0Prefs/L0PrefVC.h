@@ -5,12 +5,13 @@
 #define TINT_COLOR [UIColor colorWithRed:0.776 green:0.471 blue:0.867 alpha:1]
 
 /// Default reuse identifiers
-#define LINK_CELL_ID      @"L0LinkCell"
-#define BASIC_CELL_ID     @"L0BasicCell"
-#define PICKER_CELL_ID    @"L0PickerCell"
-#define BUTTON_CELL_ID    @"L0ButtonCell"
-#define TOGGLE_CELL_ID    @"L0ToggleCell"
-#define EDIT_TEXT_CELL_ID @"L0EditTextCell"
+#define LINK_CELL_ID           @"L0LinkCell"
+#define BASIC_CELL_ID          @"L0BasicCell"
+#define PICKER_CELL_ID         @"L0PickerCell"
+#define BUTTON_CELL_ID         @"L0ButtonCell"
+#define TOGGLE_CELL_ID         @"L0ToggleCell"
+#define EDIT_TEXT_CELL_ID      @"L0EditTextCell"
+#define PURE_EDIT_TEXT_CELL_ID @"L0PureEditTextCell"
 
 @class L0PrefVC;
 
