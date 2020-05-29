@@ -1,44 +1,38 @@
-package_name: ZZ_EvilScheme
-install_command: sbreload || killall backboardd
+name: ZZ_EvilScheme
+icmd: sbreload || killall backboardd
+
+all:
+  targetvers: 13.0
+  archs:
+    - arm64
+    - arm64e
+
+EvilKit:
+  dir: EvilKit
+  type: framework
+  install_location: '/Library/Frameworks/EvilKit.framework/'
+  objc_files:
+    - 'src/*.m'
+  public_headers:
+    - 'src/*.h'
 
 ZZ_EvilScheme:
-    type: tweak
-    logos_files:
-        - $eval("find . -name '*.xm'")
-    targetios: 13.0
-    archs:
-        - arm64
-        - arm64e
-    frameworks:
-        - UserActivity
-        - EvilKit
-EvilKit:
-    dir: EvilKit
-    type: bundle
-    install_location: "/Library/Frameworks/EvilKit.framework/"
-    files:
-        - $eval("find ./EvilKit/src -name '*.m'")
-    archs:
-        - arm64
-        - arm64e
-    stage:
-        - mkdir -p .dragon/_/Library/Frameworks/EvilKit.framework/Headers
-        - cp src/*.h .dragon/_/Library/Frameworks/EvilKit.framework/Headers
+  type: tweak
+  logos_files:
+    - 'EvilScheme.x'
+  frameworks:
+    - UserActivity
+    - EvilKit
+
 EvilSchemePrefs:
-    dir: Prefs
-    type: bundle
-    targetios: 13.0
-    files:
-        - $eval("find ./Prefs/src ./Prefs/L0Prefs -name '*.m'")
-    c_header_search_dirs:
-        - ./Prefs/L0Prefs
-        - ./Prefs/src
-    archs:
-        - arm64
-        - arm64e
-    frameworks:
-        - Preferences
-        - EvilKit
-    stage:
-        - mkdir -p .dragon/_/Library/PreferenceLoader/Preferences/
-        - cp entry.plist .dragon/_/Library/PreferenceLoader/Preferences/$name.plist
+  dir: Prefs
+  type: prefs
+  objc_files:
+    - 'L0Prefs/*.m'
+    - 'src/*.m'
+  header_includes:
+    - 'L0Prefs/*.h'
+    - 'src/*.h'
+  frameworks:
+    - Preferences
+    - EvilKit

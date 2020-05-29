@@ -51,9 +51,9 @@ NS_ENUM(NSInteger, ExperimentalPrefsSections) {
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch(section) {
         case SearchEngineSection:
-            return @"Search engine";
+            return @"Spotlight search engine";
         case BlacklistedAppSection:
-            return @"Blacklisted bundle ID's";
+            return @"Disabled apps";
         default:
             return @"";
     }
@@ -64,7 +64,7 @@ NS_ENUM(NSInteger, ExperimentalPrefsSections) {
         case SearchEngineSection:
             return @"To apply changes to default search engines, you may have to re-apply browser presets";
         case BlacklistedAppSection:
-            return @"";
+            return @"Links opened from these apps will use stock behavior";
         default:
             return @"";
     }
@@ -77,7 +77,7 @@ NS_ENUM(NSInteger, ExperimentalPrefsSections) {
         case SearchEngineSection: {
             L0PickerCell *cell = [[self tableView] dequeueReusableCellWithIdentifier:PICKER_CELL_ID forIndexPath:indexPath];
             [cell setDelegate:self];
-            [[cell textLabel] setText:@"Search Engine"];
+            [[cell textLabel] setText:@"Engine"];
             [[cell field] setText:[EVSPreferenceManager searchEngine]];
             [[cell field] setTag:-1];
             [cell setOptions:@[@"DuckDuckGo", @"Google", @"Yahoo", @"Bing"]];

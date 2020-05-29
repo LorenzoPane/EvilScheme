@@ -138,12 +138,16 @@ NS_ENUM(NSInteger, RootVCSection) {
             EVSAppAlternativeVC *ctrl = [EVSAppAlternativeVC new];
             if([indexPath row] < [appAlternatives count]) {
                 [ctrl setAppAlternative:appAlternatives[[indexPath row]]];
+                [ctrl setIndex:[indexPath row]];
+                [ctrl setDelegate:self];
+                [[self navigationController] pushViewController:ctrl animated:YES];
             } else {
                 [ctrl setAppAlternative:[EVSAppAlternativeWrapper new]];
+                [ctrl setIndex:[indexPath row]];
+                [ctrl setDelegate:self];
+                [[self navigationController] pushViewController:ctrl animated:YES];
+                [ctrl showPresetView];
             }
-            [ctrl setIndex:[indexPath row]];
-            [ctrl setDelegate:self];
-            [[self navigationController] pushViewController:ctrl animated:YES];
             break;
         }
         case MoreSettingsSection: {

@@ -34,7 +34,6 @@
         [[self contentView] addGestureRecognizer:[[UITapGestureRecognizer alloc]
                                                   initWithTarget:_field
                                                   action:@selector(becomeFirstResponder)]];
-        NSLog(@"asdfasdfasdfafdfdsaasfdasdfasfdfe");
     }
 
     return self;

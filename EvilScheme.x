@@ -1,6 +1,38 @@
 #import <EvilKit/EvilKit.h>
 #import "PrivateFrameworks.h"
 
+// Preference retrieval {{{
+static NSDictionary<NSString *, EVKAppAlternative *> *prefs() {
+    NSError *err;
+
+    NSString *path = @"/var/mobile/Library/Preferences/EvilScheme/alternatives.plist";
+    NSData *data = [NSData dataWithContentsOfFile:path];
+
+    NSKeyedUnarchiver *u = [[NSKeyedUnarchiver alloc] initForReadingFromData:data error:&err];
+    [u setRequiresSecureCoding:NO];
+    NSDictionary *ret = [u decodeObjectForKey:NSKeyedArchiveRootObjectKey];
+
+    if(err) NSLog(@"[EVS] Error loading prefs: %@", [err localizedDescription]);
+
+    return ret ? : @{};
+}
+
+static NSSet *blacklist() {
+    NSError *err;
+
+    NSString *path = @"/var/mobile/Library/Preferences/EvilScheme/blacklist.plist";
+    NSData *data = [NSData dataWithContentsOfFile:path];
+
+    NSSet *types = [NSSet setWithObjects:[NSOrderedSet class], [NSString class], nil];
+    NSOrderedSet *ret = [NSKeyedUnarchiver unarchivedObjectOfClasses:types
+                                                            fromData:data
+                                                               error:&err];
+    if(err) NSLog(@"[EVS] Error loading blacklist: %@", [err localizedDescription]);
+    return [[ret set] setByAddingObject:@"com.apple.siri"];
+}
+// }}}
+
+// Spelunk into actions as a last resort to find URL
 static NSURL *urlFromActions(NSArray *actions) {
     __block NSURL *ret;
     for(BSAction *action in actions) {
@@ -16,37 +48,6 @@ static NSURL *urlFromActions(NSArray *actions) {
     return ret;
 }
 
-#pragma GCC diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-
-static NSDictionary<NSString *, EVKAppAlternative *> *prefs() {
-    NSError *err;
-
-    NSString *path = @"/var/mobile/Library/Preferences/EvilScheme/alternatives.plist";
-    NSData *data = [NSData dataWithContentsOfFile:path];
-    NSDictionary *ret = [NSKeyedUnarchiver unarchiveTopLevelObjectWithData:data error:&err];
-
-    if(err) NSLog(@"[EVS] Error loading prefs: %@", [err localizedDescription]);
-
-    return ret ? : @{};
-}
-
-static NSOrderedSet *blacklist() {
-    NSError *err;
-    NSString *path = @"/var/mobile/Library/Preferences/EvilScheme/blacklist.plist";
-    NSSet *types = [NSSet setWithObjects:[NSOrderedSet class], [NSString class], nil];
-
-    NSData *data = [NSData dataWithContentsOfFile:path];
-    NSOrderedSet *ret = [NSKeyedUnarchiver unarchivedObjectOfClasses:types
-                                                            fromData:data
-                                                               error:&err];
-    if(err) NSLog(@"[EVS] Error loading blacklist: %@", [err localizedDescription]);
-    return ret;
-}
-
-
-#pragma GCC diagnostic pop
-
 %hook FBSystemService
 
 - (void)openApplication:(NSString *)bundleID
@@ -58,23 +59,24 @@ static NSOrderedSet *blacklist() {
         NSLog(@"[EVS] Ignored: %@\n%@", bundleID, options);
     }
     else {
-        NSLog(@"[EVS] From: %@\n%@", bundleID, options);
+        NSLog(@"[EVS] From:    %@\n%@", bundleID, options);
         EVKAppAlternative *app = prefs()[bundleID];
         if(app) {
-            NSURL *url;
+            NSURL *url; // Check all known URL locations
             if((url = [options dictionary][@"__PayloadURL"])
             || (url = [[options dictionary][@"__AppLink4LS"] URL])
             || (url = urlFromActions([options dictionary][@"__Actions"]))) {
                 if((url = [app transformURL:url])) {
+                    // Craft new request
+                    bundleID                  = [app substituteBundleID];
                     NSMutableDictionary *opts = [NSMutableDictionary new];
                     opts[@"__PayloadURL"]     = [app transformURL:url];
                     opts[@"__PayloadOptions"] = [options dictionary][@"__PayloadOptions"];
                     [options setDictionary:opts];
-                    bundleID = [app substituteBundleID];
                 }
             }
         }
-        NSLog(@"[EVS] To:   %@\n%@", bundleID, options);
+        NSLog(@"[EVS] To:      %@\n%@", bundleID, options);
     }
     %orig;
 }

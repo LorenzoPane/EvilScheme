@@ -4,7 +4,7 @@ export TARGET := iphone:clang:13.0:13.0
 include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = ZZ_EvilScheme
-ZZ_EvilScheme_FILES = EvilScheme.xm
+ZZ_EvilScheme_FILES = EvilScheme.x
 ZZ_EvilScheme_CFLAGS = -fobjc-arc
 ZZ_EvilScheme_PRIVATE_FRAMEWORKS = UserActivity
 ZZ_EvilScheme_EXTRA_FRAMEWORKS += EvilKit
