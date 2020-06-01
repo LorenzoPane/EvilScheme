@@ -108,3 +108,47 @@
 }
 
 @end
+
+@implementation EVKQueryParameterValuePortion : EVKPercentEncodablePortion
+
+- (instancetype)initWithParameter:(NSString *)param
+        percentEncodingIterations:(int)iterations {
+    if((self = [super initWithPercentEncodingIterations:iterations])) {
+        _parameter = param;
+    }
+
+    return self;
+}
+
+- (instancetype)init {
+    return [self initWithParameter:@"" percentEncodingIterations:0];
+}
+
++ (instancetype)portionWithParameter:(NSString *)param
+           percentEncodingIterations:(int)iterations {
+    return [[self alloc] initWithParameter:param percentEncodingIterations:iterations];
+}
+
+- (NSString *)stringRepresentation { return @"Query parameter"; }
+
+- (NSString *)evaluateUnencodedWithURL:(NSURL *)url { return [url queryValueForParameter:[self parameter]]; }
+
+// Coding {{{
++ (BOOL)supportsSecureCoding { return YES; }
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+    [super encodeWithCoder:coder];
+    [coder encodeObject:[self parameter] forKey:@"parameter"];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)coder {
+    return [self initWithParameter:[coder decodeObjectForKey:@"parameter"]
+         percentEncodingIterations:[coder decodeIntForKey:@"percentEncodingIterations"]];
+};
+
+- (NSOrderedSet<NSString *> *)endUserAccessibleKeys {
+    return set(@"parameter", @"percentEncodingIterations");
+}
+// }}}
+
+@end

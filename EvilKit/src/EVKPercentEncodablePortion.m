@@ -4,20 +4,20 @@
 
 @implementation EVKPercentEncodablePortion
 
-+ (instancetype)portionWithPercentEncoding:(BOOL)percentEncoded {
-    return [[[self class] alloc] initWithPercentEncoding:percentEncoded];
++ (instancetype)portionWithPercentEncodingIterations:(int)iterations {
+    return [[[self class] alloc] initWithPercentEncodingIterations:iterations];
 }
 
-- (instancetype)initWithPercentEncoding:(BOOL)percentEncoded {
+- (instancetype)initWithPercentEncodingIterations:(int)iterations {
     if((self = [super init])) {
-        _percentEncoded = @(percentEncoded);
+        _percentEncodingIterations = @(iterations);
     }
-
+    
     return self;
 }
 
 - (instancetype)init {
-    return [self initWithPercentEncoding:NO];
+    return [self initWithPercentEncodingIterations:0];
 }
 
 - (NSString *)stringRepresentation { return @""; }
@@ -26,22 +26,32 @@
 
 - (NSString *)evaluateWithURL:(NSURL *)url {
     NSString *ret = [self evaluateUnencodedWithURL:url];
-    return ([[self isPercentEncoded] boolValue] ? percentEncode(ret) : ret) ? : @"";
+    int iters = [[self percentEncodingIterations] intValue];
+    while(iters != 0) {
+        if(iters < 0) {
+            iters += 1;
+            ret = percentDecode(ret);
+        } else {
+            iters -= 1;
+            ret = percentEncode(ret);
+        }
+    }
+    return ret ? : @"";
 }
 
 // Coding {{{
 - (NSOrderedSet<NSString *> *)endUserAccessibleKeys {
-    return set(@"percentEncoded");
+    return set(@"percentEncodingIterations");
 }
 
 + (BOOL)supportsSecureCoding { return YES; }
 
 - (void)encodeWithCoder:(NSCoder *)coder {
-    [coder encodeBool:[[self isPercentEncoded] boolValue] forKey:@"percentEncoded"];
+    [coder encodeInt:[[self percentEncodingIterations] intValue] forKey:@"percentEncodingIterations"];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)coder {
-    return [self initWithPercentEncoding:[coder decodeBoolForKey:@"percentEncoded"]];
+    return [self initWithPercentEncodingIterations:[coder decodeIntForKey:@"percentEncodingIterations"]];
 }
 // }}}
 

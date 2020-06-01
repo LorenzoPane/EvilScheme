@@ -6,8 +6,8 @@
 
 - (instancetype)initWithRegex:(NSString *)regex
                      template:(NSString *)templet
-               percentEncoded:(BOOL)percentEncoded {
-    if((self = [super initWithPercentEncoding:percentEncoded])) {
+    percentEncodingIterations:(int)iterations {
+    if((self = [super initWithPercentEncodingIterations:iterations])) {
         _regex = regex;
         _templet = templet;
     }
@@ -17,14 +17,14 @@
 
 + (instancetype)portionWithRegex:(NSString *)regex
                         template:(NSString *)templet
-                  percentEncoded:(BOOL)percentEncoded {
+       percentEncodingIterations:(int)iterations {
     return [[[self class] alloc] initWithRegex:regex
                                       template:templet
-                                percentEncoded:percentEncoded];
+                     percentEncodingIterations:iterations];
 }
 
 - (instancetype)init {
-    return [self initWithRegex:@"" template:@"" percentEncoded:NO];
+    return [self initWithRegex:@"" template:@""percentEncodingIterations:0];
 }
 
 - (NSString *)evaluateUnencodedWithURL:(NSURL *)url {
@@ -42,7 +42,7 @@
 
 // Coding {{{
 - (NSOrderedSet<NSString *> *)endUserAccessibleKeys {
-    return set(@"regex", @"templet", @"percentEncoded");
+    return set(@"regex", @"templet", @"percentEncodingIterations");
 }
 
 + (BOOL)supportsSecureCoding { return YES; }
@@ -56,7 +56,7 @@
 - (instancetype)initWithCoder:(NSCoder *)coder {
     return [self initWithRegex:[coder decodeObjectOfClass:[NSRegularExpression class] forKey:@"regex"]
                       template:[coder decodeObjectOfClass:[NSString class] forKey:@"templet"]
-                percentEncoded:[coder decodeBoolForKey:@"percentEncoded"] ];
+     percentEncodingIterations:[coder decodeIntForKey:@"percentEncodingIterations"] ];
 }
 // }}}
 

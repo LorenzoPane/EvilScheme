@@ -4,8 +4,8 @@
 
 @implementation EVKStaticStringPortion
 
-- (instancetype)initWithString:(NSString *)str percentEncoded:(BOOL)percentEncoded {
-    if((self = [super initWithPercentEncoding:percentEncoded])) {
+- (instancetype)initWithString:(NSString *)str percentEncodingIterations:(int)iterations {
+    if((self = [super initWithPercentEncodingIterations:iterations])) {
         _string = str;
     }
 
@@ -13,11 +13,11 @@
 }
 
 - (instancetype)init {
-    return [self initWithString:@"" percentEncoded:NO];
+    return [self initWithString:@"" percentEncodingIterations:0];
 }
 
-+ (instancetype)portionWithString:(NSString *)str percentEncoded:(BOOL)percentEncoded {
-    return [[EVKStaticStringPortion alloc] initWithString:str percentEncoded:percentEncoded];
++ (instancetype)portionWithString:(NSString *)str percentEncodingIterations:(int)iterations {
+    return [[EVKStaticStringPortion alloc] initWithString:str percentEncodingIterations:iterations];
 }
 
 - (NSString *)evaluateUnencodedWithURL:(NSURL *)url { return [self string]; }
@@ -28,7 +28,7 @@
 
 // Coding {{{
 - (NSOrderedSet<NSString *> *)endUserAccessibleKeys {
-    return set(@"string", @"percentEncoded");
+    return set(@"string", @"percentEncodingIterations");
 }
 
 + (BOOL)supportsSecureCoding { return YES; }
@@ -40,7 +40,7 @@
 
 - (instancetype)initWithCoder:(NSCoder *)coder {
     return [self initWithString:[coder decodeObjectOfClass:[NSString class] forKey:@"string"]
-                 percentEncoded:[coder decodeBoolForKey:@"percentEncoded"]];
+      percentEncodingIterations:[coder decodeIntForKey:@"percentEncodingIterations"]];
 }
 // }}}
 

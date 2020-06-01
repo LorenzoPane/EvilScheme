@@ -20,7 +20,7 @@
 - (NSString *)trimmedPathComponent {
     NSCharacterSet *set = [NSCharacterSet characterSetWithCharactersInString:@"/"];
     return [[[NSURLComponents componentsWithURL:self
-                       resolvingAgainstBaseURL:NO] path] stringByTrimmingCharactersInSet:set];
+                        resolvingAgainstBaseURL:NO] path] stringByTrimmingCharactersInSet:set];
 }
 
 - (NSString *)trimmedResourceSpecifier {
@@ -39,4 +39,12 @@
                                     range:NSMakeRange(0, [[self absoluteString] length])] ? YES : NO;
 }
 
+- (NSString *)queryValueForParameter:(NSString *)param {
+    for(NSURLQueryItem *item in [[NSURLComponents componentsWithURL:self
+                                            resolvingAgainstBaseURL:NO] queryItems]) {
+        if([[item name] isEqualToString:param]) return [item value];
+    }
+
+    return nil;
+}
 @end

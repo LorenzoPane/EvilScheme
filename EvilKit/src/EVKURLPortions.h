@@ -5,6 +5,10 @@
 /// @param str NSString to encode
 #define percentEncode(str) [str stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet characterSetWithCharactersInString:@""]]
 
+/// Percent decode a given string
+/// @param str NSString to decode
+#define percentDecode(str) [str stringByRemovingPercentEncoding]
+
 /// Protocol representing functions of URLs that return strings
 @protocol EVKURLPortion <NSSecureCoding>
 /// Returns the evaluated portion given the original URL or an empty string
@@ -12,11 +16,11 @@
 - (NSString *)evaluateWithURL:(NSURL *)url;
 /// Returns a human-readable string representation of the un-evaluated portion
 - (NSString *)stringRepresentation;
-/// Returns an array of stridngs to be used to access KVC-compliant properties
+/// Returns an array of string to be used to access KVC-compliant properties
 - (NSOrderedSet<NSString *> *)endUserAccessibleKeys;
 @end
 
-/// Protocol to represent URL portions thay optionally may be percent encoded
+/// Protocol to represent URL portions with an arbitrary number of percent encoding iterations
 @protocol EVKPercentEncodable <EVKURLPortion>
 /// Method to be overridden with the intended unencoded output of evaluateWithURL:
 /// @param url Original URL
@@ -29,16 +33,16 @@
 /// @seealso EVKPercentEncodable
 /// @discussion When subclassed, evaluateUnencodedWithURL: should be overridden rather than evaluateWithURL:
 @interface EVKPercentEncodablePortion : NSObject <EVKPercentEncodable>
-@property (getter=isPercentEncoded, copy) NSNumber *percentEncoded;
-- (instancetype)initWithPercentEncoding:(BOOL)percentEncoded;
-+ (instancetype)portionWithPercentEncoding:(BOOL)percentEncoded;
+@property (copy) NSNumber *percentEncodingIterations;
+- (instancetype)initWithPercentEncodingIterations:(int)iterations;
++ (instancetype)portionWithPercentEncodingIterations:(int)iterations;
 @end
 
 /// Portion which always returns a fixed string, optionally percent encoded for convenience
 @interface EVKStaticStringPortion : EVKPercentEncodablePortion
 @property (copy) NSString *string;
-- (instancetype)initWithString:(NSString *)str percentEncoded:(BOOL)percentEncoded;
-+ (instancetype)portionWithString:(NSString *)str percentEncoded:(BOOL)percentEncoded;
+- (instancetype)initWithString:(NSString *)str percentEncodingIterations:(int)iterations;
++ (instancetype)portionWithString:(NSString *)str percentEncodingIterations:(int)iterations;
 @end
 
 /// Portion which returns the entire URL
@@ -69,13 +73,22 @@
 @interface EVKQueryPortion : EVKPercentEncodablePortion
 @end
 
+/// Portion which returns the value associated with a parameter in the URL's query
+@interface EVKQueryParameterValuePortion : EVKPercentEncodablePortion
+@property (copy) NSString *parameter;
+- (instancetype)initWithParameter:(NSString *)param
+        percentEncodingIterations:(int)iterations;
++ (instancetype)portionWithParameter:(NSString *)param
+           percentEncodingIterations:(int)iterations;
+@end
+
 /// Portion which returns the URL's query string translated with a given dictionary
 @interface EVKTranslatedQueryPortion : EVKPercentEncodablePortion
 @property (copy) NSDictionary<NSString *, EVKQueryItemLexicon *> *paramTranslations;
 - (instancetype)initWithDictionary:(NSDictionary<NSString *, EVKQueryItemLexicon *> *)dict
-                    percentEncoded:(BOOL)percentEncoded;
+                        percentEncodingIterations:(int)iterations;
 + (instancetype)portionWithDictionary:(NSDictionary<NSString *, EVKQueryItemLexicon *> *)dict
-                       percentEncoded:(BOOL)percentEncoded;
+                           percentEncodingIterations:(int)iterations;
 @end
 
 /// Portion which returns the result of a substitution being performed on the url with a given regex and template
@@ -84,8 +97,8 @@
 @property (copy) NSString *templet;
 - (instancetype)initWithRegex:(NSString *)regex
                      template:(NSString *)templet
-               percentEncoded:(BOOL)percentEncoded;
+    percentEncodingIterations:(int)iterations;
 + (instancetype)portionWithRegex:(NSString *)regex
                         template:(NSString *)templet
-                  percentEncoded:(BOOL)percentEncoded;
+       percentEncodingIterations:(int)iterations;
 @end

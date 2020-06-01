@@ -24,4 +24,7 @@
 /// @param regex regular expression to use
 - (BOOL)matchesRegularExpression:(NSRegularExpression *)regex;
 
+/// Returns string value for a given query parameter, nil if key is not found
+- (NSString *)queryValueForParameter:(NSString *)param;
+
 @end

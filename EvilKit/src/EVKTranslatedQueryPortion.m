@@ -6,8 +6,8 @@
 @implementation EVKTranslatedQueryPortion
 
 - (instancetype)initWithDictionary:(NSDictionary<NSString *, EVKQueryItemLexicon *> *)dict
-                    percentEncoded:(BOOL)percentEncoded {
-    if((self = [super initWithPercentEncoding:percentEncoded])) {
+         percentEncodingIterations:(int)iterations {
+    if((self = [super initWithPercentEncodingIterations:iterations])) {
         _paramTranslations = dict;
     }
 
@@ -15,12 +15,12 @@
 }
 
 - (instancetype)init {
-    return [self initWithDictionary:@{} percentEncoded:NO];
+    return [self initWithDictionary:@{} percentEncodingIterations:NO];
 }
 
 + (instancetype)portionWithDictionary:(NSDictionary<NSString *,EVKQueryItemLexicon *> *)dict
-                       percentEncoded:(BOOL)percentEncoded {
-    return [[[self class] alloc] initWithDictionary:dict percentEncoded:percentEncoded];
+            percentEncodingIterations:(int)iterations {
+    return [[[self class] alloc] initWithDictionary:dict percentEncodingIterations:iterations];
 }
 
 - (NSString *)evaluateUnencodedWithURL:(NSURL *)url {
@@ -45,7 +45,7 @@
 
 // Coding {{{
 - (NSOrderedSet<NSString *> *)endUserAccessibleKeys {
-    return set(@"paramTranslations", @"percentEncoded");
+    return set(@"paramTranslations", @"percentEncodingIterations");
 }
 
 + (BOOL)supportsSecureCoding { return YES; }
@@ -58,7 +58,7 @@
 - (instancetype)initWithCoder:(NSCoder *)coder {
     return [self initWithDictionary:[coder decodeObjectOfClass:[NSDictionary class]
                                                         forKey:@"paramTranslations"]
-                     percentEncoded:[coder decodeBoolForKey:@"percentEncoded"]];
+          percentEncodingIterations:[coder decodeIntForKey:@"percentEncodingIterations"]];
 }
 // }}}
 

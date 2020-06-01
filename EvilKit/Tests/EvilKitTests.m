@@ -168,7 +168,7 @@
     NSString *result;
     for(int i = 0; i < [urlStrings count]; i++) {
         target = schemes[i];
-        result = [[EVKTrimmedPathPortion portionWithPercentEncoding:NO] evaluateWithURL:urls[i]];
+        result = [[EVKTrimmedPathPortion portionWithPercentEncodingIterations:0] evaluateWithURL:urls[i]];
         XCTAssertTrue([target isEqualToString:result]);
     }
 }
@@ -211,7 +211,7 @@
     NSString *result;
     for(int i = 0; i < [urlStrings count]; i++) {
         target = urlStrings[i];
-        result = [[EVKFullURLPortion portionWithPercentEncoding:NO] evaluateWithURL:urls[i]];
+        result = [[EVKFullURLPortion portionWithPercentEncodingIterations:0] evaluateWithURL:urls[i]];
         XCTAssertTrue([target isEqualToString:result]);
     }
 }
@@ -228,7 +228,7 @@
         @"n2" : [[EVKQueryItemLexicon alloc] initWithKeyName:@"nTwo"
                                                   dictionary:@{@"two" : @"2"}
                                                 defaultState:URLQueryStateNull],
-    } percentEncoded:NO];
+    } percentEncodingIterations:0];
     EVKTranslatedQueryPortion *maps = [EVKTranslatedQueryPortion portionWithDictionary:@{
         @"t" : [[EVKQueryItemLexicon alloc] initWithKeyName:@"directionsmode"
                                                  dictionary:@{
@@ -249,7 +249,7 @@
         @"q" : [EVKQueryItemLexicon identityLexiconWithName:@"q"],
         @"ll" : [EVKQueryItemLexicon identityLexiconWithName:@"q"],
         @"z" : [EVKQueryItemLexicon identityLexiconWithName:@"zoom"],
-    } percentEncoded:NO];
+    } percentEncodingIterations:0];
 
     XCTAssertTrue([[example evaluateWithURL:urls[18]] isEqualToString:@"nOne=1&nTwo=2"]);
     XCTAssertTrue([[maps evaluateWithURL:urls[10]] isEqualToString:@"daddr=1%20Infinite%20Loop%20Cupertino%20CA%2095014%20United%20States"]);
@@ -271,13 +271,13 @@
                            substituteBundleID:@"org.mozilla.ios.Focus"
                                   urlOutlines:@{
                                       @"^x-web-search:" : @[
-                                              [EVKStaticStringPortion portionWithString:ffx percentEncoded:NO],
-                                              [EVKStaticStringPortion portionWithString:ddg percentEncoded:YES],
-                                              [EVKQueryPortion portionWithPercentEncoding:YES],
+                                              [EVKStaticStringPortion portionWithString:ffx percentEncodingIterations:0],
+                                              [EVKStaticStringPortion portionWithString:ddg percentEncodingIterations:1],
+                                              [EVKQueryPortion portionWithPercentEncodingIterations:1],
                                       ],
                                       @"^http(s?):" : @[
-                                          [EVKStaticStringPortion portionWithString:ffx percentEncoded:NO],
-                                          [EVKFullURLPortion portionWithPercentEncoding:YES],
+                                          [EVKStaticStringPortion portionWithString:ffx percentEncodingIterations:0],
+                                          [EVKFullURLPortion portionWithPercentEncodingIterations:1],
                                       ],
                                   }];
 
@@ -286,20 +286,20 @@
                      substituteBundleID:@"com.readdle.smartemail"
                             urlOutlines:@{
                                 @"^mailto:[^\?]*$" : @[
-                                        [EVKStaticStringPortion portionWithString:@"readdle-spark://compose?recipient=" percentEncoded:NO],
-                                        [EVKTrimmedPathPortion portionWithPercentEncoding:NO],
+                                        [EVKStaticStringPortion portionWithString:@"readdle-spark://compose?recipient=" percentEncodingIterations:0],
+                                        [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
                                 ],
                                 @"^mailto:.*\?.*$" : @[
-                                        [EVKStaticStringPortion portionWithString:@"readdle-spark://compose?recipient=" percentEncoded:NO],
-                                        [EVKTrimmedPathPortion portionWithPercentEncoding:NO],
-                                        [EVKStaticStringPortion portionWithString:@"&" percentEncoded:NO],
+                                        [EVKStaticStringPortion portionWithString:@"readdle-spark://compose?recipient=" percentEncodingIterations:0],
+                                        [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
+                                        [EVKStaticStringPortion portionWithString:@"&" percentEncodingIterations:0],
                                         [EVKTranslatedQueryPortion portionWithDictionary:@{
                                             @"bcc"     : [EVKQueryItemLexicon identityLexiconWithName:@"bcc"],
                                             @"body"    : [EVKQueryItemLexicon identityLexiconWithName:@"body"],
                                             @"cc"      : [EVKQueryItemLexicon identityLexiconWithName:@"cc"],
                                             @"subject" : [EVKQueryItemLexicon identityLexiconWithName:@"subject"],
                                             @"to"      : [EVKQueryItemLexicon identityLexiconWithName:@"recipient"],
-                                        } percentEncoded:NO],
+                                        } percentEncodingIterations:0],
                                 ],
                             }];
 
@@ -308,7 +308,7 @@
                                substituteBundleID:@"com.google.Maps"
                                       urlOutlines:@{
                                           @"^(((http(s?)://)?maps.apple.com)|(maps:))" : @[
-                                                  [EVKStaticStringPortion portionWithString:@"comgooglemaps://?" percentEncoded:NO],
+                                                  [EVKStaticStringPortion portionWithString:@"comgooglemaps://?" percentEncodingIterations:0],
                                                   [EVKTranslatedQueryPortion portionWithDictionary:@{
                                                       @"t"       : [[EVKQueryItemLexicon alloc] initWithKeyName:@"directionsmode"
                                                                                                      dictionary:@{
@@ -329,7 +329,7 @@
                                                       @"q"       : [EVKQueryItemLexicon identityLexiconWithName:@"q"],
                                                       @"ll"      : [EVKQueryItemLexicon identityLexiconWithName:@"q"],
                                                       @"z"       : [EVKQueryItemLexicon identityLexiconWithName:@"zoom"],
-                                                  } percentEncoded:NO]
+                                                  } percentEncodingIterations:0]
                                           ]}];
 
     NSDictionary *appAlternatives =  @{
@@ -362,6 +362,7 @@
 }
 #pragma GCC diagnostic pop
 
+// Preset tests {{{
 - (void)testFocus {
     NSArray *targets = @[
         @"",
@@ -393,13 +394,13 @@
                            substituteBundleID:@"org.mozilla.ios.Focus"
                                   urlOutlines:@{
                                       @"^x-web-search:" : @[
-                                              [EVKStaticStringPortion portionWithString:ffx percentEncoded:NO],
-                                              [EVKStaticStringPortion portionWithString:ddg percentEncoded:YES],
-                                              [EVKQueryPortion portionWithPercentEncoding:YES],
+                                              [EVKStaticStringPortion portionWithString:ffx percentEncodingIterations:0],
+                                              [EVKStaticStringPortion portionWithString:ddg percentEncodingIterations:1],
+                                              [EVKQueryPortion portionWithPercentEncodingIterations:1],
                                       ],
                                       @"^http(s?):" : @[
-                                              [EVKStaticStringPortion portionWithString:ffx percentEncoded:NO],
-                                              [EVKFullURLPortion portionWithPercentEncoding:YES],
+                                              [EVKStaticStringPortion portionWithString:ffx percentEncodingIterations:0],
+                                              [EVKFullURLPortion portionWithPercentEncodingIterations:1],
                                       ],
                                   }];
     NSString *target;
@@ -444,17 +445,17 @@
                            substituteBundleID:@"com.google.chrome.ios"
                                   urlOutlines:@{
                                       @"^http:" : @[
-                                              [EVKStaticStringPortion portionWithString:chr percentEncoded:NO],
-                                              [EVKTrimmedResourceSpecifierPortion portionWithPercentEncoding:NO],
+                                              [EVKStaticStringPortion portionWithString:chr percentEncodingIterations:0],
+                                              [EVKTrimmedResourceSpecifierPortion portionWithPercentEncodingIterations:0],
                                       ],
                                       @"^https:" : @[
-                                              [EVKStaticStringPortion portionWithString:chrs percentEncoded:NO],
-                                              [EVKTrimmedResourceSpecifierPortion portionWithPercentEncoding:NO],
+                                              [EVKStaticStringPortion portionWithString:chrs percentEncodingIterations:0],
+                                              [EVKTrimmedResourceSpecifierPortion portionWithPercentEncodingIterations:0],
                                       ],
                                       @"^x-web-search:" : @[
-                                              [EVKStaticStringPortion portionWithString:chrs percentEncoded:NO],
-                                              [EVKStaticStringPortion portionWithString:ddg percentEncoded:NO],
-                                              [EVKQueryPortion portionWithPercentEncoding:YES],
+                                              [EVKStaticStringPortion portionWithString:chrs percentEncodingIterations:0],
+                                              [EVKStaticStringPortion portionWithString:ddg percentEncodingIterations:0],
+                                              [EVKQueryPortion portionWithPercentEncodingIterations:1],
                                       ],
                                   }];
     NSString *target;
@@ -497,13 +498,13 @@
                            substituteBundleID:@"com.brave.ios.browser"
                                   urlOutlines:@{
                                       @"^x-web-search:" : @[
-                                              [EVKStaticStringPortion portionWithString:ffx percentEncoded:NO],
-                                              [EVKStaticStringPortion portionWithString:ddg percentEncoded:YES],
-                                              [EVKQueryPortion portionWithPercentEncoding:YES],
+                                              [EVKStaticStringPortion portionWithString:ffx percentEncodingIterations:0],
+                                              [EVKStaticStringPortion portionWithString:ddg percentEncodingIterations:1],
+                                              [EVKQueryPortion portionWithPercentEncodingIterations:1],
                                       ],
                                       @"^http(s?):" : @[
-                                              [EVKStaticStringPortion portionWithString:ffx percentEncoded:NO],
-                                              [EVKFullURLPortion portionWithPercentEncoding:YES],
+                                              [EVKStaticStringPortion portionWithString:ffx percentEncodingIterations:0],
+                                              [EVKFullURLPortion portionWithPercentEncodingIterations:1],
                                       ],
                                   }];
     NSString *target;
@@ -514,5 +515,42 @@
         XCTAssertTrue([result isEqualToString:target]);
     }
 }
+
+- (void)testReddit {
+    NSDictionary *URLs = @{
+        @"https://reddit.com": @"apollo://",
+        @"http://www.reddit.com/r/jailbreak/": @"apollo://reddit.com/r/jailbreak",
+        @"https://www.reddit.com/r/jailbreak/comments/gth4zu/": @"apollo://reddit.com/r/jailbreak/comments/gth4zu",
+        @"https://m.reddit.com/r/jailbreak/comments/gth4zu/upcoming_free_release_evil_scheme_change_your/": @"apollo://reddit.com/r/jailbreak/comments/gth4zu/upcoming_free_release_evil_scheme_change_your",
+        @"https://amp.reddit.com/branch-redirect?creative=AppSelectorModal&experiment=app_selector_contrast_iteration&path=%2Fr%2Fjailbreak%2Fcomments%2Fgth4zu%2Fupcoming_free_release_evil_scheme_change_your%2F&variant=control_2": @"apollo://reddit.com/r/jailbreak/comments/gth4zu/upcoming_free_release_evil_scheme_change_your/",
+        @"https://reddit.app.link/?channel=xpromo&feature=amp&campaign=app_selector_contrast_iteration&tags=AppSelectorModal&keyword=blue_header&%24og_redirect=https%3A%2F%2Fwww.reddit.com%2Fr%2Fjailbreak%2Fcomments%2Fgth4zu%2Fupcoming_free_release_evil_scheme_change_your%2F&%24deeplink_path=%2Fr%2Fjailbreak%2Fcomments%2Fgth4zu%2Fupcoming_free_release_evil_scheme_change_your%2F&%24android_deeplink_path=reddit%2Fr%2Fjailbreak%2Fcomments%2Fgth4zu%2Fupcoming_free_release_evil_scheme_change_your%2F&utm_source=xpromo&utm_medium=amp&utm_name=app_selector_contrast_iteration&utm_term=blue_header&utm_content=AppSelectorModal&mweb_loid=;" : @""
+    };
+
+    EVKAppAlternative *apollo =  [[EVKAppAlternative alloc] initWithTargetBundleID:@"com.reddit.Reddit"
+                                                                substituteBundleID:@"com.christianselig.Apollo"
+                                                                       urlOutlines:@{
+                                                                           @".*reddit.com/r.*" : @[
+                                                                                   [EVKStaticStringPortion portionWithString:@"apollo://reddit.com/" percentEncodingIterations:0],
+                                                                                   [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
+                                                                           ],
+                                                                           @".*reddit.com(/?)$" : @[
+                                                                                   [EVKStaticStringPortion portionWithString:@"apollo://" percentEncodingIterations:0],
+                                                                           ],
+                                                                           @"amp.reddit.com/branch-redirect.*" : @[
+                                                                                   [EVKStaticStringPortion portionWithString:@"apollo://reddit.com" percentEncodingIterations:0],
+                                                                                   [EVKQueryParameterValuePortion portionWithParameter:@"path" percentEncodingIterations:0]
+                                                                           ],
+                                                                           @".*reddit.app.link.*" : @[
+                                                                                   [EVKStaticStringPortion portionWithString:@"apollo://reddit.com" percentEncodingIterations:0],
+                                                                                   [EVKQueryParameterValuePortion portionWithParameter:@"$deeplink_path" percentEncodingIterations:0]
+                                                                           ],
+                                                                       }];
+    for(NSString *url in URLs) {
+        NSString *target = URLs[url];
+        NSString *result = [[apollo transformURL:[NSURL URLWithString:url]] absoluteString];
+        XCTAssertTrue([result isEqualToString:target]);
+    }
+}
+// }}}
 
 @end
