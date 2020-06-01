@@ -6,25 +6,27 @@
 
 + (NSDictionary<NSString *, NSString *> *)propertyNameMappings {
     return @{
-        @"percentEncoded"    : @"Percent Encoded",
-        @"paramTranslations" : @"Query Translator",
-        @"string"            : @"Text",
-        @"regex"             : @"Regular Expression",
-        @"templet"           : @"Template",
+        @"paramTranslations"         : @"Query Translator",
+        @"parameter"                 : @"Parameter Name",
+        @"percentEncodingIterations" : @"Percent Encoding",
+        @"regex"                     : @"Regular Expression",
+        @"string"                    : @"Text",
+        @"templet"                   : @"Template",
     };
 }
 
 + (NSDictionary<NSString *, Class> *)classNameMappings {
     return @{
         @"Constant Text"      : [EVKStaticStringPortion class],
+        @"Domain"             : [EVKHostPortion class],
         @"Full URL"           : [EVKFullURLPortion class],
         @"Path"               : [EVKTrimmedPathPortion class],
-        @"Resource Specifier" : [EVKTrimmedResourceSpecifierPortion class],
-        @"Domain"             : [EVKHostPortion class],
-        @"Scheme"             : [EVKSchemePortion class],
+        @"Query Parameter"    : [EVKQueryParameterValuePortion class],
         @"Query"              : [EVKQueryPortion class],
-        @"Translated Query"   : [EVKTranslatedQueryPortion class],
         @"Regex Substitution" : [EVKRegexSubstitutionPortion class],
+        @"Resource Specifier" : [EVKTrimmedResourceSpecifierPortion class],
+        @"Scheme"             : [EVKSchemePortion class],
+        @"Translated Query"   : [EVKTranslatedQueryPortion class],
     };
 }
 
@@ -65,6 +67,8 @@
     NSString *str = [NSString stringWithFormat:@"%@", obj];
     if([obj isKindOfClass:objc_getClass("__NSCFBoolean")])
         str = [(NSNumber *)obj boolValue] ? @"True" : @"False";
+    else if([obj isKindOfClass:[NSNumber class]])
+        str = [NSString stringWithFormat:@"%d", [(NSNumber *)obj intValue]];
     else if([obj isKindOfClass:[NSDictionary class]])
         str = @"Query Tranlator";
 
@@ -83,6 +87,8 @@
     NSObject *obj = [[self portion] valueForKey:key];
     if([obj isKindOfClass:objc_getClass("__NSCFBoolean")])
         return [L0ToggleCell class];
+    else if([obj isKindOfClass:[NSNumber class]])
+        return [L0StepperCell class];
     else if([obj isKindOfClass:[NSDictionary class]])
         return [L0LinkCell class];
     else if([obj isKindOfClass:[NSString class]])

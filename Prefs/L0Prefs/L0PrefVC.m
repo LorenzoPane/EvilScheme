@@ -26,6 +26,7 @@
         PICKER_CELL_ID         : [L0PickerCell class],
         BUTTON_CELL_ID         : [L0ButtonCell class],
         TOGGLE_CELL_ID         : [L0ToggleCell class],
+        STEPPER_CELL_ID        : [L0StepperCell class],
         EDIT_TEXT_CELL_ID      : [L0EditTextCell class],
         PURE_EDIT_TEXT_CELL_ID : [L0PureEditTextCell class],
     }];

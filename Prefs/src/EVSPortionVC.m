@@ -84,6 +84,16 @@ NS_ENUM(NSInteger, PortionVCSection) {
                 L0LinkCell *cell = [tableView dequeueReusableCellWithIdentifier:LINK_CELL_ID forIndexPath:indexPath];
                 [[cell textLabel] setText:[[self portion] propertyNameForIndex:row]];
                 return cell;
+            } else if(cellType == [L0StepperCell class]) {
+                L0StepperCell *cell = [tableView dequeueReusableCellWithIdentifier:STEPPER_CELL_ID forIndexPath:indexPath];
+                [cell setPrefix:[[self portion] propertyNameForIndex:row]];
+                [[cell stepper] setMinimumValue:-10];
+                [[cell stepper] setMaximumValue:10];
+                [[cell stepper] setTag:row];
+                [[cell stepper] setValue:[(NSNumber *)[[self portion] objectForPropertyIndex:row] intValue]];
+                [cell setDelegate:self];
+                [cell stepperValueDidChange:[cell stepper]];
+                return cell;
             } else {
                 L0EditTextCell *cell = [tableView dequeueReusableCellWithIdentifier:EDIT_TEXT_CELL_ID forIndexPath:indexPath];
                 [[cell textLabel] setText:[[self portion] propertyNameForIndex:row]];
@@ -133,6 +143,11 @@ NS_ENUM(NSInteger, PortionVCSection) {
         [[self portion] setObject:[field text] forPropertyIndex:[field tag]];
     }
 
+    [[self delegate] controllerDidChangeModel:self];
+}
+
+- (void)stepperValueDidChange:(UIStepper *)stepper {
+    [[self portion] setObject:@([stepper value]) forPropertyIndex:[stepper tag]];
     [[self delegate] controllerDidChangeModel:self];
 }
 

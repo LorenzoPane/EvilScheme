@@ -10,6 +10,7 @@
 #define PICKER_CELL_ID         @"L0PickerCell"
 #define BUTTON_CELL_ID         @"L0ButtonCell"
 #define TOGGLE_CELL_ID         @"L0ToggleCell"
+#define STEPPER_CELL_ID        @"L0StepperCell"
 #define EDIT_TEXT_CELL_ID      @"L0EditTextCell"
 #define PURE_EDIT_TEXT_CELL_ID @"L0PureEditTextCell"
 
