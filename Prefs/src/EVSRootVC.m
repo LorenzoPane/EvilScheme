@@ -40,7 +40,7 @@
 }
 
 - (void)setupNav {
-    [self setTitle:@"EvilScheme"];
+    [self setTitle:@"Evil Scheme"];
     [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
                                                                                                target:self
                                                                                                action:@selector(saveSettings)]];

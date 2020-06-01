@@ -62,7 +62,7 @@ NS_ENUM(NSInteger, ExperimentalPrefsSections) {
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
     switch(section) {
         case SearchEngineSection:
-            return @"To apply changes to default search engines, you may have to re-apply browser presets";
+            return @"To apply changes to default search engines, you may have to re-apply browser presets from the presets menu";
         case BlacklistedAppSection:
             return @"Links opened from these apps will use stock behavior";
         default:
