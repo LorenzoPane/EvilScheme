@@ -17,9 +17,10 @@
 
 - (void)setupNav {
     [self setTitle:@"Experimental Preferences"];
-    [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
-                                                                                               target:self
-                                                                                               action:@selector(saveSettings)]];
+    [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Apply"
+                                                                                  style:UIBarButtonItemStylePlain
+                                                                                 target:self
+                                                                                 action:@selector(saveSettings)]];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

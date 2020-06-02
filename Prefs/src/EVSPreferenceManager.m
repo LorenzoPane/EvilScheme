@@ -313,6 +313,44 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                         [EVKQueryPortion portionWithPercentEncodingIterations:1],
                                                                                                 ],
                                                                                             }] name:@"GMail"],
+
+                [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilemail"
+                                                                                     substituteBundleID:@"com.CloudMagic.Mail"
+                                                                                            urlOutlines:@{
+                                                                                                @"^mailto:[^\?]*$" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:@"cloudmagic://compose?to=" percentEncodingIterations:0],
+                                                                                                        [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
+                                                                                                ],
+                                                                                                @"^mailto:.*\?.*$" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:@"cloudmagic://compose?to=" percentEncodingIterations:0],
+                                                                                                        [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
+                                                                                                        [EVKStaticStringPortion portionWithString:@"&" percentEncodingIterations:0],
+
+                                                                                                        [EVKQueryPortion portionWithPercentEncodingIterations:1],
+                                                                                                ],
+                                                                                            }] name:@"Newton"],
+                [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilemail"
+                                                                                     substituteBundleID:@"com.airmailapp.iphone"
+                                                                                            urlOutlines:@{
+                                                                                                @"^mailto:[^\?]*$" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:@"airmail://compose?to=" percentEncodingIterations:0],
+                                                                                                        [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
+                                                                                                ],
+                                                                                                @"^mailto:.*\?.*$" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:@"airmail://compose?to=" percentEncodingIterations:0],
+                                                                                                        [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
+                                                                                                        [EVKStaticStringPortion portionWithString:@"&" percentEncodingIterations:0],
+
+
+                                                                                                        [EVKTranslatedQueryPortion portionWithDictionary:@{
+                                                                                                            @"bcc"     : [EVKQueryItemLexicon identityLexiconWithName:@"bcc"],
+                                                                                                            @"body"    : [EVKQueryItemLexicon identityLexiconWithName:@"plainBody"],
+                                                                                                            @"cc"      : [EVKQueryItemLexicon identityLexiconWithName:@"cc"],
+                                                                                                            @"subject" : [EVKQueryItemLexicon identityLexiconWithName:@"subject"],
+                                                                                                            @"to"      : [EVKQueryItemLexicon identityLexiconWithName:@"recipient"],
+                                                                                                        } percentEncodingIterations:0],
+                                                                                                ],
+                                                                                            }] name:@"Airmail"],
         ],
         @"Package Manager": @[
                 //            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Installer"],
