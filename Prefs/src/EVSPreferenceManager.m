@@ -310,7 +310,7 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                         [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
                                                                                                         [EVKStaticStringPortion portionWithString:@"&" percentEncodingIterations:0],
 
-                                                                                                        [EVKQueryPortion portionWithPercentEncodingIterations:1],
+                                                                                                        [EVKQueryPortion portionWithPercentEncodingIterations:0],
                                                                                                 ],
                                                                                             }] name:@"GMail"],
 
@@ -326,7 +326,7 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                         [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
                                                                                                         [EVKStaticStringPortion portionWithString:@"&" percentEncodingIterations:0],
 
-                                                                                                        [EVKQueryPortion portionWithPercentEncodingIterations:1],
+                                                                                                        [EVKQueryPortion portionWithPercentEncodingIterations:0],
                                                                                                 ],
                                                                                             }] name:@"Newton"],
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilemail"
@@ -351,6 +351,21 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                         } percentEncodingIterations:0],
                                                                                                 ],
                                                                                             }] name:@"Airmail"],
+                [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilemail"
+                                                                                     substituteBundleID:@"com.microsoft.Office.Outlook"
+                                                                                            urlOutlines:@{
+                                                                                                @"^mailto:[^\?]*$" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:@"ms-outlook://compose?to=" percentEncodingIterations:0],
+                                                                                                        [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
+                                                                                                ],
+                                                                                                @"^mailto:.*\?.*$" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:@"ms-outlook://compose?to=" percentEncodingIterations:0],
+                                                                                                        [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
+                                                                                                        [EVKStaticStringPortion portionWithString:@"&" percentEncodingIterations:0],
+
+                                                                                                        [EVKQueryPortion portionWithPercentEncodingIterations:0],
+                                                                                                ],
+                                                                                             }] name:@"Outlook"],
         ],
         @"Package Manager": @[
                 //            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Installer"],
