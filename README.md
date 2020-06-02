@@ -8,7 +8,7 @@ A full manual for operation can be found [here](https://l.pane.net/evil.html)
 
 Installation
 ---
-You can install EvilScheme for free by adding the [Dynastic Repo](http://repo.dynastic.co) to your favorite package manager. It can also be compiled from source using [Theos](https://theos.dev) or [DragonBuild](https://github.com/DragonBuild/DragonBuild). Makefiles for both are provided in this repo. You may need to build EvilKit separately first and add it to your build system's framework include directory.
+You can install EvilScheme for free by adding the [Dynastic Repo](http://repo.dynastic.co) to your favorite package manager. It can also be compiled from source using [Theos](https://theos.dev) or [DragonBuild](https://github.com/DragonBuild/DragonBuild). Makefiles for both are provided in this repo. You may need to build EvilKit separately first and add it to your build system's framework include directory. Debs are also avalible directly from Github under the `Releases` tab.
 
 Contribution
 ---
