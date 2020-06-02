@@ -367,9 +367,7 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                 ],
                                                                                              }] name:@"Outlook"],
         ],
-        @"Package Manager": @[
-                //            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Installer"],
-                //            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Sileo"],
+        @"Package Managers": @[
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.saurik.Cydia"
                                                                                      substituteBundleID:@"xyz.willy.Zebra"
                                                                                             urlOutlines:@{
@@ -379,8 +377,7 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                 ],
                                                                                             }] name:@"Zebra"],
         ],
-        @"Reddit Client": @[
-                //            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Alien Blue"],
+        @"Reddit Clients": @[
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.reddit.Reddit"
                                                                                      substituteBundleID:@"com.christianselig.Apollo"
                                                                                             urlOutlines:@{
