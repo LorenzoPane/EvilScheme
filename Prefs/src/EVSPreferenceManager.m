@@ -92,11 +92,11 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                 @"^x-web-search:" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:aloha percentEncodingIterations:0],
                                                                                                         [EVKStaticStringPortion portionWithString:search percentEncodingIterations:1],
-                                                                                                        [EVKQueryPortion portionWithPercentEncodingIterations:YES],
+                                                                                                        [EVKQueryPortion portionWithPercentEncodingIterations:1],
                                                                                                 ],
                                                                                                 @"^http(s?):" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:aloha percentEncodingIterations:0],
-                                                                                                        [EVKFullURLPortion portionWithPercentEncodingIterations:YES],
+                                                                                                        [EVKFullURLPortion portionWithPercentEncodingIterations:1],
                                                                                                 ],
                                                                                             }] name:@"Aloha"],
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
@@ -105,11 +105,11 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                 @"^x-web-search:" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:brv percentEncodingIterations:0],
                                                                                                         [EVKStaticStringPortion portionWithString:search percentEncodingIterations:1],
-                                                                                                        [EVKQueryPortion portionWithPercentEncodingIterations:YES],
+                                                                                                        [EVKQueryPortion portionWithPercentEncodingIterations:1],
                                                                                                 ],
                                                                                                 @"^http(s?):" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:brv percentEncodingIterations:0],
-                                                                                                        [EVKFullURLPortion portionWithPercentEncodingIterations:YES],
+                                                                                                        [EVKFullURLPortion portionWithPercentEncodingIterations:1],
                                                                                                 ],
                                                                                             }] name:@"Brave"],
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
@@ -118,11 +118,11 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                 @"^x-web-search:" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:cake percentEncodingIterations:0],
                                                                                                         [EVKStaticStringPortion portionWithString:search percentEncodingIterations:1],
-                                                                                                        [EVKQueryPortion portionWithPercentEncodingIterations:YES],
+                                                                                                        [EVKQueryPortion portionWithPercentEncodingIterations:1],
                                                                                                 ],
                                                                                                 @"^http(s?):" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:cake percentEncodingIterations:0],
-                                                                                                        [EVKFullURLPortion portionWithPercentEncodingIterations:YES],
+                                                                                                        [EVKFullURLPortion portionWithPercentEncodingIterations:1],
                                                                                                 ],
                                                                                             }] name:@"Cake"],
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
@@ -131,11 +131,11 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                 @"^x-web-search:" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:ddgBrowser percentEncodingIterations:0],
                                                                                                         [EVKStaticStringPortion portionWithString:search percentEncodingIterations:1],
-                                                                                                        [EVKQueryPortion portionWithPercentEncodingIterations:YES],
+                                                                                                        [EVKQueryPortion portionWithPercentEncodingIterations:1],
                                                                                                 ],
                                                                                                 @"^http(s?):" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:ddgBrowser percentEncodingIterations:0],
-                                                                                                        [EVKFullURLPortion portionWithPercentEncodingIterations:NO],
+                                                                                                        [EVKFullURLPortion portionWithPercentEncodingIterations:0],
                                                                                                 ],
                                                                                             }] name:@"DuckDuckGo"],
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
@@ -144,15 +144,15 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                 @"^x-web-search:" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:@"microsoft-edge-https://" percentEncodingIterations:0],
                                                                                                         [EVKStaticStringPortion portionWithString:search percentEncodingIterations:1],
-                                                                                                        [EVKQueryPortion portionWithPercentEncodingIterations:YES],
+                                                                                                        [EVKQueryPortion portionWithPercentEncodingIterations:1],
                                                                                                 ],
                                                                                                 @"^http:" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:@"microsoft-edge-http://" percentEncodingIterations:0],
-                                                                                                        [EVKTrimmedResourceSpecifierPortion portionWithPercentEncodingIterations:NO],
+                                                                                                        [EVKTrimmedResourceSpecifierPortion portionWithPercentEncodingIterations:0],
                                                                                                 ],
                                                                                                 @"^https:" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:@"microsoft-edge-https://" percentEncodingIterations:0],
-                                                                                                        [EVKTrimmedResourceSpecifierPortion portionWithPercentEncodingIterations:NO],
+                                                                                                        [EVKTrimmedResourceSpecifierPortion portionWithPercentEncodingIterations:0],
                                                                                                 ],
                                                                                             }] name:@"Microsoft Edge"],
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
@@ -161,15 +161,15 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                 @"^x-web-search:" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:@"googlechromes://" percentEncodingIterations:0],
                                                                                                         [EVKStaticStringPortion portionWithString:search percentEncodingIterations:1],
-                                                                                                        [EVKQueryPortion portionWithPercentEncodingIterations:YES],
+                                                                                                        [EVKQueryPortion portionWithPercentEncodingIterations:1],
                                                                                                 ],
                                                                                                 @"^http:" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:@"googlechrome://" percentEncodingIterations:0],
-                                                                                                        [EVKTrimmedResourceSpecifierPortion portionWithPercentEncodingIterations:NO],
+                                                                                                        [EVKTrimmedResourceSpecifierPortion portionWithPercentEncodingIterations:0],
                                                                                                 ],
                                                                                                 @"^https:" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:@"googlechromes://" percentEncodingIterations:0],
-                                                                                                        [EVKTrimmedResourceSpecifierPortion portionWithPercentEncodingIterations:NO],
+                                                                                                        [EVKTrimmedResourceSpecifierPortion portionWithPercentEncodingIterations:0],
                                                                                                 ],
                                                                                             }] name:@"Google Chrome"],
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
@@ -178,11 +178,11 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                 @"^x-web-search:" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:ffx percentEncodingIterations:0],
                                                                                                         [EVKStaticStringPortion portionWithString:search percentEncodingIterations:1],
-                                                                                                        [EVKQueryPortion portionWithPercentEncodingIterations:YES],
+                                                                                                        [EVKQueryPortion portionWithPercentEncodingIterations:1],
                                                                                                 ],
                                                                                                 @"^http(s?):" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:ffx percentEncodingIterations:0],
-                                                                                                        [EVKFullURLPortion portionWithPercentEncodingIterations:YES],
+                                                                                                        [EVKFullURLPortion portionWithPercentEncodingIterations:1],
                                                                                                 ],
                                                                                             }] name:@"Firefox"],
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
@@ -191,11 +191,11 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                 @"^x-web-search:" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:focus percentEncodingIterations:0],
                                                                                                         [EVKStaticStringPortion portionWithString:search percentEncodingIterations:1],
-                                                                                                        [EVKQueryPortion portionWithPercentEncodingIterations:YES],
+                                                                                                        [EVKQueryPortion portionWithPercentEncodingIterations:1],
                                                                                                 ],
                                                                                                 @"^http(s?):" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:focus percentEncodingIterations:0],
-                                                                                                        [EVKFullURLPortion portionWithPercentEncodingIterations:YES],
+                                                                                                        [EVKFullURLPortion portionWithPercentEncodingIterations:1],
                                                                                                 ],
                                                                                             }] name:@"Firefox Focus"],
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
@@ -204,15 +204,15 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                 @"^x-web-search:" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:@"onionhttps://" percentEncodingIterations:0],
                                                                                                         [EVKStaticStringPortion portionWithString:search percentEncodingIterations:1],
-                                                                                                        [EVKQueryPortion portionWithPercentEncodingIterations:YES],
+                                                                                                        [EVKQueryPortion portionWithPercentEncodingIterations:1],
                                                                                                 ],
                                                                                                 @"^http:" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:@"onionhttp://" percentEncodingIterations:0],
-                                                                                                        [EVKTrimmedResourceSpecifierPortion portionWithPercentEncodingIterations:NO],
+                                                                                                        [EVKTrimmedResourceSpecifierPortion portionWithPercentEncodingIterations:0],
                                                                                                 ],
                                                                                                 @"^https:" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:@"onionhttps://" percentEncodingIterations:0],
-                                                                                                        [EVKTrimmedResourceSpecifierPortion portionWithPercentEncodingIterations:NO],
+                                                                                                        [EVKTrimmedResourceSpecifierPortion portionWithPercentEncodingIterations:0],
                                                                                                 ],
                                                                                             }] name:@"OnionBrowser"],
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
@@ -221,15 +221,15 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                 @"^x-web-search:" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:@"touch-https://" percentEncodingIterations:0],
                                                                                                         [EVKStaticStringPortion portionWithString:search percentEncodingIterations:1],
-                                                                                                        [EVKQueryPortion portionWithPercentEncodingIterations:YES],
+                                                                                                        [EVKQueryPortion portionWithPercentEncodingIterations:1],
                                                                                                 ],
                                                                                                 @"^http:" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:@"touch-http://" percentEncodingIterations:0],
-                                                                                                        [EVKTrimmedResourceSpecifierPortion portionWithPercentEncodingIterations:NO],
+                                                                                                        [EVKTrimmedResourceSpecifierPortion portionWithPercentEncodingIterations:0],
                                                                                                 ],
                                                                                                 @"^https:" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:@"touch-https://" percentEncodingIterations:0],
-                                                                                                        [EVKTrimmedResourceSpecifierPortion portionWithPercentEncodingIterations:NO],
+                                                                                                        [EVKTrimmedResourceSpecifierPortion portionWithPercentEncodingIterations:0],
                                                                                                 ],
                                                                                             }] name:@"Opera"],
         ],
@@ -278,21 +278,16 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                 ]}] name:@"Waze"],
         ],
         @"Mail Clients": @[
-                //            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Airmail"],
-                //            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Edison"],
-                //            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Outlook"],
-                //            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"PolyMail"],
-                //            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Proton Mail"],
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilemail"
                                                                                      substituteBundleID:@"com.readdle.smartemail"
                                                                                             urlOutlines:@{
                                                                                                 @"^mailto:[^\?]*$" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:@"readdle-spark://compose?recipient=" percentEncodingIterations:0],
-                                                                                                        [EVKTrimmedPathPortion portionWithPercentEncodingIterations:NO],
+                                                                                                        [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
                                                                                                 ],
                                                                                                 @"^mailto:.*\?.*$" : @[
                                                                                                         [EVKStaticStringPortion portionWithString:@"readdle-spark://compose?recipient=" percentEncodingIterations:0],
-                                                                                                        [EVKTrimmedPathPortion portionWithPercentEncodingIterations:NO],
+                                                                                                        [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
                                                                                                         [EVKStaticStringPortion portionWithString:@"&" percentEncodingIterations:0],
                                                                                                         [EVKTranslatedQueryPortion portionWithDictionary:@{
                                                                                                             @"bcc"     : [EVKQueryItemLexicon identityLexiconWithName:@"bcc"],
@@ -303,7 +298,21 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                         } percentEncodingIterations:0],
                                                                                                 ],
                                                                                             }] name:@"Spark"],
-                //            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Yahoo Mail"],
+                [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilemail"
+                                                                                     substituteBundleID:@"com.google.Gmail"
+                                                                                            urlOutlines:@{
+                                                                                                @"^mailto:[^\?]*$" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:@"googlegmail://co?to=" percentEncodingIterations:0],
+                                                                                                        [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
+                                                                                                ],
+                                                                                                @"^mailto:.*\?.*$" : @[
+                                                                                                        [EVKStaticStringPortion portionWithString:@"googlegmail://co?to=" percentEncodingIterations:0],
+                                                                                                        [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
+                                                                                                        [EVKStaticStringPortion portionWithString:@"&" percentEncodingIterations:0],
+
+                                                                                                        [EVKQueryPortion portionWithPercentEncodingIterations:1],
+                                                                                                ],
+                                                                                            }] name:@"GMail"],
         ],
         @"Package Manager": @[
                 //            [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:nil name:@"Installer"],
