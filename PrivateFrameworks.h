@@ -22,6 +22,11 @@
 @property NSString *bundleIdentifier;
 @end
 
+@interface LSApplicationWorkspace : NSObject
++ (instancetype)defaultWorkspace;
+- (BOOL)applicationIsInstalled:(NSString *)bundleID;
+@end
+
 @interface FBSystemService : NSObject
 - (void)openApplication:(NSString *)bundleID
             withOptions:(FBSOpenApplicationOptions *)options

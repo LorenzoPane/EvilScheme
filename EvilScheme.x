@@ -1,6 +1,8 @@
 #import <EvilKit/EvilKit.h>
 #import "PrivateFrameworks.h"
 
+#define appInstalled(app)  [[LSApplicationWorkspace defaultWorkspace] applicationIsInstalled:app]
+
 // Preference retrieval {{{
 static NSDictionary<NSString *, EVKAppAlternative *> *prefs() {
     NSError *err;
@@ -55,13 +57,16 @@ static NSURL *urlFromActions(NSArray *actions) {
              originator:(BSProcessHandle *)source
               requestID:(NSUInteger)req
              completion:(id)completion {
-    if([blacklist() containsObject:[source bundleIdentifier]]) {
+
+    EVKAppAlternative *app = prefs()[bundleID];
+    if([blacklist() containsObject:[source bundleIdentifier]]
+    || !appInstalled([app substituteBundleID])) {
         NSLog(@"[EVS] Ignored: %@\n%@", bundleID, options);
     }
     else {
         NSLog(@"[EVS] From:    %@\n%@", bundleID, options);
-        EVKAppAlternative *app = prefs()[bundleID];
         if(app) {
+        // applicationIsInstalled:(id)arg1 ;
             NSURL *url; // Check all known URL locations
             if((url = [options dictionary][@"__PayloadURL"])
             || (url = [[options dictionary][@"__AppLink4LS"] URL])

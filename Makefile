@@ -6,7 +6,7 @@ include $(THEOS)/makefiles/common.mk
 TWEAK_NAME = ZZ_EvilScheme
 ZZ_EvilScheme_FILES = EvilScheme.x
 ZZ_EvilScheme_CFLAGS = -fobjc-arc
-ZZ_EvilScheme_PRIVATE_FRAMEWORKS = UserActivity
+ZZ_EvilScheme_PRIVATE_FRAMEWORKS = UserActivity CoreServices
 ZZ_EvilScheme_EXTRA_FRAMEWORKS += EvilKit
 
 include $(THEOS_MAKE_PATH)/tweak.mk

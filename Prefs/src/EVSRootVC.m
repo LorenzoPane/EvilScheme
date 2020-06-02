@@ -27,13 +27,15 @@
         @"Source code / Bug tracker",
         @"License: BSD 3-Clause",
         @"Follow me on twitter :)",
+        @"Tip jar <3",
     ];
 
     linkURLs = @[
-        @"https://github.com/lorenzopane/evilscheme",
+        @"https://l.pane.net/evil.html",
         @"https://github.com/lorenzopane/evilscheme",
         @"https://opensource.org/licenses/BSD-3-Clause",
         @"https://twitter.com/mushyware",
+        @"https://l.pane.net/causes.html",
     ];
 
     appAlternatives = [[EVSPreferenceManager activeAlternatives] mutableCopy];
@@ -77,7 +79,7 @@ NS_ENUM(NSInteger, RootVCSection) {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch(section) {
         case MetaSection:
-            return 4;
+            return [linkTitles count];
         case AppAlternativeSection:
             return [appAlternatives count] + 1;
         case MoreSettingsSection:
