@@ -51,4 +51,11 @@ numberOfRowsInComponent:(NSInteger)component {
     return [self options][row];
 }
 
+- (void)pickerView:(UIPickerView *)pickerView
+      didSelectRow:(NSInteger)row
+       inComponent:(NSInteger)component {
+    [[self field] setText:[self options][row]];
+    [[self delegate] textFieldDidChange:[self field]];
+}
+
 @end
