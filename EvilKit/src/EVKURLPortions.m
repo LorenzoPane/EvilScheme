@@ -15,6 +15,10 @@
 - (void)encodeWithCoder:(NSCoder *)coder { [super encodeWithCoder:coder]; }
 
 - (instancetype)initWithCoder:(NSCoder *)coder { return [super initWithCoder:coder]; }
+
+- (instancetype)copyWithZone:(NSZone *)zone {
+    return [[self class] portionWithPercentEncodingIterations:[[self percentEncodingIterations] intValue]];
+}
 // }}}
 
 @end
@@ -31,6 +35,10 @@
 - (void)encodeWithCoder:(NSCoder *)coder { [super encodeWithCoder:coder]; }
 
 - (instancetype)initWithCoder:(NSCoder *)coder { return [super initWithCoder:coder]; };
+
+- (instancetype)copyWithZone:(NSZone *)zone {
+    return [[self class] portionWithPercentEncodingIterations:[[self percentEncodingIterations] intValue]];
+}
 // }}}
 
 @end
@@ -47,6 +55,10 @@
 - (void)encodeWithCoder:(NSCoder *)coder { [super encodeWithCoder:coder]; }
 
 - (instancetype)initWithCoder:(NSCoder *)coder { return [super initWithCoder:coder]; };
+
+- (instancetype)copyWithZone:(NSZone *)zone {
+    return [[self class] portionWithPercentEncodingIterations:[[self percentEncodingIterations] intValue]];
+}
 // }}}
 
 @end
@@ -63,6 +75,10 @@
 - (void)encodeWithCoder:(NSCoder *)coder { [super encodeWithCoder:coder]; }
 
 - (instancetype)initWithCoder:(NSCoder *)coder { return [super initWithCoder:coder]; };
+
+- (instancetype)copyWithZone:(NSZone *)zone {
+    return [[self class] portionWithPercentEncodingIterations:[[self percentEncodingIterations] intValue]];
+}
 // }}}
 
 @end
@@ -81,6 +97,10 @@
 - (void)encodeWithCoder:(NSCoder *)coder { [super encodeWithCoder:coder]; }
 
 - (instancetype)initWithCoder:(NSCoder *)coder { return [super initWithCoder:coder]; };
+
+- (instancetype)copyWithZone:(NSZone *)zone {
+    return [[self class] portionWithPercentEncodingIterations:[[self percentEncodingIterations] intValue]];
+}
 // }}}
 
 @end
@@ -97,16 +117,31 @@
 - (void)encodeWithCoder:(NSCoder *)coder { [super encodeWithCoder:coder]; }
 
 - (instancetype)initWithCoder:(NSCoder *)coder { return [super initWithCoder:coder]; };
+
+- (instancetype)copyWithZone:(NSZone *)zone {
+    return [[self class] portionWithPercentEncodingIterations:[[self percentEncodingIterations] intValue]];
+}
 // }}}
 
 @end
 
-@implementation EVKFragmentPortion : EVKPercentEncodablePortion
+@implementation EVKFragmentPortion
 
 - (NSString *)evaluateUnencodedWithURL:(NSURL *)url {
     return [url fragmentString];
 }
 
+// Coding {{{
++ (BOOL)supportsSecureCoding { return YES; }
+
+- (void)encodeWithCoder:(NSCoder *)coder { [super encodeWithCoder:coder]; }
+
+- (instancetype)initWithCoder:(NSCoder *)coder { return [super initWithCoder:coder]; };
+
+- (instancetype)copyWithZone:(NSZone *)zone {
+    return [[self class] portionWithPercentEncodingIterations:[[self percentEncodingIterations] intValue]];
+}
+// }}}
 @end
 
 @implementation EVKQueryParameterValuePortion : EVKPercentEncodablePortion
@@ -144,10 +179,14 @@
 - (instancetype)initWithCoder:(NSCoder *)coder {
     return [self initWithParameter:[coder decodeObjectForKey:@"parameter"]
          percentEncodingIterations:[coder decodeIntForKey:@"percentEncodingIterations"]];
-};
+}
 
 - (NSOrderedSet<NSString *> *)endUserAccessibleKeys {
     return set(@"parameter", @"percentEncodingIterations");
+}
+
+- (instancetype)copyWithZone:(NSZone *)zone {
+    return [[self class] portionWithPercentEncodingIterations:[[self percentEncodingIterations] intValue]];
 }
 // }}}
 

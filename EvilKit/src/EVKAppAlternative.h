@@ -3,7 +3,7 @@
 #import "EVKAction.h"
 
 /// Object to represent an altenative app to a default scheme endpoint and the modifications that must be made to it's request
-@interface EVKAppAlternative : NSObject <NSSecureCoding>
+@interface EVKAppAlternative : NSObject <NSSecureCoding, NSCopying>
 
 /// Bundle ID of the default scheme endpoint
 @property (copy) NSString *targetBundleID;

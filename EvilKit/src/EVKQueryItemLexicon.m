@@ -54,6 +54,12 @@
                       dictionary:[coder decodeObjectOfClass:[NSDictionary class] forKey:@"substitutions"]
                     defaultState:[coder decodeIntegerForKey:@"defaultState"]];
 }
+
+- (instancetype)copyWithZone:(NSZone *)zone {
+    return [[[self class] alloc] initWithKeyName:[self param]
+                                      dictionary:[self substitutions]
+                                    defaultState:[self defaultState]];
+}
 // }}}
 
 @end

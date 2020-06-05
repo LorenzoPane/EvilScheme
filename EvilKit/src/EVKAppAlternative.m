@@ -45,6 +45,12 @@
                      substituteBundleID:[coder decodeObjectOfClass:[NSString class] forKey:@"substituteBundleID"]
                             urlOutlines:[coder decodeObjectOfClass:[NSDictionary class] forKey:@"urlOutlines"]];
 }
+
+- (instancetype)copyWithZone:(NSZone *)zone {
+    return [[[self class] alloc] initWithTargetBundleID:[self targetBundleID]
+                                     substituteBundleID:[self substituteBundleID]
+                                            urlOutlines:[self urlOutlines]];
+}
 // }}}
 
 @end

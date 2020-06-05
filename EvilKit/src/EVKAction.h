@@ -1,7 +1,7 @@
 #import "EVKURLPortions.h"
 
 /// Object to represent a regex pattern and its corrosponding blueprint
-@interface EVKAction : NSObject
+@interface EVKAction : NSObject <NSSecureCoding, NSCopying>
 
 @property (atomic, strong) NSString *regexPattern;
 @property (atomic, strong) NSArray<NSObject<EVKURLPortion> *> *outline;

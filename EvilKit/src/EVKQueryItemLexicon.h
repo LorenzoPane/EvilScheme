@@ -10,7 +10,7 @@ typedef NS_ENUM(NSInteger, URLQueryState) {
 };
 
 /// An object to model translations of query items from one application's context to another's
-@interface EVKQueryItemLexicon : NSObject <NSSecureCoding>
+@interface EVKQueryItemLexicon : NSObject <NSSecureCoding, NSCopying>
 
 /// The name with which to substitute
 @property (nonatomic, copy) NSString *param;

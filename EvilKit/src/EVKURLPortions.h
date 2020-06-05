@@ -10,7 +10,7 @@
 #define percentDecode(str) [str stringByRemovingPercentEncoding]
 
 /// Protocol representing functions of URLs that return strings
-@protocol EVKURLPortion <NSSecureCoding>
+@protocol EVKURLPortion <NSSecureCoding, NSCopying>
 /// Returns the evaluated portion given the original URL or an empty string
 /// @param url Original URL
 - (NSString *)evaluateWithURL:(NSURL *)url;
@@ -21,7 +21,7 @@
 @end
 
 /// Protocol to represent URL portions with an arbitrary number of percent encoding iterations
-@protocol EVKPercentEncodable <EVKURLPortion>
+@protocol EVKPercentEncodable <EVKURLPortion, NSCopying>
 /// Method to be overridden with the intended unencoded output of evaluateWithURL:
 /// @param url Original URL
 /// @seealso evaluateWithURL:
@@ -32,7 +32,7 @@
 /// return value logic: `(ret ? : @"")`
 /// @seealso EVKPercentEncodable
 /// @discussion When subclassed, evaluateUnencodedWithURL: should be overridden rather than evaluateWithURL:
-@interface EVKPercentEncodablePortion : NSObject <EVKPercentEncodable>
+@interface EVKPercentEncodablePortion : NSObject <EVKPercentEncodable, NSCopying>
 @property (copy) NSNumber *percentEncodingIterations;
 - (instancetype)initWithPercentEncodingIterations:(int)iterations;
 + (instancetype)portionWithPercentEncodingIterations:(int)iterations;

@@ -37,5 +37,23 @@
     return nil;
 }
 
-@end
+// Coding {{{
++ (BOOL)supportsSecureCoding { return YES; }
 
+- (void)encodeWithCoder:(NSCoder *)coder {
+    [coder encodeObject:[self regexPattern] forKey:@"regexPattern"];
+    [coder encodeObject:[self outline] forKey:@"outline"];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)coder {
+    return [self initWithRegexPattern:[coder decodeObjectForKey:@"regexPattern"]
+                           URLOutline:[coder decodeObjectForKey:@"outline"]];
+}
+
+- (instancetype)copyWithZone:(NSZone *)zone {
+    return [[self class] actionWithPattern:[self regexPattern]
+                                   outline:[self outline]];
+}
+// }}}
+
+@end
