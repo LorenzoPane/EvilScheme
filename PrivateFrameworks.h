@@ -32,7 +32,7 @@
             withOptions:(FBSOpenApplicationOptions *)options
              originator:(BSProcessHandle *)source
               requestID:(NSUInteger)req
-             completion:(id)completion ;
+             completion:(id)completion;
 - (void)activateApplication:(NSString *)bundleID
                   requestID:(NSUInteger)req
                     options:(FBSOpenApplicationOptions *)options

@@ -6,6 +6,6 @@
 @property (atomic, strong) NSArray<NSString *> *options;
 
 - (void)selectIndex:(NSUInteger)idx;
-- (void)selectObject:(id<NSCopying>)obj;
+- (void)selectObject:(NSString *)obj;
 
 @end

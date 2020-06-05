@@ -66,12 +66,11 @@ static NSURL *urlFromActions(NSArray *actions) {
     else {
         NSLog(@"[EVS] From:    %@\n%@", bundleID, options);
         if(app) {
-        // applicationIsInstalled:(id)arg1 ;
             NSURL *url; // Check all known URL locations
             if((url = [options dictionary][@"__PayloadURL"])
             || (url = [[options dictionary][@"__AppLink4LS"] URL])
             || (url = urlFromActions([options dictionary][@"__Actions"]))) {
-                if((url = [app transformURL:url])) {
+                if([app transformURL:url]) {
                     // Craft new request
                     bundleID                  = [app substituteBundleID];
                     NSMutableDictionary *opts = [NSMutableDictionary new];

@@ -16,7 +16,7 @@
 }
 
 - (void)setupNav {
-    [self setTitle:@"Experimental Preferences"];
+    [self setTitle:@"Experimental"];
     [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Apply"
                                                                                   style:UIBarButtonItemStylePlain
                                                                                  target:self
