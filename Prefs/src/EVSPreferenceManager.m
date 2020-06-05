@@ -88,156 +88,156 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
         @"Web Browsers": @[
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
                                                                                      substituteBundleID:@"com.alohabrowser.alohabrowser"
-                                                                                            urlOutlines:@{
-                                                                                                @"^x-web-search:" : @[
+                                                                                            urlOutlines:@[
+                                                                                                [EVKAction actionWithPattern:@"^x-web-search:" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:aloha percentEncodingIterations:0],
                                                                                                         [EVKStaticStringPortion portionWithString:search percentEncodingIterations:1],
                                                                                                         [EVKQueryPortion portionWithPercentEncodingIterations:1],
-                                                                                                ],
-                                                                                                @"^http(s?):" : @[
+                                                                                                ]],
+                                                                                                [EVKAction actionWithPattern:@"^http(s?):" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:aloha percentEncodingIterations:0],
                                                                                                         [EVKFullURLPortion portionWithPercentEncodingIterations:1],
-                                                                                                ],
-                                                                                            }] name:@"Aloha"],
+                                                                                                ]],
+                                                                                            ]] name:@"Aloha"],
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
                                                                                      substituteBundleID:@"com.brave.ios.browser"
-                                                                                            urlOutlines:@{
-                                                                                                @"^x-web-search:" : @[
+                                                                                            urlOutlines:@[
+                                                                                                [EVKAction actionWithPattern:@"^x-web-search:" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:brv percentEncodingIterations:0],
                                                                                                         [EVKStaticStringPortion portionWithString:search percentEncodingIterations:1],
                                                                                                         [EVKQueryPortion portionWithPercentEncodingIterations:1],
-                                                                                                ],
-                                                                                                @"^http(s?):" : @[
+                                                                                                ]],
+                                                                                                [EVKAction actionWithPattern:@"^http(s?):" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:brv percentEncodingIterations:0],
                                                                                                         [EVKFullURLPortion portionWithPercentEncodingIterations:1],
-                                                                                                ],
-                                                                                            }] name:@"Brave"],
+                                                                                                ]],
+                                                                                            ]] name:@"Brave"],
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
                                                                                      substituteBundleID:@"com.lipslabs.cake"
-                                                                                            urlOutlines:@{
-                                                                                                @"^x-web-search:" : @[
+                                                                                            urlOutlines:@[
+                                                                                                [EVKAction actionWithPattern:@"^x-web-search:" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:cake percentEncodingIterations:0],
                                                                                                         [EVKStaticStringPortion portionWithString:search percentEncodingIterations:1],
                                                                                                         [EVKQueryPortion portionWithPercentEncodingIterations:1],
-                                                                                                ],
-                                                                                                @"^http(s?):" : @[
+                                                                                                ]],
+                                                                                                [EVKAction actionWithPattern:@"^http(s?):" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:cake percentEncodingIterations:0],
                                                                                                         [EVKFullURLPortion portionWithPercentEncodingIterations:1],
-                                                                                                ],
-                                                                                            }] name:@"Cake"],
+                                                                                                ]],
+                                                                                            ]] name:@"Cake"],
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
                                                                                      substituteBundleID:@"com.duckduckgo.mobile.ios"
-                                                                                            urlOutlines:@{
-                                                                                                @"^x-web-search:" : @[
+                                                                                            urlOutlines:@[
+                                                                                                [EVKAction actionWithPattern:@"^x-web-search:" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:ddgBrowser percentEncodingIterations:0],
                                                                                                         [EVKStaticStringPortion portionWithString:search percentEncodingIterations:1],
                                                                                                         [EVKQueryPortion portionWithPercentEncodingIterations:1],
-                                                                                                ],
-                                                                                                @"^http(s?):" : @[
+                                                                                                ]],
+                                                                                                [EVKAction actionWithPattern:@"^http(s?):" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:ddgBrowser percentEncodingIterations:0],
                                                                                                         [EVKFullURLPortion portionWithPercentEncodingIterations:0],
-                                                                                                ],
-                                                                                            }] name:@"DuckDuckGo"],
+                                                                                                ]],
+                                                                                            ]] name:@"DuckDuckGo"],
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
                                                                                      substituteBundleID:@"com.microsoft.msedge"
-                                                                                            urlOutlines:@{
-                                                                                                @"^x-web-search:" : @[
+                                                                                            urlOutlines:@[
+                                                                                                [EVKAction actionWithPattern:@"^x-web-search:" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"microsoft-edge-https://" percentEncodingIterations:0],
                                                                                                         [EVKStaticStringPortion portionWithString:search percentEncodingIterations:1],
                                                                                                         [EVKQueryPortion portionWithPercentEncodingIterations:1],
-                                                                                                ],
-                                                                                                @"^http:" : @[
+                                                                                                ]],
+                                                                                                [EVKAction actionWithPattern:@"^http:" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"microsoft-edge-http://" percentEncodingIterations:0],
                                                                                                         [EVKTrimmedResourceSpecifierPortion portionWithPercentEncodingIterations:0],
-                                                                                                ],
-                                                                                                @"^https:" : @[
+                                                                                                ]],
+                                                                                                [EVKAction actionWithPattern:@"^https:" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"microsoft-edge-https://" percentEncodingIterations:0],
                                                                                                         [EVKTrimmedResourceSpecifierPortion portionWithPercentEncodingIterations:0],
-                                                                                                ],
-                                                                                            }] name:@"Microsoft Edge"],
+                                                                                                ]],
+                                                                                            ]] name:@"Microsoft Edge"],
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
                                                                                      substituteBundleID:@"com.google.chrome.ios"
-                                                                                            urlOutlines:@{
-                                                                                                @"^x-web-search:" : @[
+                                                                                            urlOutlines:@[
+                                                                                                [EVKAction actionWithPattern:@"^x-web-search:" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"googlechromes://" percentEncodingIterations:0],
                                                                                                         [EVKStaticStringPortion portionWithString:search percentEncodingIterations:1],
                                                                                                         [EVKQueryPortion portionWithPercentEncodingIterations:1],
-                                                                                                ],
-                                                                                                @"^http:" : @[
+                                                                                                ]],
+                                                                                                [EVKAction actionWithPattern:@"^http:" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"googlechrome://" percentEncodingIterations:0],
                                                                                                         [EVKTrimmedResourceSpecifierPortion portionWithPercentEncodingIterations:0],
-                                                                                                ],
-                                                                                                @"^https:" : @[
+                                                                                                ]],
+                                                                                                [EVKAction actionWithPattern:@"^https:" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"googlechromes://" percentEncodingIterations:0],
                                                                                                         [EVKTrimmedResourceSpecifierPortion portionWithPercentEncodingIterations:0],
-                                                                                                ],
-                                                                                            }] name:@"Google Chrome"],
+                                                                                                ]],
+                                                                                            ]] name:@"Google Chrome"],
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
                                                                                      substituteBundleID:@"org.mozilla.ios.Firefox"
-                                                                                            urlOutlines:@{
-                                                                                                @"^x-web-search:" : @[
+                                                                                            urlOutlines:@[
+                                                                                                [EVKAction actionWithPattern:@"^x-web-search:" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:ffx percentEncodingIterations:0],
                                                                                                         [EVKStaticStringPortion portionWithString:search percentEncodingIterations:1],
                                                                                                         [EVKQueryPortion portionWithPercentEncodingIterations:1],
-                                                                                                ],
-                                                                                                @"^http(s?):" : @[
+                                                                                                ]],
+                                                                                                [EVKAction actionWithPattern:@"^http(s?):" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:ffx percentEncodingIterations:0],
                                                                                                         [EVKFullURLPortion portionWithPercentEncodingIterations:1],
-                                                                                                ],
-                                                                                            }] name:@"Firefox"],
+                                                                                                ]],
+                                                                                            ]] name:@"Firefox"],
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
                                                                                      substituteBundleID:@"org.mozilla.ios.Focus"
-                                                                                            urlOutlines:@{
-                                                                                                @"^x-web-search:" : @[
+                                                                                            urlOutlines:@[
+                                                                                                [EVKAction actionWithPattern:@"^x-web-search:" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:focus percentEncodingIterations:0],
                                                                                                         [EVKStaticStringPortion portionWithString:search percentEncodingIterations:1],
                                                                                                         [EVKQueryPortion portionWithPercentEncodingIterations:1],
-                                                                                                ],
-                                                                                                @"^http(s?):" : @[
+                                                                                                ]],
+                                                                                                [EVKAction actionWithPattern:@"^http(s?):" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:focus percentEncodingIterations:0],
                                                                                                         [EVKFullURLPortion portionWithPercentEncodingIterations:1],
-                                                                                                ],
-                                                                                            }] name:@"Firefox Focus"],
+                                                                                                ]],
+                                                                                            ]] name:@"Firefox Focus"],
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
                                                                                      substituteBundleID:@"com.miketigas.OnionBrowser"
-                                                                                            urlOutlines:@{
-                                                                                                @"^x-web-search:" : @[
+                                                                                            urlOutlines:@[
+                                                                                                [EVKAction actionWithPattern:@"^x-web-search:" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"onionhttps://" percentEncodingIterations:0],
                                                                                                         [EVKStaticStringPortion portionWithString:search percentEncodingIterations:1],
                                                                                                         [EVKQueryPortion portionWithPercentEncodingIterations:1],
-                                                                                                ],
-                                                                                                @"^http:" : @[
+                                                                                                ]],
+                                                                                                [EVKAction actionWithPattern:@"^http:" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"onionhttp://" percentEncodingIterations:0],
                                                                                                         [EVKTrimmedResourceSpecifierPortion portionWithPercentEncodingIterations:0],
-                                                                                                ],
-                                                                                                @"^https:" : @[
+                                                                                                ]],
+                                                                                                [EVKAction actionWithPattern:@"^https:" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"onionhttps://" percentEncodingIterations:0],
                                                                                                         [EVKTrimmedResourceSpecifierPortion portionWithPercentEncodingIterations:0],
-                                                                                                ],
-                                                                                            }] name:@"OnionBrowser"],
+                                                                                                ]],
+                                                                                            ]] name:@"OnionBrowser"],
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilesafari"
                                                                                      substituteBundleID:@"com.opera.OperaTouch"
-                                                                                            urlOutlines:@{
-                                                                                                @"^x-web-search:" : @[
+                                                                                            urlOutlines:@[
+                                                                                                [EVKAction actionWithPattern:@"^x-web-search:" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"touch-https://" percentEncodingIterations:0],
                                                                                                         [EVKStaticStringPortion portionWithString:search percentEncodingIterations:1],
                                                                                                         [EVKQueryPortion portionWithPercentEncodingIterations:1],
-                                                                                                ],
-                                                                                                @"^http:" : @[
+                                                                                                ]],
+                                                                                                [EVKAction actionWithPattern:@"^http:" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"touch-http://" percentEncodingIterations:0],
                                                                                                         [EVKTrimmedResourceSpecifierPortion portionWithPercentEncodingIterations:0],
-                                                                                                ],
-                                                                                                @"^https:" : @[
+                                                                                                ]],
+                                                                                                [EVKAction actionWithPattern:@"^https:" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"touch-https://" percentEncodingIterations:0],
                                                                                                         [EVKTrimmedResourceSpecifierPortion portionWithPercentEncodingIterations:0],
-                                                                                                ],
-                                                                                            }] name:@"Opera"],
+                                                                                                ]],
+                                                                                            ]] name:@"Opera"],
         ],
         @"Maps": @[
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.Maps"
                                                                                      substituteBundleID:@"com.google.Maps"
-                                                                                            urlOutlines:@{
-                                                                                                @"^(((http(s?)://)?maps.apple.com)|(maps:))" : @[
+                                                                                            urlOutlines:@[
+                                                                                                [EVKAction actionWithPattern:@"^(((http(s?)://)?maps.apple.com)|(maps:))" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"comgooglemaps://?" percentEncodingIterations:0],
                                                                                                         [EVKTranslatedQueryPortion portionWithDictionary:@{
                                                                                                             @"t"       : [[EVKQueryItemLexicon alloc] initWithKeyName:@"directionsmode"
@@ -259,12 +259,12 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                             @"q"       : [EVKQueryItemLexicon identityLexiconWithName:@"q"],
                                                                                                             @"ll"      : [EVKQueryItemLexicon identityLexiconWithName:@"q"],
                                                                                                             @"z"       : [EVKQueryItemLexicon identityLexiconWithName:@"zoom"],
-                                                                                                        } percentEncodingIterations:0]
-                                                                                                ]}] name:@"Google Maps"],
+                                                                                                        } percentEncodingIterations:0]]
+                                                                                                ]]] name:@"Google Maps"],
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.Maps"
                                                                                      substituteBundleID:@"com.waze.iphone"
-                                                                                            urlOutlines:@{
-                                                                                                @"^(((http(s?)://)?maps.apple.com)|(maps:))" : @[
+                                                                                            urlOutlines:@[
+                                                                                                [EVKAction actionWithPattern:@"^(((http(s?)://)?maps.apple.com)|(maps:))" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"waze://?" percentEncodingIterations:0],
                                                                                                         [EVKTranslatedQueryPortion portionWithDictionary:@{
                                                                                                             @"address" : [EVKQueryItemLexicon identityLexiconWithName:@"q"],
@@ -275,17 +275,17 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                             @"sll"     : [EVKQueryItemLexicon identityLexiconWithName:@"ll"],
                                                                                                             @"z"       : [EVKQueryItemLexicon identityLexiconWithName:@"z"],
                                                                                                         } percentEncodingIterations:0]
-                                                                                                ]}] name:@"Waze"],
+                                                                                                ]]]] name:@"Waze"],
         ],
         @"Mail Clients": @[
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilemail"
                                                                                      substituteBundleID:@"com.readdle.smartemail"
-                                                                                            urlOutlines:@{
-                                                                                                @"^mailto:[^\?]*$" : @[
+                                                                                            urlOutlines:@[
+                                                                                                [EVKAction actionWithPattern:@"^mailto:[^\?]*$" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"readdle-spark://compose?recipient=" percentEncodingIterations:0],
                                                                                                         [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
-                                                                                                ],
-                                                                                                @"^mailto:.*\?.*$" : @[
+                                                                                                ]],
+                                                                                                [EVKAction actionWithPattern:@"^mailto:.*\?.*$" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"readdle-spark://compose?recipient=" percentEncodingIterations:0],
                                                                                                         [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
                                                                                                         [EVKStaticStringPortion portionWithString:@"&" percentEncodingIterations:0],
@@ -296,47 +296,46 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                             @"subject" : [EVKQueryItemLexicon identityLexiconWithName:@"subject"],
                                                                                                             @"to"      : [EVKQueryItemLexicon identityLexiconWithName:@"recipient"],
                                                                                                         } percentEncodingIterations:0],
-                                                                                                ],
-                                                                                            }] name:@"Spark"],
+                                                                                                ]],
+                                                                                            ]] name:@"Spark"],
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilemail"
                                                                                      substituteBundleID:@"com.google.Gmail"
-                                                                                            urlOutlines:@{
-                                                                                                @"^mailto:[^\?]*$" : @[
+                                                                                            urlOutlines:@[
+                                                                                                [EVKAction actionWithPattern:@"^mailto:[^\?]*$" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"googlegmail://co?to=" percentEncodingIterations:0],
                                                                                                         [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
-                                                                                                ],
-                                                                                                @"^mailto:.*\?.*$" : @[
+                                                                                                ]],
+                                                                                                [EVKAction actionWithPattern:@"^mailto:.*\?.*$" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"googlegmail://co?to=" percentEncodingIterations:0],
                                                                                                         [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
                                                                                                         [EVKStaticStringPortion portionWithString:@"&" percentEncodingIterations:0],
 
                                                                                                         [EVKQueryPortion portionWithPercentEncodingIterations:0],
-                                                                                                ],
-                                                                                            }] name:@"GMail"],
-
+                                                                                                ]],
+                                                                                            ]] name:@"GMail"],
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilemail"
                                                                                      substituteBundleID:@"com.CloudMagic.Mail"
-                                                                                            urlOutlines:@{
-                                                                                                @"^mailto:[^\?]*$" : @[
+                                                                                            urlOutlines:@[
+                                                                                                [EVKAction actionWithPattern:@"^mailto:[^\?]*$" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"cloudmagic://compose?to=" percentEncodingIterations:0],
                                                                                                         [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
-                                                                                                ],
-                                                                                                @"^mailto:.*\?.*$" : @[
+                                                                                                ]],
+                                                                                                [EVKAction actionWithPattern:@"^mailto:.*\?.*$" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"cloudmagic://compose?to=" percentEncodingIterations:0],
                                                                                                         [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
                                                                                                         [EVKStaticStringPortion portionWithString:@"&" percentEncodingIterations:0],
 
                                                                                                         [EVKQueryPortion portionWithPercentEncodingIterations:0],
-                                                                                                ],
-                                                                                            }] name:@"Newton"],
+                                                                                                ]],
+                                                                                            ]] name:@"Newton"],
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilemail"
                                                                                      substituteBundleID:@"com.airmailapp.iphone"
-                                                                                            urlOutlines:@{
-                                                                                                @"^mailto:[^\?]*$" : @[
+                                                                                            urlOutlines:@[
+                                                                                                [EVKAction actionWithPattern:@"^mailto:[^\?]*$" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"airmail://compose?to=" percentEncodingIterations:0],
                                                                                                         [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
-                                                                                                ],
-                                                                                                @"^mailto:.*\?.*$" : @[
+                                                                                                ]],
+                                                                                                [EVKAction actionWithPattern:@"^mailto:.*\?.*$" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"airmail://compose?to=" percentEncodingIterations:0],
                                                                                                         [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
                                                                                                         [EVKStaticStringPortion portionWithString:@"&" percentEncodingIterations:0],
@@ -349,54 +348,54 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                             @"subject" : [EVKQueryItemLexicon identityLexiconWithName:@"subject"],
                                                                                                             @"to"      : [EVKQueryItemLexicon identityLexiconWithName:@"recipient"],
                                                                                                         } percentEncodingIterations:0],
-                                                                                                ],
-                                                                                            }] name:@"Airmail"],
+                                                                                                ]],
+                                                                                            ]] name:@"Airmail"],
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.mobilemail"
                                                                                      substituteBundleID:@"com.microsoft.Office.Outlook"
-                                                                                            urlOutlines:@{
-                                                                                                @"^mailto:[^\?]*$" : @[
+                                                                                            urlOutlines:@[
+                                                                                                [EVKAction actionWithPattern:@"^mailto:[^\?]*$" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"ms-outlook://compose?to=" percentEncodingIterations:0],
                                                                                                         [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
-                                                                                                ],
-                                                                                                @"^mailto:.*\?.*$" : @[
+                                                                                                ]],
+                                                                                                [EVKAction actionWithPattern:@"^mailto:.*\?.*$" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"ms-outlook://compose?to=" percentEncodingIterations:0],
                                                                                                         [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
                                                                                                         [EVKStaticStringPortion portionWithString:@"&" percentEncodingIterations:0],
 
                                                                                                         [EVKQueryPortion portionWithPercentEncodingIterations:0],
-                                                                                                ],
-                                                                                             }] name:@"Outlook"],
+                                                                                                ]],
+                                                                                             ]] name:@"Outlook"],
         ],
         @"Package Managers": @[
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.saurik.Cydia"
                                                                                      substituteBundleID:@"xyz.willy.Zebra"
-                                                                                            urlOutlines:@{
-                                                                                                @"^cydia:.*" : @[
+                                                                                            urlOutlines:@[
+                                                                                                [EVKAction actionWithPattern:@"^cydia:.*" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"zbra://sources/add/" percentEncodingIterations:0],
                                                                                                         [EVKRegexSubstitutionPortion portionWithRegex:@"(.*)=(.*)" template:@"$2" percentEncodingIterations:0],
-                                                                                                ],
-                                                                                            }] name:@"Zebra"],
+                                                                                                ]],
+                                                                                            ]] name:@"Zebra"],
         ],
         @"Reddit Clients": @[
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.reddit.Reddit"
                                                                                      substituteBundleID:@"com.christianselig.Apollo"
-                                                                                            urlOutlines:@{
-                                                                                                @".*reddit.com/r.*" : @[
+                                                                                            urlOutlines:@[
+                                                                                                [EVKAction actionWithPattern:@".*reddit.com/r.*" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"apollo://reddit.com/" percentEncodingIterations:0],
                                                                                                         [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
-                                                                                                ],
-                                                                                                @".*reddit.com(/?)$" : @[
+                                                                                                ]],
+                                                                                                [EVKAction actionWithPattern:@".*reddit.com(/?)$" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"apollo://" percentEncodingIterations:0],
-                                                                                                ],
-                                                                                                @"amp.reddit.com/branch-redirect.*" : @[
+                                                                                                ]],
+                                                                                                [EVKAction actionWithPattern:@"amp.reddit.com/branch-redirect.*" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"apollo://reddit.com" percentEncodingIterations:0],
                                                                                                         [EVKQueryParameterValuePortion portionWithParameter:@"path" percentEncodingIterations:0]
-                                                                                                ],
-                                                                                                @".*reddit.app.link.*" : @[
+                                                                                                ]],
+                                                                                                [EVKAction actionWithPattern:@".*reddit.app.link.*" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"apollo://reddit.com" percentEncodingIterations:0],
                                                                                                         [EVKQueryParameterValuePortion portionWithParameter:@"$deeplink_path" percentEncodingIterations:0]
-                                                                                                ],
-                                                                                            }] name:@"Apollo"],
+                                                                                                ]],
+                                                                                            ]] name:@"Apollo"],
         ],
     }];
 }

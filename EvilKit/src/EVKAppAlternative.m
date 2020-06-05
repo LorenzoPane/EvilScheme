@@ -1,13 +1,10 @@
 #import "EVKAppAlternative.h"
-#import "NSURL+ComponentAdditions.h"
-
-#define regex(pattern) [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:nil]
 
 @implementation EVKAppAlternative
 
 - (instancetype)initWithTargetBundleID:(NSString *)targetBundleID
                     substituteBundleID:(NSString *)substituteBundleID
-                           urlOutlines:(NSDictionary<NSString *, NSArray<NSObject<EVKURLPortion> *> *> *)outlines {
+                           urlOutlines:(NSArray<EVKAction *> *)outlines {
     if((self = [super init])) {
         _targetBundleID = targetBundleID;
         _substituteBundleID = substituteBundleID;
@@ -20,28 +17,18 @@
 - (instancetype)init {
     return [self initWithTargetBundleID:@""
                      substituteBundleID:@""
-                            urlOutlines:@{}];
+                            urlOutlines:@[]];
 }
 
 - (NSURL *)transformURL:(NSURL *)url {
-    NSArray<NSObject<EVKURLPortion> *> *outline;
-
-    for(NSString *pattern in [self urlOutlines]) {
-        if(regex(pattern) && [url matchesRegularExpression:regex(pattern)]) {
-            outline = [self urlOutlines][pattern];
-            break;
+    NSURL *ret;
+    for(EVKAction *action in [self urlOutlines]) {
+        if((ret = [action transformURL:url])) {
+            return ret;
         }
     }
 
-    if(outline) {
-        NSMutableString *ret = [NSMutableString new];
-        for(NSObject<EVKURLPortion> *portion in outline) {
-            [ret appendString:[portion evaluateWithURL:url]];
-        }
-        return [NSURL URLWithString:ret];
-    }
-
-    return url;
+    return nil;
 }
 
 // Coding {{{
