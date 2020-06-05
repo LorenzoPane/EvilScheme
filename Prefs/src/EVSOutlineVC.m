@@ -134,6 +134,7 @@ NS_ENUM(NSInteger, OutlineTextFieldTags) {
         [[self tableView] deleteRowsAtIndexPaths:@[indexPath]
                                 withRowAnimation:UITableViewRowAnimationMiddle];
     }
+    [[self delegate] controllerDidChangeModel:self];
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
