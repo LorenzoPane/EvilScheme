@@ -5,4 +5,7 @@
 @property (atomic, strong) UIPickerView *picker;
 @property (atomic, strong) NSArray<NSString *> *options;
 
+- (void)selectIndex:(NSUInteger)idx;
+- (void)selectObject:(id<NSCopying>)obj;
+
 @end

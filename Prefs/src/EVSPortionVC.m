@@ -65,7 +65,17 @@ NS_ENUM(NSInteger, PortionVCSection) {
             L0PickerCell *cell = [tableView dequeueReusableCellWithIdentifier:PICKER_CELL_ID forIndexPath:indexPath];
             [[cell textLabel] setText:@"Type"];
             [[cell field] setText:[[self portion] stringRepresentation]];
-            [cell setOptions:[[EVSPortionVM classNameMappings] allKeys]];
+
+            NSDictionary *mappings = [EVSPortionVM classNameMappings];
+            [cell setOptions:[mappings allKeys]];
+
+            for(NSString *key in [mappings allKeys]) {
+                if([[[self portion] portion] class] == mappings[key]) {
+                    [cell selectObject:key];
+                    break;
+                }
+            }
+
             [[cell field] setTag:-1];
             [cell setDelegate:self];
             return cell;

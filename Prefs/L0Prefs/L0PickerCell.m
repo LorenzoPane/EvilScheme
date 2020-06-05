@@ -58,4 +58,12 @@ numberOfRowsInComponent:(NSInteger)component {
     [[self delegate] textFieldDidChange:[self field]];
 }
 
+- (void)selectIndex:(NSUInteger)idx {
+    [[self picker] selectRow:idx inComponent:0 animated:YES];
+}
+
+- (void)selectObject:(id<NSCopying>)obj {
+    [self selectIndex:[[self options] indexOfObject:obj]];
+}
+
 @end

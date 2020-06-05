@@ -82,6 +82,7 @@ NS_ENUM(NSInteger, ExperimentalPrefsSections) {
             [[cell field] setText:[EVSPreferenceManager searchEngine]];
             [[cell field] setTag:-1];
             [cell setOptions:@[@"DuckDuckGo", @"Google", @"Yahoo", @"Bing"]];
+            [cell selectObject:[EVSPreferenceManager searchEngine]];
 
             return cell;
         }
