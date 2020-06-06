@@ -374,11 +374,31 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.saurik.Cydia"
                                                                                      substituteBundleID:@"xyz.willy.Zebra"
                                                                                             urlOutlines:@[
-                                                                                                [EVKAction actionWithPattern:@"^cydia:.*" outline:@[
-                                                                                                        [EVKStaticStringPortion portionWithString:@"zbra://sources/add/" percentEncodingIterations:0],
-                                                                                                        [EVKRegexSubstitutionPortion portionWithRegex:@"(.*)=(.*)" template:@"$2" percentEncodingIterations:0],
+                                                                                                [EVKAction actionWithPattern:@"^cydia:.*(((source).*(package))|((package).*(source)))" outline:@[
+                                                                                                    [EVKStaticStringPortion portionWithString:@"zbra://packages/" percentEncodingIterations:0],
+                                                                                                    [EVKRegexSubstitutionPortion portionWithRegex:@".*?package=(.*?)(&|$).*"
+                                                                                                                                         template:@"$1"
+                                                                                                                        percentEncodingIterations:0],
+                                                                                                    [EVKStaticStringPortion portionWithString:@"?source=" percentEncodingIterations:0],
+                                                                                                    [EVKRegexSubstitutionPortion portionWithRegex:@".*?source=(.*?)(&|$).*"
+                                                                                                                                         template:@"$1"
+                                                                                                                        percentEncodingIterations:0],
                                                                                                 ]],
-                                                                                            ]] name:@"Zebra"],
+                                                                                                [EVKAction actionWithPattern:@"^cydia:.*package" outline:@[
+                                                                                                    [EVKStaticStringPortion portionWithString:@"zbra://packages/" percentEncodingIterations:0],
+                                                                                                    [EVKRegexSubstitutionPortion portionWithRegex:@".*?package=(.*?)(&|$).*"
+                                                                                                                                         template:@"$1"
+                                                                                                                        percentEncodingIterations:0],
+                                                                                                ]],
+                                                                                                [EVKAction actionWithPattern:@"^cydia:.*source" outline:@[
+                                                                                                    [EVKStaticStringPortion portionWithString:@"zbra://sources/add/" percentEncodingIterations:0],
+                                                                                                    [EVKRegexSubstitutionPortion portionWithRegex:@".*?source=(.*?)(&|$).*"
+                                                                                                                                         template:@"$1"
+                                                                                                                        percentEncodingIterations:0],
+                                                                                                ]],
+                                                                                            ]]
+                                                                    name:@"Zebra"
+                                                         targetBundleIDs:@[@"org.coolstar.SileoStore"]],
         ],
         @"Reddit Clients": @[
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.reddit.Reddit"

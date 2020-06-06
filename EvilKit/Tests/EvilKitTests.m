@@ -551,6 +551,47 @@
         XCTAssertTrue(!result || [result isEqualToString:target]);
     }
 }
+
+- (void)testZebra {
+    NSDictionary<NSString *, NSString *> *urls = @{
+        @"cydia://url/https://cydia.saurik.com/api/share#?source=https://repo.dynastic.co":  @"zbra://sources/add/https://repo.dynastic.co",
+        @"cydia://url/https://cydia.saurik.com/api/share#?source=https://repo.dynastic.co/&package=net.pane.l.evilscheme": @"zbra://packages/net.pane.l.evilscheme?source=https://repo.dynastic.co/",
+        @"cydia://url/https://cydia.saurik.com/api/share#?package=net.pane.l.evilscheme": @"zbra://packages/net.pane.l.evilscheme",
+    };
+
+    EVKAppAlternative *zebra = [[EVKAppAlternative alloc] initWithTargetBundleID:@"com.saurik.Cydia"
+                                                              substituteBundleID:@"xyz.willy.Zebra"
+                                                                     urlOutlines:@[
+                                                                         [EVKAction actionWithPattern:@"^cydia:.*(((source).*(package))|((package).*(source)))" outline:@[
+                                                                             [EVKStaticStringPortion portionWithString:@"zbra://packages/" percentEncodingIterations:0],
+                                                                             [EVKRegexSubstitutionPortion portionWithRegex:@".*?package=(.*?)(&|$).*"
+                                                                                                                  template:@"$1"
+                                                                                                 percentEncodingIterations:0],
+                                                                             [EVKStaticStringPortion portionWithString:@"?source=" percentEncodingIterations:0],
+                                                                             [EVKRegexSubstitutionPortion portionWithRegex:@".*?source=(.*?)(&|$).*"
+                                                                                                                  template:@"$1"
+                                                                                                 percentEncodingIterations:0],
+                                                                         ]],
+                                                                         [EVKAction actionWithPattern:@"^cydia:.*package" outline:@[
+                                                                             [EVKStaticStringPortion portionWithString:@"zbra://packages/" percentEncodingIterations:0],
+                                                                             [EVKRegexSubstitutionPortion portionWithRegex:@".*?package=(.*?)(&|$).*"
+                                                                                                                  template:@"$1"
+                                                                                                 percentEncodingIterations:0],
+                                                                         ]],
+                                                                         [EVKAction actionWithPattern:@"^cydia:.*source" outline:@[
+                                                                             [EVKStaticStringPortion portionWithString:@"zbra://sources/add/" percentEncodingIterations:0],
+                                                                             [EVKRegexSubstitutionPortion portionWithRegex:@".*?source=(.*?)(&|$).*"
+                                                                                                                  template:@"$1"
+                                                                                                 percentEncodingIterations:0],
+                                                                         ]],
+                                                                     ]];
+
+    for(NSString *url in urls) {
+        NSURL *result = [zebra transformURL:[NSURL URLWithString:url]];
+        XCTAssertTrue([[result absoluteString] isEqualToString:urls[url]]);
+    }
+}
+
 // }}}
 
 /*
