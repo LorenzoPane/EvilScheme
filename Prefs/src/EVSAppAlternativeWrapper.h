@@ -6,13 +6,15 @@
 
 @property (atomic, strong) EVKAppAlternative *orig;
 @property (atomic, strong) NSString *name;
+@property (atomic, strong) NSMutableArray<NSString *> *targetBundleIDs;
 
 - (instancetype)initWithAppAlternative:(EVKAppAlternative *)app name:(NSString *)name;
-- (NSString *)targetBundleID;
-- (void)setTargetBundleID:(NSString *)bundleID;
+- (instancetype)initWithAppAlternative:(EVKAppAlternative *)app
+                                  name:(NSString *)name
+                       targetBundleIDs:(NSArray<NSString *> *)targets;
 - (NSString *)substituteBundleID;
 - (void)setSubstituteBundleID:(NSString *)bundleID;
-- (NSDictionary<NSString *, NSArray<NSObject<EVKURLPortion> *> *> *)urlOutlines;
-- (void)setUrlOutlines:(NSDictionary<NSString *, NSArray<NSObject<EVKURLPortion> *> *> *)outlines;
+- (NSArray<EVKAction *> *)urlOutlines;
+- (void)setUrlOutlines:(NSArray<EVKAction *> *)outlines;
 
 @end

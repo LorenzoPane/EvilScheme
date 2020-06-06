@@ -9,10 +9,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    [[self tableView] setEditing:YES animated:YES];
     [self setupNav];
     blacklist = [[EVSPreferenceManager blacklistedApps] mutableCopy];
+}
+
+- (void)setupTable {
+    [super setupTable];
+    [[self tableView] setEditing:YES animated:YES];
+    [[self tableView] setAllowsSelectionDuringEditing:YES];
 }
 
 - (void)setupNav {
@@ -109,6 +113,13 @@ NS_ENUM(NSInteger, ExperimentalPrefsSections) {
     }
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+    if([indexPath section] == BlacklistedAppSection && [indexPath row] == [blacklist count]) {
+        [self tableView:[self tableView] commitEditingStyle:UITableViewCellEditingStyleInsert forRowAtIndexPath:indexPath];
+    }
+}
+
 #pragma mark - editing
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -132,8 +143,10 @@ NS_ENUM(NSInteger, ExperimentalPrefsSections) {
             [[self tableView] deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
             break;
         case UITableViewCellEditingStyleInsert:
-            [blacklist addObject:@""];
-            [[self tableView] insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            if(![blacklist containsObject:@""]) {
+                [blacklist addObject:@""];
+                [[self tableView] insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            }
             break;
         default:
             break;

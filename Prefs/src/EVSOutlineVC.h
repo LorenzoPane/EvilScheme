@@ -4,7 +4,6 @@
 #import "EVSPortionVC.h"
 
 @interface EVSOutlineVC : L0PrefVC <L0TextCellDelegate, L0PrefVCDelegate, UITableViewDelegate, UITableViewDataSource>
-@property (atomic, strong) NSMutableArray<NSObject<EVKURLPortion> *> *outline;
-@property (atomic, strong) NSString *regex;
-@property (atomic, strong) NSString *key;
+@property (atomic, strong) EVKAction *action;
+@property (atomic, assign) NSUInteger index;
 @end

@@ -44,8 +44,12 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
 
 
     NSMutableDictionary<NSString *, EVKAppAlternative *> *dict = [NSMutableDictionary new];
-    for(EVSAppAlternativeWrapper *alt in alternatives) {
-        dict[[[alt orig] targetBundleID]] = [alt orig];
+    for(EVSAppAlternativeWrapper *altWrapper in alternatives) {
+        for(NSString *target in [altWrapper targetBundleIDs]) {
+            EVKAppAlternative *alt = [[altWrapper orig] copy];
+            [alt setTargetBundleID:target];
+            dict[target] = alt;
+        }
     }
 
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:[NSDictionary dictionaryWithDictionary:dict]
