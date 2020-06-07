@@ -6,21 +6,25 @@
     return [self initWithAppAlternative:[EVKAppAlternative new] name:@""];
 }
 
-- (instancetype)initWithAppAlternative:(EVKAppAlternative *)app name:(NSString *)name {
+- (instancetype)initWithAppAlternative:(EVKAppAlternative *)app
+                                  name:(NSString *)name
+                       targetBundleIDs:(NSArray<NSString *> *)targets {
     if((self = [super init])) {
         _orig = app;
         _name = name;
+        _targetBundleIDs = [targets mutableCopy];
+        if(![_targetBundleIDs containsObject:[app targetBundleID]]) {
+            [_targetBundleIDs addObject:[app targetBundleID]];
+        }
     }
 
     return self;
 }
 
-- (NSString *)targetBundleID {
-    return [[self orig] targetBundleID];
-}
-
-- (void)setTargetBundleID:(NSString *)bundleID {
-    [[self orig] setTargetBundleID:bundleID];
+- (instancetype)initWithAppAlternative:(EVKAppAlternative *)app name:(NSString *)name {
+    return [self initWithAppAlternative:app
+                                   name:name
+                        targetBundleIDs:@[]];
 }
 
 - (NSString *)substituteBundleID {
@@ -31,19 +35,12 @@
     [[self orig] setSubstituteBundleID:bundleID];
 }
 
-- (NSDictionary<NSString *, NSArray<NSObject<EVKURLPortion> *> *> *)urlOutlines {
+- (NSArray<EVKAction *> *)urlOutlines {
     return [[self orig] urlOutlines];
 }
 
-- (void)setUrlOutlines:(NSDictionary<NSString *, NSArray<NSObject <EVKURLPortion> *> *> *)outlines {
+- (void)setUrlOutlines:(NSArray<EVKAction *> *)outlines {
    [[self orig] setUrlOutlines:outlines];
-}
-
-- (NSDictionary *)dict {
-    return [self urlOutlines];
-}
-- (void)setDict:(NSDictionary *)dict {
-    [self setUrlOutlines:dict];
 }
 
 // Coding {{{

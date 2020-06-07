@@ -60,6 +60,11 @@
                                                         forKey:@"paramTranslations"]
           percentEncodingIterations:[coder decodeIntForKey:@"percentEncodingIterations"]];
 }
+
+- (instancetype)copyWithZone:(NSZone *)zone {
+    return [[self class] portionWithDictionary:[self paramTranslations]
+                     percentEncodingIterations:[[self percentEncodingIterations] intValue]];
+}
 // }}}
 
 @end

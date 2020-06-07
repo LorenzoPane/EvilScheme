@@ -53,6 +53,10 @@
 - (instancetype)initWithCoder:(NSCoder *)coder {
     return [self initWithPercentEncodingIterations:[coder decodeIntForKey:@"percentEncodingIterations"]];
 }
+
+- (instancetype)copyWithZone:(NSZone *)zone {
+    return [[self class] portionWithPercentEncodingIterations:[[self percentEncodingIterations] intValue]];
+}
 // }}}
 
 @end

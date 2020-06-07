@@ -13,5 +13,9 @@
 + (NSString *)searchEngine;
 + (void)setBlacklistedApps:(NSArray<NSString *> *)apps;
 + (NSArray<NSString *> *)blacklistedApps;
++ (void)setLogging:(BOOL)logging;
++ (BOOL)isLogging;
++ (NSDictionary *)logDict;
++ (void)setLogDict:(NSDictionary *)dict;
 
 @end

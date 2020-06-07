@@ -42,6 +42,11 @@
     return [self initWithString:[coder decodeObjectOfClass:[NSString class] forKey:@"string"]
       percentEncodingIterations:[coder decodeIntForKey:@"percentEncodingIterations"]];
 }
+
+- (instancetype)copyWithZone:(NSZone *)zone {
+    return [[self class] portionWithString:[self string]
+                 percentEncodingIterations:[[self percentEncodingIterations] intValue]];
+}
 // }}}
 
 @end

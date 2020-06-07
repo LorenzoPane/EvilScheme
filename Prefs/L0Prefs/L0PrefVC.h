@@ -7,6 +7,7 @@
 /// Default reuse identifiers
 #define LINK_CELL_ID           @"L0LinkCell"
 #define BASIC_CELL_ID          @"L0BasicCell"
+#define PROSE_CELL_ID          @"L0ProseCell"
 #define PICKER_CELL_ID         @"L0PickerCell"
 #define BUTTON_CELL_ID         @"L0ButtonCell"
 #define TOGGLE_CELL_ID         @"L0ToggleCell"

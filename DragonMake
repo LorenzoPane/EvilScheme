@@ -23,6 +23,7 @@ ZZ_EvilScheme:
   frameworks:
     - UserActivity
     - EvilKit
+    - CoreServices
 
 EvilSchemePrefs:
   dir: Prefs

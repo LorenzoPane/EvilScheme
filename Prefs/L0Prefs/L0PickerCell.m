@@ -62,8 +62,10 @@ numberOfRowsInComponent:(NSInteger)component {
     [[self picker] selectRow:idx inComponent:0 animated:YES];
 }
 
-- (void)selectObject:(id<NSCopying>)obj {
-    [self selectIndex:[[self options] indexOfObject:obj]];
+- (void)selectObject:(NSString *)obj {
+    if([[self options] containsObject:obj]) {
+        [self selectIndex:[[self options] indexOfObject:obj]];
+    }
 }
 
 @end

@@ -34,7 +34,7 @@ NS_ENUM(NSInteger, OutlineVCSection) {
         case RegexSection:
             return 1;
         case PortionSection:
-            return [[self outline] count] + 1;
+            return [[[self action] outline] count] + 1;
         default:
             return 0;
     }
@@ -63,14 +63,14 @@ NS_ENUM(NSInteger, OutlineTextFieldTags) {
         case RegexSection: {
             L0EditTextCell *cell = [tableView dequeueReusableCellWithIdentifier:EDIT_TEXT_CELL_ID forIndexPath:indexPath];
             [[cell textLabel] setText:@"Regex"];
-            [[cell field] setText:[self regex]];
+            [[cell field] setText:[[self action] regexPattern]];
             [cell setDelegate:self];
             return cell;
         }
         case PortionSection: {
-            if([indexPath row] < [[self outline] count]) {
+            if([indexPath row] < [[[self action] outline] count]) {
                 UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:LINK_CELL_ID forIndexPath:indexPath];
-                NSObject<EVKURLPortion> *item = [self outline][[indexPath row]];
+                NSObject<EVKURLPortion> *item = [[self action] outline][[indexPath row]];
                 [[cell textLabel] setText:[item stringRepresentation]];
                 return cell;
             } else {
@@ -86,8 +86,8 @@ NS_ENUM(NSInteger, OutlineTextFieldTags) {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if([indexPath section] == PortionSection) {
             NSInteger row = [indexPath row];
-        if(row < [[self outline] count]) {
-            [self presentVCForPortion:[self outline][row] withIndex:row];
+        if(row < [[[self action] outline] count]) {
+            [self presentVCForPortion:[[self action] outline][row] withIndex:row];
         } else {
             UIAlertController *alertCtrl = [UIAlertController alertControllerWithTitle:@"Add new URL fragment"
                                                                                message:@"Choose a fragment type"
@@ -130,7 +130,9 @@ NS_ENUM(NSInteger, OutlineTextFieldTags) {
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if(editingStyle == UITableViewCellEditingStyleDelete) {
-        [[self outline] removeObjectAtIndex:[indexPath row]];
+        NSMutableArray *arr = [[[self action] outline] mutableCopy];
+        [arr removeObjectAtIndex:[indexPath row]];
+        [[self action] setOutline:arr];
         [[self tableView] deleteRowsAtIndexPaths:@[indexPath]
                                 withRowAnimation:UITableViewRowAnimationMiddle];
     }
@@ -138,35 +140,39 @@ NS_ENUM(NSInteger, OutlineTextFieldTags) {
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
-    return ([proposedDestinationIndexPath section] == PortionSection && [proposedDestinationIndexPath row] < [[self outline] count]) ? proposedDestinationIndexPath : sourceIndexPath;
+    return ([proposedDestinationIndexPath section] == PortionSection && [proposedDestinationIndexPath row] < [[[self action] outline] count]) ? proposedDestinationIndexPath : sourceIndexPath;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [indexPath section] == PortionSection && [indexPath row] < [[self outline] count];
+    return [indexPath section] == PortionSection && [indexPath row] < [[[self action] outline] count];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [indexPath section] == PortionSection && [indexPath row] < [[self outline] count];
+    return [indexPath section] == PortionSection && [indexPath row] < [[[self action] outline] count];
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
-    NSObject<EVKURLPortion> *obj = [self outline][[sourceIndexPath row]];
-    [[self outline] removeObjectAtIndex:[sourceIndexPath row]];
-    [[self outline] insertObject:obj atIndex:[destinationIndexPath row]];
+    NSObject<EVKURLPortion> *obj = [[self action] outline][[sourceIndexPath row]];
+    NSMutableArray *arr = [[[self action] outline] mutableCopy];
+    [arr removeObjectAtIndex:[sourceIndexPath row]];
+    [arr insertObject:obj atIndex:[destinationIndexPath row]];
+    [[self action] setOutline:arr];
     [[self delegate] controllerDidChangeModel:self];
 }
 
 #pragma mark - model
 
 - (void)textFieldDidChange:(UITextField *)field {
-    if([field tag] == RegexTag && [[self delegate] controller:self canMoveFromKey:[self regex] toKey:[field text]]) {
-        [self setRegex:[field text]];
+    if([field tag] == RegexTag && [[self delegate] controller:self canMoveFromKey:[[self action] regexPattern] toKey:[field text]]) {
+        [[self action] setRegexPattern:[field text]];
         [[self delegate] controllerDidChangeModel:self];
     }
 }
 
 - (void)controllerDidChangeModel:(EVSPortionVC *)controller {
-    [self outline][[controller index]] = [[controller portion] portion];
+    NSMutableArray *arr = [[[self action] outline] mutableCopy];
+    arr[[controller index]] = [[controller portion] portion];
+    [[self action] setOutline:arr];
     [super controllerDidChangeModel:controller];
 }
 

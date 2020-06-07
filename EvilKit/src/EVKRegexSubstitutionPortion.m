@@ -58,6 +58,12 @@
                       template:[coder decodeObjectOfClass:[NSString class] forKey:@"templet"]
      percentEncodingIterations:[coder decodeIntForKey:@"percentEncodingIterations"] ];
 }
+
+- (instancetype)copyWithZone:(NSZone *)zone {
+    return [[self class] portionWithRegex:[self regex]
+                                 template:[self templet]
+                percentEncodingIterations:[[self percentEncodingIterations] intValue]];
+}
 // }}}
 
 @end
