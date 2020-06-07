@@ -76,10 +76,12 @@ NS_ENUM(NSUInteger, KeyValuePairVCTags) {
                 [self setKey:[field text]];
                 [self setTitle:[field text]];
             }
+            break;
         }
         case ValueTag: {
             [self setValue:txt];
             [[self delegate] controllerDidChangeModel:self];
+            break;
         }
     }
 }

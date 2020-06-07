@@ -130,6 +130,7 @@ NS_ENUM(NSInteger, AppTextFieldTags) {
             }
             [ctrl setDelegate:self];
             [[self navigationController] pushViewController:ctrl animated:YES];
+            break;
         }
         case TargetAppSection: {
             if([indexPath row] == [[[self appAlternative] targetBundleIDs] count]) {
