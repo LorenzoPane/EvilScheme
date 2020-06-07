@@ -412,22 +412,41 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.reddit.Reddit"
                                                                                      substituteBundleID:@"com.christianselig.Apollo"
                                                                                             urlOutlines:@[
+                                                                                                [EVKAction actionWithPattern:@".*reddit.app.link.*" outline:@[
+                                                                                                    [EVKStaticStringPortion portionWithString:@"apollo://reddit.com" percentEncodingIterations:0],
+                                                                                                    [EVKQueryParameterValuePortion portionWithParameter:@"$deeplink_path" percentEncodingIterations:0]
+                                                                                                ]],
+                                                                                                [EVKAction actionWithPattern:@"amp.reddit.com/branch-redirect.*" outline:@[
+                                                                                                    [EVKStaticStringPortion portionWithString:@"apollo://reddit.com" percentEncodingIterations:0],
+                                                                                                    [EVKQueryParameterValuePortion portionWithParameter:@"path" percentEncodingIterations:0]
+                                                                                                ]],
+                                                                                                [EVKAction actionWithPattern:@".*reddit.com(/?)$" outline:@[
+                                                                                                    [EVKStaticStringPortion portionWithString:@"apollo://" percentEncodingIterations:0],
+                                                                                                ]],
                                                                                                 [EVKAction actionWithPattern:@".*reddit.com/r.*" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"apollo://reddit.com/" percentEncodingIterations:0],
                                                                                                         [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
                                                                                                 ]],
-                                                                                                [EVKAction actionWithPattern:@".*reddit.com(/?)$" outline:@[
-                                                                                                        [EVKStaticStringPortion portionWithString:@"apollo://" percentEncodingIterations:0],
+                                                                                          ]] name:@"Apollo"],
+                [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.reddit.Reddit"
+                                                                                     substituteBundleID:@"AaronKovacs.Comet"
+                                                                                            urlOutlines:@[
+                                                                                                [EVKAction actionWithPattern:@".*reddit.app.link.*" outline:@[
+                                                                                                    [EVKStaticStringPortion portionWithString:@"comet://reddit.com" percentEncodingIterations:0],
+                                                                                                    [EVKQueryParameterValuePortion portionWithParameter:@"$deeplink_path" percentEncodingIterations:0]
                                                                                                 ]],
                                                                                                 [EVKAction actionWithPattern:@"amp.reddit.com/branch-redirect.*" outline:@[
-                                                                                                        [EVKStaticStringPortion portionWithString:@"apollo://reddit.com" percentEncodingIterations:0],
-                                                                                                        [EVKQueryParameterValuePortion portionWithParameter:@"path" percentEncodingIterations:0]
+                                                                                                    [EVKStaticStringPortion portionWithString:@"comet://reddit.com" percentEncodingIterations:0],
+                                                                                                    [EVKQueryParameterValuePortion portionWithParameter:@"path" percentEncodingIterations:0]
                                                                                                 ]],
-                                                                                                [EVKAction actionWithPattern:@".*reddit.app.link.*" outline:@[
-                                                                                                        [EVKStaticStringPortion portionWithString:@"apollo://reddit.com" percentEncodingIterations:0],
-                                                                                                        [EVKQueryParameterValuePortion portionWithParameter:@"$deeplink_path" percentEncodingIterations:0]
+                                                                                                [EVKAction actionWithPattern:@".*reddit.com/r.*" outline:@[
+                                                                                                        [EVKStaticStringPortion portionWithString:@"comet://reddit.com/" percentEncodingIterations:0],
+                                                                                                        [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
                                                                                                 ]],
-                                                                                            ]] name:@"Apollo"],
+                                                                                                [EVKAction actionWithPattern:@".*reddit.com(/?)$" outline:@[
+                                                                                                        [EVKStaticStringPortion portionWithString:@"comet://" percentEncodingIterations:0],
+                                                                                                ]],
+                                                                                           ]] name:@"Comet"],
         ],
     }];
 }
