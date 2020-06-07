@@ -7,6 +7,7 @@
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
 NSString *const dir              = @"/var/mobile/Library/Preferences/EvilScheme/";
+NSString *const logPath          = @"file:/var/mobile/Library/Preferences/EvilScheme/log.plist";
 NSString *const prefsPath        = @"file:/var/mobile/Library/Preferences/EvilScheme/prefs.plist";
 NSString *const blacklistPath    = @"file:/var/mobile/Library/Preferences/EvilScheme/blacklist.plist";
 NSString *const searchEnginePath = @"file:/var/mobile/Library/Preferences/EvilScheme/search.txt";
@@ -20,7 +21,7 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
     if (![[NSFileManager defaultManager] fileExistsAtPath:dirString
                                               isDirectory:nil]) {
         [[NSFileManager defaultManager] createDirectoryAtPath:dirString
-                                  withIntermediateDirectories:NO
+                                  withIntermediateDirectories:YES
                                                    attributes:nil
                                                         error:&err];
     } handle(err);
@@ -466,6 +467,41 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                             fromData:data
                                                                error:&err]; handle(err);
     return [set array] ? : @[];
+}
+
++ (BOOL)isLogging {
+    return [[self logDict][@"enabled"] boolValue];
+}
+
++ (void)setLogging:(BOOL)logging {
+    NSMutableDictionary *dict = [[self logDict] ? : @{} mutableCopy];
+    dict[@"enabled"] = @(logging);
+    [self setLogDict:dict];
+}
+
++ (NSDictionary *)logDict {
+    [self ensureDirExists:dir];
+    NSError *err;
+
+    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:logPath]
+                                         options:0
+                                           error:&err]; handle(err);
+
+    NSDictionary *ret = [NSKeyedUnarchiver unarchivedObjectOfClasses:[NSSet setWithObjects:[NSDictionary class], [NSArray class], [NSString class], [NSNumber class], nil]
+                                                            fromData:data
+                                                               error:&err]; handle(err);
+
+    return ret;
+}
+
++ (void)setLogDict:(NSDictionary *)dict {
+    NSError *err;
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:dict
+                                         requiringSecureCoding:NO
+                                                         error:&err]; handle(err);
+    [data writeToURL:[NSURL URLWithString:logPath]
+             options:0
+               error:&err]; handle(err);
 }
 
 @end

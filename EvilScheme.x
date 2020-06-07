@@ -34,6 +34,66 @@ static NSSet *blacklist() {
 }
 // }}}
 
+// Logging {{{
+static NSDictionary *logDict() {
+    NSError *err;
+    NSString *path = @"file:/var/mobile/Library/Preferences/EvilScheme/log.plist";
+
+    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:path]
+                                         options:0
+                                           error:&err];
+
+    NSSet *types = [NSSet setWithObjects:[NSDictionary class],
+                                         [NSArray class],
+                                         [NSString class],
+                                         [NSNumber class], nil];
+
+    NSDictionary *ret = [NSKeyedUnarchiver unarchivedObjectOfClasses:types
+                                                            fromData:data
+                                                               error:&err];
+
+    if(err) NSLog(@"[EVS] Error reading log: %@", [err localizedDescription]);
+
+    return ret;
+}
+
+static void setLogDict(NSDictionary *dict) {
+    NSError *err;
+
+    NSString *dir = @"/var/mobile/Library/Preferences/EvilScheme/";
+    // Ensure dir exists
+    if (![[NSFileManager defaultManager] fileExistsAtPath:dir
+                                              isDirectory:nil]) {
+        [[NSFileManager defaultManager] createDirectoryAtPath:dir
+                                  withIntermediateDirectories:YES
+                                                   attributes:nil
+                                                        error:&err];
+    }
+
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:dict
+                                         requiringSecureCoding:NO
+                                                         error:&err];
+
+    NSString *path = @"file:/var/mobile/Library/Preferences/EvilScheme/log.plist";
+    [data writeToURL:[NSURL URLWithString:path]
+             options:0
+               error:&err];
+
+    if(err) NSLog(@"[EVS] Error writing to log: %@", [err localizedDescription]);
+}
+
+static void logString(NSString *lString) {
+    NSLog(@"[EVS] %@", lString);
+    NSMutableDictionary *ld = [logDict() ? : @{} mutableCopy];
+    if([ld[@"enabled"] boolValue]) {
+        NSMutableArray *arr = [ld[@"data"] ? : @[] mutableCopy];
+        [arr addObject:lString];
+        ld[@"data"] = arr;
+        setLogDict(ld);
+    }
+}
+// }}}
+
 // Spelunk into actions as a last resort to find URL
 static NSURL *urlFromActions(NSArray *actions) {
     __block NSURL *ret;
@@ -59,12 +119,13 @@ static NSURL *urlFromActions(NSArray *actions) {
              completion:(id)completion {
 
     EVKAppAlternative *app = prefs()[bundleID];
+    NSMutableString *lString = [NSMutableString new];
     if([blacklist() containsObject:[source bundleIdentifier]]
     || !appInstalled([app substituteBundleID])) {
-        NSLog(@"[EVS] Ignored: %@\n%@", bundleID, options);
+        [lString appendFormat:@"Ignored: %@\n%@\n", bundleID, options];
     }
     else {
-        NSLog(@"[EVS] From:    %@\n%@", bundleID, options);
+        [lString appendFormat:@"From: %@\n%@\n", bundleID, options];
         if(app) {
             NSURL *url; // Check all known URL locations
             if((url = [options dictionary][@"__PayloadURL"])
@@ -80,8 +141,10 @@ static NSURL *urlFromActions(NSArray *actions) {
                 }
             }
         }
-        NSLog(@"[EVS] To:      %@\n%@", bundleID, options);
+        [lString appendFormat:@"\nTo: %@\n%@\n", bundleID, options];
     }
+
+    logString(lString);
     %orig;
 }
 

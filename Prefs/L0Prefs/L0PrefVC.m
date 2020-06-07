@@ -24,6 +24,7 @@
         LINK_CELL_ID           : [L0LinkCell class],
         BASIC_CELL_ID          : [L0DataCell class],
         PICKER_CELL_ID         : [L0PickerCell class],
+        PROSE_CELL_ID          : [L0ProseCell class],
         BUTTON_CELL_ID         : [L0ButtonCell class],
         TOGGLE_CELL_ID         : [L0ToggleCell class],
         STEPPER_CELL_ID        : [L0StepperCell class],

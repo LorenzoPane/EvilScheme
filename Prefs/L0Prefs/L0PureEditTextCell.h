@@ -6,4 +6,3 @@
 @property (nonatomic, weak) id<L0TextCellDelegate> delegate;
 
 @end
-

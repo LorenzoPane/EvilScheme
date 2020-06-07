@@ -5,6 +5,7 @@
 #import "EVSPreferenceManager.h"
 #import "EVSRootVC.h"
 #import "EVSExperimentalPrefsVC.h"
+#import "EVSLogVC.h"
 
 @implementation EVSRootVC {
     NSMutableArray<EVSAppAlternativeWrapper *> *appAlternatives;
@@ -84,7 +85,7 @@ NS_ENUM(NSInteger, RootVCSection) {
         case AppAlternativeSection:
             return [appAlternatives count] + 1;
         case MoreSettingsSection:
-            return 1;
+            return 2;
         default:
             return 0;
     }
@@ -121,7 +122,7 @@ NS_ENUM(NSInteger, RootVCSection) {
         }
         case MoreSettingsSection: {
             L0LinkCell *cell = [tableView dequeueReusableCellWithIdentifier:LINK_CELL_ID forIndexPath:indexPath];
-            [[cell textLabel] setText:@"Experimental Settings"];
+            [[cell textLabel] setText:([indexPath row] ? @"Log" : @"Experimental Settings")];
             return cell;
         }
         default:
@@ -154,8 +155,13 @@ NS_ENUM(NSInteger, RootVCSection) {
             break;
         }
         case MoreSettingsSection: {
-            EVSExperimentalPrefsVC *ctrl = [EVSExperimentalPrefsVC new];
-            [[self navigationController] pushViewController:ctrl animated:YES];
+            if([indexPath row]) {
+                EVSLogVC *ctrl = [EVSLogVC new];
+                [[self navigationController] pushViewController:ctrl animated:YES];
+            } else {
+                EVSExperimentalPrefsVC *ctrl = [EVSExperimentalPrefsVC new];
+                [[self navigationController] pushViewController:ctrl animated:YES];
+            }
             break;
         }
         default:
