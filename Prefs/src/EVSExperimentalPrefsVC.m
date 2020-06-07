@@ -3,6 +3,8 @@
 
 @implementation EVSExperimentalPrefsVC {
     NSMutableArray<NSString *> *blacklist;
+    NSString *selectedEngine;
+    NSDictionary *engines;
 }
 
 #pragma mark - lifecycle
@@ -10,7 +12,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupNav];
+    [self setupData];
+}
+
+- (void)setupData {
     blacklist = [[EVSPreferenceManager blacklistedApps] mutableCopy];
+    engines = @{
+        @"DuckDuckGo": @"ddg.gg/?q=",
+        @"Google": @"google.com/search?q=",
+        @"Yahoo": @"search.yahoo.com/search?q=",
+        @"Bing": @"bing.com/search?q=",
+    };
+    selectedEngine = [EVSPreferenceManager searchEngine];
 }
 
 - (void)setupTable {
@@ -45,7 +58,7 @@ NS_ENUM(NSInteger, ExperimentalPrefsSections) {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
         case SearchEngineSection:
-            return 1;
+            return engines[selectedEngine] ? 1 : 2;
         case BlacklistedAppSection:
             return [blacklist count] + 1;
         default:
@@ -80,15 +93,31 @@ NS_ENUM(NSInteger, ExperimentalPrefsSections) {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch([indexPath section]) {
         case SearchEngineSection: {
-            L0PickerCell *cell = [[self tableView] dequeueReusableCellWithIdentifier:PICKER_CELL_ID forIndexPath:indexPath];
-            [cell setDelegate:self];
-            [[cell textLabel] setText:@"Engine"];
-            [[cell field] setText:[EVSPreferenceManager searchEngine]];
-            [[cell field] setTag:-1];
-            [cell setOptions:@[@"DuckDuckGo", @"Google", @"Yahoo", @"Bing"]];
-            [cell selectObject:[EVSPreferenceManager searchEngine]];
+            NSString *eng = [EVSPreferenceManager searchEngine];
+            if([indexPath row]) {
+                L0PureEditTextCell *cell = [[self tableView] dequeueReusableCellWithIdentifier:PURE_EDIT_TEXT_CELL_ID forIndexPath:indexPath];
+                [[cell field] setPlaceholder:@"ex. ddg.gg/?q="];
+                [[cell field] setTag:-2];
+                [cell setDelegate:self];
+                [[cell field] setText:(engines[eng] ? @"" : eng)];
+                return cell;
+            } else {
+                L0PickerCell *cell = [[self tableView] dequeueReusableCellWithIdentifier:PICKER_CELL_ID forIndexPath:indexPath];
+                [cell setDelegate:self];
+                [[cell textLabel] setText:@"Engine"];
+                [[cell field] setTag:-1];
+                [cell setOptions:[[engines allKeys] arrayByAddingObject:@"Custom URL Base"]];
+                if([[cell options] containsObject:eng]) {
+                    [[cell field] setText:eng];
+                    [cell selectObject:eng];
+                }
+                else {
+                    [[cell field] setText:@"Custom URL Base"];
+                    [cell selectObject:@"Custom URL Base"];
+                }
+                return cell;
+            }
 
-            return cell;
         }
         case BlacklistedAppSection: {
             if([indexPath row] < [blacklist count]) {
@@ -157,8 +186,25 @@ NS_ENUM(NSInteger, ExperimentalPrefsSections) {
 
 - (void)textFieldDidChange:(UITextField *)field {
     if([field tag] == -1) {
+        NSInteger old = [self tableView:[self tableView] numberOfRowsInSection:SearchEngineSection];
+        selectedEngine = [field text];
+        BOOL diff = !(old == [self tableView:[self tableView] numberOfRowsInSection:SearchEngineSection]);
+        if(engines[[field text]]) {
+            [EVSPreferenceManager setSearchEngine:[field text]];
+            if(diff) {
+                [[self tableView] deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:SearchEngineSection]]
+                                        withRowAnimation:UITableViewRowAnimationMiddle];
+            }
+        } else {
+            if(diff) {
+                [[self tableView] insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:SearchEngineSection]]
+                                        withRowAnimation:UITableViewRowAnimationMiddle];
+            }
+        }
+    } else if([field tag] == -2) {
         [EVSPreferenceManager setSearchEngine:[field text]];
-    } else {
+    }
+    else {
         blacklist[[field tag]] = [[field text] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     }
 }

@@ -63,7 +63,9 @@ numberOfRowsInComponent:(NSInteger)component {
 }
 
 - (void)selectObject:(NSString *)obj {
-    [self selectIndex:[[self options] indexOfObject:obj]];
+    if([[self options] containsObject:obj]) {
+        [self selectIndex:[[self options] indexOfObject:obj]];
+    }
 }
 
 @end
