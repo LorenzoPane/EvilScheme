@@ -12,7 +12,7 @@
     if((self = [super init])) {
         _orig = app;
         _name = name;
-        _targetBundleIDs = [targets mutableCopy];
+        _targetBundleIDs = [(targets ? : @[]) mutableCopy];
         if(![_targetBundleIDs containsObject:[app targetBundleID]]) {
             [_targetBundleIDs addObject:[app targetBundleID]];
         }
@@ -50,11 +50,13 @@
 - (void)encodeWithCoder:(NSCoder *)coder {
     [coder encodeObject:[self orig] forKey:@"orig"];
     [coder encodeObject:[self name] forKey:@"name"];
+    [coder encodeObject:[self targetBundleIDs] forKey:@"targetBundleIDs"];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)coder {
     return [self initWithAppAlternative:[coder decodeObjectForKey:@"orig"]
-                                   name:[coder decodeObjectForKey:@"name"]];
+                                   name:[coder decodeObjectForKey:@"name"]
+                        targetBundleIDs:[coder decodeObjectForKey:@"targetBundleIDs"]];
 }
 
 // }}}
