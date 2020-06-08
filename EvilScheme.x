@@ -7,7 +7,7 @@
 static NSDictionary<NSString *, EVKAppAlternative *> *prefs() {
     NSError *err;
 
-    NSString *path = @"/var/mobile/Library/Preferences/EvilScheme/alternatives.plist";
+    NSString *path = @"/var/mobile/Library/Preferences/EvilScheme/alternatives_v0.plist";
     NSData *data = [NSData dataWithContentsOfFile:path];
 
     NSKeyedUnarchiver *u = [[NSKeyedUnarchiver alloc] initForReadingFromData:data error:&err];
@@ -22,7 +22,7 @@ static NSDictionary<NSString *, EVKAppAlternative *> *prefs() {
 static NSSet *blacklist() {
     NSError *err;
 
-    NSString *path = @"/var/mobile/Library/Preferences/EvilScheme/blacklist.plist";
+    NSString *path = @"/var/mobile/Library/Preferences/EvilScheme/blacklist_v0.plist";
     NSData *data = [NSData dataWithContentsOfFile:path];
 
     NSSet *types = [NSSet setWithObjects:[NSOrderedSet class], [NSString class], nil];
@@ -37,7 +37,7 @@ static NSSet *blacklist() {
 // Logging {{{
 static NSDictionary *logDict() {
     NSError *err;
-    NSString *path = @"file:/var/mobile/Library/Preferences/EvilScheme/log.plist";
+    NSString *path = @"file:/var/mobile/Library/Preferences/EvilScheme/log_v0.plist";
 
     NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:path]
                                          options:0
@@ -74,7 +74,7 @@ static void setLogDict(NSDictionary *dict) {
                                          requiringSecureCoding:NO
                                                          error:&err];
 
-    NSString *path = @"file:/var/mobile/Library/Preferences/EvilScheme/log.plist";
+    NSString *path = @"file:/var/mobile/Library/Preferences/EvilScheme/log_v0.plist";
     [data writeToURL:[NSURL URLWithString:path]
              options:0
                error:&err];
