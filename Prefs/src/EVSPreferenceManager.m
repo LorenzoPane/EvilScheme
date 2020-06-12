@@ -427,6 +427,10 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                         [EVKStaticStringPortion portionWithString:@"apollo://reddit.com/" percentEncodingIterations:0],
                                                                                                         [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
                                                                                                 ]],
+                                                                                                [EVKAction actionWithPattern:@"reddit:///r/.*" outline:@[
+                                                                                                    [EVKStaticStringPortion portionWithString:@"apollo://reddit.com/" percentEncodingIterations:0],
+                                                                                                    [EVKTrimmedResourceSpecifierPortion portionWithPercentEncodingIterations:0],
+                                                                                                ]],
                                                                                           ]] name:@"Apollo"],
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.reddit.Reddit"
                                                                                      substituteBundleID:@"AaronKovacs.Comet"
@@ -445,6 +449,10 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                 ]],
                                                                                                 [EVKAction actionWithPattern:@".*reddit.com(/?)$" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"comet://" percentEncodingIterations:0],
+                                                                                                ]],
+                                                                                                [EVKAction actionWithPattern:@"reddit:///r/.*" outline:@[
+                                                                                                    [EVKStaticStringPortion portionWithString:@"comet://reddit.com/" percentEncodingIterations:0],
+                                                                                                    [EVKTrimmedResourceSpecifierPortion portionWithPercentEncodingIterations:0],
                                                                                                 ]],
                                                                                            ]] name:@"Comet"],
         ],

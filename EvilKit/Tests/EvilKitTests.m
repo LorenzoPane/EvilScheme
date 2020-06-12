@@ -524,6 +524,7 @@
         @"https://m.reddit.com/r/jailbreak/comments/gth4zu/upcoming_free_release_evil_scheme_change_your/": @"apollo://reddit.com/r/jailbreak/comments/gth4zu/upcoming_free_release_evil_scheme_change_your",
         @"https://amp.reddit.com/branch-redirect?creative=AppSelectorModal&experiment=app_selector_contrast_iteration&path=%2Fr%2Fjailbreak%2Fcomments%2Fgth4zu%2Fupcoming_free_release_evil_scheme_change_your%2F&variant=control_2": @"apollo://reddit.com/r/jailbreak/comments/gth4zu/upcoming_free_release_evil_scheme_change_your/",
         @"https://reddit.app.link/?channel=xpromo&feature=amp&campaign=app_selector_contrast_iteration&tags=AppSelectorModal&keyword=blue_header&%24og_redirect=https%3A%2F%2Fwww.reddit.com%2Fr%2Fjailbreak%2Fcomments%2Fgth4zu%2Fupcoming_free_release_evil_scheme_change_your%2F&%24deeplink_path=%2Fr%2Fjailbreak%2Fcomments%2Fgth4zu%2Fupcoming_free_release_evil_scheme_change_your%2F&%24android_deeplink_path=reddit%2Fr%2Fjailbreak%2Fcomments%2Fgth4zu%2Fupcoming_free_release_evil_scheme_change_your%2F&utm_source=xpromo&utm_medium=amp&utm_name=app_selector_contrast_iteration&utm_term=blue_header&utm_content=AppSelectorModal&mweb_loid=;" : @"apollo://reddit.com/r/jailbreak/comments/gth4zu/upcoming_free_release_evil_scheme_change_your/",
+        @"reddit:///r/jailbreak/comments/gth4zu/": @"apollo://reddit.com/r/jailbreak/comments/gth4zu",
     };
 
     EVKAppAlternative *apollo =  [[EVKAppAlternative alloc] initWithTargetBundleID:@"com.reddit.Reddit"
@@ -543,6 +544,10 @@
                                                                            [EVKAction actionWithPattern:@".*reddit.app.link.*" outline:@[
                                                                                [EVKStaticStringPortion portionWithString:@"apollo://reddit.com" percentEncodingIterations:0],
                                                                                [EVKQueryParameterValuePortion portionWithParameter:@"$deeplink_path" percentEncodingIterations:0]
+                                                                           ]],
+                                                                           [EVKAction actionWithPattern:@"reddit:///r/.*" outline:@[
+                                                                               [EVKStaticStringPortion portionWithString:@"apollo://reddit.com/" percentEncodingIterations:0],
+                                                                               [EVKTrimmedResourceSpecifierPortion portionWithPercentEncodingIterations:0],
                                                                            ]],
                                                                        ]];
     for(NSString *url in URLs) {
