@@ -95,12 +95,19 @@ NS_ENUM(NSInteger, RootVCSection) {
     switch(section) {
         case AppAlternativeSection:
             return @"Default Apps";
+        case MoreSettingsSection:
+            return @"Advanced";
         default:
             return @"";
     }
 }
 
 #pragma mark - cells
+
+NS_ENUM(NSInteger, MoreSettingsCells) {
+    ExperimentalCell,
+    LogCell,
+};
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch([indexPath section]) {
@@ -122,7 +129,7 @@ NS_ENUM(NSInteger, RootVCSection) {
         }
         case MoreSettingsSection: {
             L0LinkCell *cell = [tableView dequeueReusableCellWithIdentifier:LINK_CELL_ID forIndexPath:indexPath];
-            [[cell textLabel] setText:([indexPath row] ? @"Log" : @"Experimental Settings")];
+            [[cell textLabel] setText:([indexPath row] == LogCell ? @"Log" : @"Experimental Settings")];
             return cell;
         }
         default:
@@ -155,19 +162,23 @@ NS_ENUM(NSInteger, RootVCSection) {
             break;
         }
         case MoreSettingsSection: {
-            if([indexPath row]) {
-                EVSLogVC *ctrl = [EVSLogVC new];
-                [[self navigationController] pushViewController:ctrl animated:YES];
-            } else {
-                EVSExperimentalPrefsVC *ctrl = [EVSExperimentalPrefsVC new];
-                [[self navigationController] pushViewController:ctrl animated:YES];
+            switch([indexPath row]) {
+                case LogCell: {
+                    EVSLogVC *ctrl = [EVSLogVC new];
+                    [[self navigationController] pushViewController:ctrl animated:YES];
+                    break;
+                }
+                case ExperimentalCell: {
+                    EVSExperimentalPrefsVC *ctrl = [EVSExperimentalPrefsVC new];
+                    [[self navigationController] pushViewController:ctrl animated:YES];
+                    break;
+                }
             }
             break;
         }
         default:
             break;
     }
-
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
 

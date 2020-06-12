@@ -45,7 +45,7 @@
 
 #pragma mark - cells
 
-NS_ENUM(NSUInteger, KeyValuePairVCTags) {
+NS_ENUM(NSUInteger, KeyValuePairCells) {
     KeyTag,
     ValueTag,
 };
@@ -54,12 +54,15 @@ NS_ENUM(NSUInteger, KeyValuePairVCTags) {
     L0EditTextCell *cell = [[self tableView] dequeueReusableCellWithIdentifier:EDIT_TEXT_CELL_ID forIndexPath:indexPath];
     [[cell field] setTag:[indexPath row]];
     [cell setDelegate:self];
-    if([indexPath row]) {
-        [[cell textLabel] setText:@"To"];
-        [[cell field] setText:[self value]];
-    } else {
-        [[cell textLabel] setText:@"From"];
-        [[cell field] setText:[self key]];
+    switch([indexPath row]) {
+        case KeyTag: {
+            [[cell textLabel] setText:@"To"];
+            [[cell field] setText:[self value]];
+        }
+        case ValueTag: {
+            [[cell textLabel] setText:@"From"];
+            [[cell field] setText:[self key]];
+        }
     }
 
     return cell;

@@ -19,7 +19,7 @@
 }
 
 - (BOOL)containsKey:(NSString *)key {
-    return [self dict][key];
+    return (BOOL)[self dict][key];
 }
 
 - (NSArray<NSString *> *)keys {

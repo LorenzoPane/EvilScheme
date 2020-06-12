@@ -32,11 +32,6 @@ NS_ENUM(NSInteger, AppVCSection) {
     OutlineSection,
 };
 
-NS_ENUM(NSInteger, AppTextFieldTags) {
-    SubstituteBundleIDTag = -1,
-    NameTag               = -2,
-};
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 3;
 }
@@ -67,20 +62,35 @@ NS_ENUM(NSInteger, AppTextFieldTags) {
 
 #pragma mark - cells
 
+NS_ENUM(NSInteger, AppTextFieldTags) {
+    NameTag               = -1,
+    SubstituteBundleIDTag = -2,
+};
+
+NS_ENUM(NSInteger, MetaCells) {
+    NameCell,
+    SubstituteBundleCell,
+};
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch ([indexPath section]) {
         case MetaSection: {
             L0EditTextCell *cell = [tableView dequeueReusableCellWithIdentifier:EDIT_TEXT_CELL_ID forIndexPath:indexPath];
-            if([indexPath row] == 0) {
-                [[cell textLabel] setText:@"Name"];
-                [[cell field] setPlaceholder:@"For easy identification"];
-                [[cell field] setText:[[self appAlternative] name]];
-                [[cell field] setTag:NameTag];
-            } else {
-                [[cell textLabel] setText:@"New Bundle ID"];
-                [[cell field] setPlaceholder:@"ex: com.brave.ios.browser"];
-                [[cell field] setText:[[self appAlternative] substituteBundleID]];
-                [[cell field] setTag:SubstituteBundleIDTag];
+            switch([indexPath row]) {
+                case NameCell: {
+                    [[cell textLabel] setText:@"Name"];
+                    [[cell field] setPlaceholder:@"For easy identification"];
+                    [[cell field] setText:[[self appAlternative] name]];
+                    [[cell field] setTag:NameTag];
+                    break;
+                }
+                case SubstituteBundleCell: {
+                    [[cell textLabel] setText:@"New Bundle ID"];
+                    [[cell field] setPlaceholder:@"ex: com.brave.ios.browser"];
+                    [[cell field] setText:[[self appAlternative] substituteBundleID]];
+                    [[cell field] setTag:SubstituteBundleIDTag];
+                    break;
+                }
             }
             [cell setDelegate:self];
             return cell;

@@ -26,7 +26,7 @@
     return self;
 }
 
-- (bool)textField:(UITextField *)textField
+- (BOOL)textField:(UITextField *)textField
     shouldChangeCharactersInRange:(NSRange)range
                 replacementString:(NSString *)string {
     return NO;
