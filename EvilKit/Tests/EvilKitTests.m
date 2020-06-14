@@ -3,7 +3,6 @@
 #import <EvilKit/EvilKit.h>
 
 @interface EvilKitTests : XCTestCase
-
 @end
 
 @implementation EvilKitTests {
@@ -598,15 +597,5 @@
 }
 
 // }}}
-
-/*
- - (void)testResearch {
- NSURL *url = [NSURL URLWithString:@"mapitem://YnBsaXN0MDDSAQIDCF8QJU1LTWFwSXRlbUxhdW5jaEFkZGl0aW9uc0xhdW5jaE9wdGlvbnNfECBNS01hcEl0ZW1MYXVuY2hBZGRpdGlvbnNNYXBJdGVtc9IEBQYHXxAdTUtMYXVuY2hPcHRpb25zRGlyZWN0aW9uc01vZGVfECRNS0xhdW5jaE9wdGlvbnNSZWZlcnJhbElkZW50aWZpZXJLZXlfECRNS0xhdW5jaE9wdGlvbnNEaXJlY3Rpb25zTW9kZURlZmF1bHRfEBNjb20ueWVscC55ZWxwaXBob25loQnTCgsMDQ4PXxATTUtNYXBJdGVtR0VPTWFwSXRlbV1NS01hcEl0ZW1OYW1lXxAUTUtNYXBJdGVtUGhvbmVOdW1iZXJPELQSiwEiEkFwcGxlIEZpZnRoIEF2ZW51ZSokKX6RtvfDYURAMdw1VPhFflLAOX6RtvfDYURAQdw1VPhFflLAMjh6NgoNVW5pdGVkIFN0YXRlcxICVVMaAk5ZMghOZXcgWW9yazoFMTAxNTNiDDc2NyA1dGggQXZlCkoSCX6RtvfDYURAEdw1VPhFflLA8AwAQiQKEkFwcGxlIEZpZnRoIEF2ZW51ZRIOKDIxMikgMzM2LTE0NDBfEBJBcHBsZSBGaWZ0aCBBdmVudWVeKDIxMikgMzM2LTE0NDAACAANADUAWABdAH0ApADLAOEA4wDqAQABDgElAdwB8QAAAAAAAAIBAAAAAAAAABAAAAAAAAAAAAAAAAAAAAIA"];
-
- NSData *data = [[NSData alloc] initWithBase64EncodedString:[url trimmedResourceSpecifier] options:0];
- id q = [NSKeyedUnarchiver unarchiveObjectWithData:data];
- NSLog(@"%@", q);
- }
- */
 
 @end

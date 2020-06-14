@@ -12,14 +12,17 @@
         @"regex"                     : @"Regular Expression",
         @"string"                    : @"Text",
         @"templet"                   : @"Template",
+        @"path"                      : @"Key-value path"
     };
 }
 
 + (NSDictionary<NSString *, Class> *)classNameMappings {
     return @{
+        @"Address unwrapper"  : [EVKMapItemUnwrapperPortion class],
         @"Constant Text"      : [EVKStaticStringPortion class],
         @"Domain"             : [EVKHostPortion class],
         @"Full URL"           : [EVKFullURLPortion class],
+        @"Key-value path"     : [EVKKeyValuePathPortion class],
         @"Path"               : [EVKTrimmedPathPortion class],
         @"Query Parameter"    : [EVKQueryParameterValuePortion class],
         @"Query"              : [EVKQueryPortion class],

@@ -102,3 +102,20 @@
                         template:(NSString *)templet
        percentEncodingIterations:(int)iterations;
 @end
+
+/// Niche portion which returns the joined value for a key path for of a base64 encoded plist
+@interface EVKKeyValuePathPortion : EVKRegexSubstitutionPortion
+@property (copy) NSString *path;
+- (instancetype)initWithRegex:(NSString *)regex
+                     template:(NSString *)templet
+                         path:(NSString *)path
+    percentEncodingIterations:(int)iterations;
++ (instancetype)portionWithRegex:(NSString *)regex
+                        template:(NSString *)templet
+                            path:(NSString *)path
+       percentEncodingIterations:(int)iterations;
+@end
+
+/// Niche portion which returns an address from a base64 encoded MapItem
+@interface EVKMapItemUnwrapperPortion : EVKPercentEncodablePortion
+@end

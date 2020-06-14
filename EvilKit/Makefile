@@ -10,6 +10,7 @@ FRAMEWORK_NAME = EvilKit
 EvilKit_FILES = $(SAUCE)
 EvilKit_PUBLIC_HEADERS = $(HEADERS)
 EvilKit_INSTALL_PATH = /Library/Frameworks
+EvilKit_PRIVATE_FRAMEWORKS = GeoServices
 EvilKit_CFLAGS = -fobjc-arc
 
 include $(THEOS_MAKE_PATH)/framework.mk

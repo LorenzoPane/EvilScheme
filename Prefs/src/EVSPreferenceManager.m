@@ -249,6 +249,10 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.Maps"
                                                                                      substituteBundleID:@"com.google.Maps"
                                                                                             urlOutlines:@[
+                                                                                                [EVKAction actionWithPattern:@"^mapitem://" outline:@[
+                                                                                                    [EVKStaticStringPortion portionWithString:@"waze://?q=" percentEncodingIterations:0],
+                                                                                                    [EVKMapItemUnwrapperPortion portionWithPercentEncodingIterations:1],
+                                                                                                ]],
                                                                                                 [EVKAction actionWithPattern:@"^(((http(s?)://)?maps.apple.com)|(maps:))" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"comgooglemaps://?" percentEncodingIterations:0],
                                                                                                         [EVKTranslatedQueryPortion portionWithDictionary:@{
@@ -276,6 +280,10 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                 [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.apple.Maps"
                                                                                      substituteBundleID:@"com.waze.iphone"
                                                                                             urlOutlines:@[
+                                                                                                [EVKAction actionWithPattern:@"^mapitem://" outline:@[
+                                                                                                    [EVKStaticStringPortion portionWithString:@"waze://?q=" percentEncodingIterations:0],
+                                                                                                    [EVKMapItemUnwrapperPortion portionWithPercentEncodingIterations:1],
+                                                                                                ]],
                                                                                                 [EVKAction actionWithPattern:@"^(((http(s?)://)?maps.apple.com)|(maps:))" outline:@[
                                                                                                         [EVKStaticStringPortion portionWithString:@"waze://?" percentEncodingIterations:0],
                                                                                                         [EVKTranslatedQueryPortion portionWithDictionary:@{
