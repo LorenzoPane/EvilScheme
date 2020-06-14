@@ -7,4 +7,4 @@ Depends: mobilesubstrate,preferenceloader,firmware (>= 13.0)
 Replaces: com.lpane.browserdefault,com.lpane.googlemapsdefault
 Architecture: iphoneos-arm
 Section: Tweaks
-Version: 0.2.2
+Version: 0.2.3
