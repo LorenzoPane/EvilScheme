@@ -464,6 +464,37 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                 ]],
                                                                                            ]] name:@"Comet"],
         ],
+        @"Twitter Clients": @[
+                [[EVSAppAlternativeWrapper alloc] initWithAppAlternative:[NEWALT initWithTargetBundleID:@"com.atebits.Tweetie2"
+                                                                                     substituteBundleID:@"com.tapbots.Tweetbot4"
+                                                                                            urlOutlines:@[
+                                                                                                [EVKAction actionWithPattern:@".*twitter.com/[^/]+/?$"
+                                                                                                                     outline:@[
+                                                                                                                         [EVKStaticStringPortion portionWithString:@"tweetbotbot:///user_profile/" percentEncodingIterations:0],
+                                                                                                                         [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
+                                                                                                                     ]],
+                                                                                                [EVKAction actionWithPattern:@".*twitter.com/i/lists/.*$"
+                                                                                                                     outline:@[
+                                                                                                                         [EVKStaticStringPortion portionWithString:@"tweetbot:///list/" percentEncodingIterations:0],
+                                                                                                                         [EVKRegexSubstitutionPortion portionWithRegex:@"^.*/i/lists/(\\d+)/?$"
+                                                                                                                                                              template:@"$1"
+                                                                                                                                             percentEncodingIterations:0],
+                                                                                                                     ]],
+                                                                                                [EVKAction actionWithPattern:@".*twitter.com/.+/status/.*$"
+                                                                                                                     outline:@[
+                                                                                                                         [EVKStaticStringPortion portionWithString:@"tweetbot:///status/" percentEncodingIterations:0],
+                                                                                                                         [EVKRegexSubstitutionPortion portionWithRegex:@"^.*/[^/]+/status/(\\d+)/?$"
+                                                                                                                                                              template:@"$1"
+                                                                                                                                             percentEncodingIterations:0],
+                                                                                                                     ]],
+                                                                                                [EVKAction actionWithPattern:@".*twitter.com.*"
+                                                                                                                     outline:@[
+                                                                                                                         [EVKStaticStringPortion portionWithString:@"tweetbotbot:///" percentEncodingIterations:0],
+                                                                                                                         [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
+                                                                                                                     ]],
+                                                                                            ]]
+                                                                    name:@"Tweetbot 5"]
+        ],
     }];
 }
 

@@ -2,6 +2,7 @@ name: ZZ_EvilScheme
 icmd: sbreload || killall backboardd
 
 all:
+  target: ios
   targetvers: 13.0
   archs:
     - arm64

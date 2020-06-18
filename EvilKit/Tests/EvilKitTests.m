@@ -596,6 +596,46 @@
     }
 }
 
+- (void)testTweetbot {
+    NSArray *urls = @[
+        @"https://twitter.com/mushyware",
+        @"https://www.twitter.com/mushyware/status/1267615150321827840",
+        @"http://twitter.com/i/lists/1005878912671461376",
+    ];
+
+    EVKAppAlternative *tweetbot = [[EVKAppAlternative alloc] initWithTargetBundleID:@"com.atebits.Tweetie2"
+                                                                 substituteBundleID:@"com.tapbots.Tweetbot4"
+                                                                        urlOutlines:@[
+                                                                            [EVKAction actionWithPattern:@".*twitter.com/[^/]+/?$"
+                                                                                                 outline:@[
+                                                                                                     [EVKStaticStringPortion portionWithString:@"tweetbotbot:///user_profile/" percentEncodingIterations:0],
+                                                                                                     [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
+                                                                                                 ]],
+                                                                            [EVKAction actionWithPattern:@".*twitter.com/i/lists/.*$"
+                                                                                                 outline:@[
+                                                                                                     [EVKStaticStringPortion portionWithString:@"tweetbot:///list/" percentEncodingIterations:0],
+                                                                                                     [EVKRegexSubstitutionPortion portionWithRegex:@"^.*/i/lists/(\\d+)/?$"
+                                                                                                                                          template:@"$1"
+                                                                                                                         percentEncodingIterations:0],
+                                                                                                 ]],
+                                                                            [EVKAction actionWithPattern:@".*twitter.com/.+/status/.*$"
+                                                                                                 outline:@[
+                                                                                                     [EVKStaticStringPortion portionWithString:@"tweetbot:///status/" percentEncodingIterations:0],
+                                                                                                     [EVKRegexSubstitutionPortion portionWithRegex:@"^.*/[^/]+/status/(\\d+)/?$"
+                                                                                                                                          template:@"$1"
+                                                                                                                         percentEncodingIterations:0],
+                                                                                                 ]],
+                                                                            [EVKAction actionWithPattern:@".*twitter.com.*"
+                                                                                                 outline:@[
+                                                                                                     [EVKStaticStringPortion portionWithString:@"tweetbotbot:///" percentEncodingIterations:0],
+                                                                                                     [EVKTrimmedPathPortion portionWithPercentEncodingIterations:0],
+                                                                                                 ]],
+                                                                        ]];
+    for(NSString *url in urls) {
+        NSLog(@"%@", [tweetbot transformURL:[NSURL URLWithString:url]]);
+    }
+}
+
 // }}}
 
 @end

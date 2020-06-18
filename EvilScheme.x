@@ -131,6 +131,7 @@ static NSURL *urlFromActions(NSArray *actions) {
             if((url = [options dictionary][@"__PayloadURL"])
             || (url = [[options dictionary][@"__AppLink4LS"] URL])
             || (url = urlFromActions([options dictionary][@"__Actions"]))) {
+                [lString appendFormat:@"%@\n"[url absoluteString]];
                 if([app transformURL:url]) {
                     // Craft new request
                     bundleID                  = [app substituteBundleID];
