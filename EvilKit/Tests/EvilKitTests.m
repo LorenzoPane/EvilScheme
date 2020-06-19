@@ -601,6 +601,7 @@
         @"https://twitter.com/mushyware",
         @"https://www.twitter.com/mushyware/status/1267615150321827840",
         @"http://twitter.com/i/lists/1005878912671461376",
+        @"https://twitter.com/pwn20wnd/status/1163111004370161666?s=21",
     ];
 
     EVKAppAlternative *tweetbot = [[EVKAppAlternative alloc] initWithTargetBundleID:@"com.atebits.Tweetie2"
@@ -614,14 +615,14 @@
                                                                             [EVKAction actionWithPattern:@".*twitter.com/i/lists/.*$"
                                                                                                  outline:@[
                                                                                                      [EVKStaticStringPortion portionWithString:@"tweetbot:///list/" percentEncodingIterations:0],
-                                                                                                     [EVKRegexSubstitutionPortion portionWithRegex:@"^.*/i/lists/(\\d+)/?$"
+                                                                                                     [EVKRegexSubstitutionPortion portionWithRegex:@"^.*/i/lists/(\\d+).*$"
                                                                                                                                           template:@"$1"
                                                                                                                          percentEncodingIterations:0],
                                                                                                  ]],
                                                                             [EVKAction actionWithPattern:@".*twitter.com/.+/status/.*$"
                                                                                                  outline:@[
                                                                                                      [EVKStaticStringPortion portionWithString:@"tweetbot:///status/" percentEncodingIterations:0],
-                                                                                                     [EVKRegexSubstitutionPortion portionWithRegex:@"^.*/[^/]+/status/(\\d+)/?$"
+                                                                                                     [EVKRegexSubstitutionPortion portionWithRegex:@"^.*/[^/]+/status/(\\d+).*$"
                                                                                                                                           template:@"$1"
                                                                                                                          percentEncodingIterations:0],
                                                                                                  ]],

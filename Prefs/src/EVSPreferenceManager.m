@@ -476,14 +476,14 @@ NSString *const alternativesPath = @"file:/var/mobile/Library/Preferences/EvilSc
                                                                                                 [EVKAction actionWithPattern:@".*twitter.com/i/lists/.*$"
                                                                                                                      outline:@[
                                                                                                                          [EVKStaticStringPortion portionWithString:@"tweetbot:///list/" percentEncodingIterations:0],
-                                                                                                                         [EVKRegexSubstitutionPortion portionWithRegex:@"^.*/i/lists/(\\d+)/?$"
+                                                                                                                         [EVKRegexSubstitutionPortion portionWithRegex:@"^.*/i/lists/(\\d+).*$"
                                                                                                                                                               template:@"$1"
                                                                                                                                              percentEncodingIterations:0],
                                                                                                                      ]],
                                                                                                 [EVKAction actionWithPattern:@".*twitter.com/.+/status/.*$"
                                                                                                                      outline:@[
                                                                                                                          [EVKStaticStringPortion portionWithString:@"tweetbot:///status/" percentEncodingIterations:0],
-                                                                                                                         [EVKRegexSubstitutionPortion portionWithRegex:@"^.*/[^/]+/status/(\\d+)/?$"
+                                                                                                                         [EVKRegexSubstitutionPortion portionWithRegex:@"^.*/[^/]+/status/(\\d+).*$"
                                                                                                                                                               template:@"$1"
                                                                                                                                              percentEncodingIterations:0],
                                                                                                                      ]],
