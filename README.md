@@ -12,7 +12,7 @@ You can install EvilScheme for free by adding the [Dynastic Repo](http://repo.dy
 
 Contribution
 ---
-I love pull requests! To contribute, just fork, branch, commit, push, and send me a PR. Please ensure that your code fits with the style of the project and is well documented with comments. If you have and questions, shoot me a DM. If you want to add a preset, modify the `EVSPreferenceManager.m` file with your preset from source. It is each item is structured similarly to it's counterpart in the settings pane. If you don't quite remember the behavior of each portion, check out the well documented header [here](https://github.com/LorenzoPane/EvilScheme/blob/master/EvilKit/src/EVKURLPortions.h).
+I love pull requests! To contribute, just fork, branch, commit, push, and send me a PR. Please ensure that your code fits with the style of the project and is well documented with comments. If you have and questions, shoot me a DM. If you want to add a preset, modify the `EVSPreferenceManager.m` file with your preset from source. Each item is structured similarly to its counterpart in the settings pane. If you don't quite remember the behavior of each portion, check out the well documented headers [here](https://github.com/LorenzoPane/EvilScheme/blob/master/EvilKit/src/EVKURLPortions.h).
 
 Tips
 ---
